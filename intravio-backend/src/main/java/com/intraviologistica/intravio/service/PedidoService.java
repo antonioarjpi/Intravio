@@ -2,6 +2,7 @@ package com.intraviologistica.intravio.service;
 
 import com.intraviologistica.intravio.dto.PedidoDTO;
 import com.intraviologistica.intravio.model.*;
+import com.intraviologistica.intravio.model.enums.StatusPedido;
 import com.intraviologistica.intravio.repository.ItemRepository;
 import com.intraviologistica.intravio.repository.PedidoRepository;
 import com.intraviologistica.intravio.service.exceptions.ResourceNotFoundException;
@@ -29,6 +30,11 @@ public class PedidoService {
         this.produtoService = produtoService;
     }
 
+    public Pedido findById(Long id) {
+        return pedidoRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Pedido não encontrado: " + id));
+    }
+
     @Transactional
     public List<PedidoDTO> listar() {
         return pedidoRepository.findAll()
@@ -39,7 +45,7 @@ public class PedidoService {
 
     @Transactional
     public PedidoDTO buscarPorId(Long id) {
-        return toDTO(buscarPedidoPorId(id));
+        return toDTO(findById(id));
     }
 
     @Transactional
@@ -47,6 +53,8 @@ public class PedidoService {
         Pedido pedido = toEntity(dto);
 
         setPedido(dto, pedido);
+
+        pedido.setStatus(StatusPedido.PENDENTE);
 
         pedido = pedidoRepository.save(pedido);
 
@@ -65,7 +73,7 @@ public class PedidoService {
 
     @Transactional
     public Pedido atualizar(PedidoDTO dto) {
-        Pedido pedido = buscarPedidoPorId(dto.getId());
+        Pedido pedido = findById(dto.getId());
 
         setPedido(dto, pedido);
 
@@ -92,12 +100,6 @@ public class PedidoService {
         pedidoRepository.deleteById(id);
     }
 
-
-    private Pedido buscarPedidoPorId(Long id) {
-        return pedidoRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Pedido não encontrado: " + id));
-    }
-
     private void setPedido(PedidoDTO dto, Pedido pedido) {
         Filial origem = filialService.buscarPorNome(dto.getOrigem());
         Filial destino = filialService.buscarPorNome(dto.getDestino());
@@ -119,6 +121,7 @@ public class PedidoService {
         dto.setDataAtualizacao(pedido.getDataAtualizacao() == null ? pedido.getDataPedido() : pedido.getDataAtualizacao());
         dto.setDataPedido(pedido.getDataPedido());
         dto.setPrioridade(pedido.getPrioridade());
+        dto.setAcompanhaStatus(pedido.getAcompanhaStatus());
 
         dto.setOrigem(pedido.getOrigem().getNome());
         dto.setDestino(pedido.getDestino().getNome());
@@ -137,6 +140,7 @@ public class PedidoService {
         pedido.setStatus(dto.getStatus());
         pedido.setDataAtualizacao(LocalDateTime.now());
         pedido.setPrioridade(dto.getPrioridade());
+        pedido.setAcompanhaStatus(dto.getAcompanhaStatus());
 
         return pedido;
     }

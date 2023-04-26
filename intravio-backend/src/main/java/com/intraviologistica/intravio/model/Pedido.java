@@ -1,8 +1,9 @@
 package com.intraviologistica.intravio.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.intraviologistica.intravio.model.enums.AcompanhaStatus;
 import com.intraviologistica.intravio.model.enums.Prioridade;
-import com.intraviologistica.intravio.model.enums.Status;
+import com.intraviologistica.intravio.model.enums.StatusPedido;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -43,19 +44,24 @@ public class Pedido {
     private AcompanhaStatus acompanhaStatus;
 
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private StatusPedido statusPedido;
 
     @Enumerated(EnumType.STRING)
     private Prioridade prioridade;
 
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "romaneio_id")
+    private Romaneio romaneio;
+
     public Pedido() {
     }
 
-    public Pedido(Long id, List<Item> itens, List<String> fotos, Status status, Funcionario remetente, Funcionario destinatario, Filial origem, Filial destino, LocalDateTime dataPedido, LocalDateTime dataAtualizacao, Prioridade prioridade, AcompanhaStatus acompanhaStatus) {
+    public Pedido(Long id, List<Item> itens, List<String> fotos, StatusPedido statusPedido, Funcionario remetente, Funcionario destinatario, Filial origem, Filial destino, LocalDateTime dataPedido, LocalDateTime dataAtualizacao, Prioridade prioridade, AcompanhaStatus acompanhaStatus) {
         this.id = id;
         this.itens = itens;
         this.fotos = fotos;
-        this.status = status;
+        this.statusPedido = statusPedido;
         this.remetente = remetente;
         this.destinatario = destinatario;
         this.origem = origem;
@@ -66,17 +72,17 @@ public class Pedido {
         this.acompanhaStatus = acompanhaStatus;
     }
 
-    public Double getValorTotal(){
+    public Double getValorTotal() {
         Double soma = 0.0;
-        for (Item item : itens){
+        for (Item item : itens) {
             soma += item.getSubtotal();
         }
         return soma;
     }
 
-    public Double getPesoTotal(){
+    public Double getPesoTotal() {
         Double soma = 0.0;
-        for (Item item : itens){
+        for (Item item : itens) {
             soma += item.getPesoTotal();
         }
         return soma;
@@ -106,12 +112,12 @@ public class Pedido {
         this.fotos = fotos;
     }
 
-    public Status getStatus() {
-        return status;
+    public StatusPedido getStatus() {
+        return statusPedido;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
+    public void setStatus(StatusPedido statusPedido) {
+        this.statusPedido = statusPedido;
     }
 
     public Funcionario getRemetente() {
@@ -162,11 +168,11 @@ public class Pedido {
         this.prioridade = prioridade;
     }
 
-    public LocalDateTime getDataAtualizacao(){
+    public LocalDateTime getDataAtualizacao() {
         return dataAtualizacao;
     }
 
-    public void setDataAtualizacao(LocalDateTime dataAtualizacao){
+    public void setDataAtualizacao(LocalDateTime dataAtualizacao) {
         this.dataAtualizacao = dataAtualizacao;
     }
 
@@ -176,5 +182,13 @@ public class Pedido {
 
     public void setAcompanhaStatus(AcompanhaStatus acompanhaStatus) {
         this.acompanhaStatus = acompanhaStatus;
+    }
+
+    public Romaneio getRomaneio() {
+        return romaneio;
+    }
+
+    public void setRomaneio(Romaneio romaneio) {
+        this.romaneio = romaneio;
     }
 }

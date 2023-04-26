@@ -1,8 +1,9 @@
 package com.intraviologistica.intravio.dto;
 
 import com.intraviologistica.intravio.model.Item;
+import com.intraviologistica.intravio.model.enums.AcompanhaStatus;
 import com.intraviologistica.intravio.model.enums.Prioridade;
-import com.intraviologistica.intravio.model.enums.Status;
+import com.intraviologistica.intravio.model.enums.StatusPedido;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -13,7 +14,7 @@ public class PedidoDTO {
     private Long id;
     private List<Item> itens = new ArrayList<>();
     private List<String> fotos = new ArrayList<>();
-    private Status status;
+    private StatusPedido statusPedido;
     private String remetente;
     private String destinatario;
     private String origem;
@@ -21,15 +22,16 @@ public class PedidoDTO {
     private LocalDateTime dataPedido;
     private LocalDateTime dataAtualizacao;
     private Prioridade prioridade;
+    private AcompanhaStatus acompanhaStatus;
 
     public PedidoDTO() {
     }
 
-    public PedidoDTO(Long id, List<Item> itens, List<String> fotos, Status status, String remetente, String destinatario, String origem, String destino, LocalDateTime dataPedido, LocalDateTime dataAtualizacao, Prioridade prioridade) {
+    public PedidoDTO(Long id, List<Item> itens, List<String> fotos, StatusPedido statusPedido, String remetente, String destinatario, String origem, String destino, LocalDateTime dataPedido, LocalDateTime dataAtualizacao, Prioridade prioridade) {
         this.id = id;
         this.itens = itens;
         this.fotos = fotos;
-        this.status = status;
+        this.statusPedido = statusPedido;
         this.remetente = remetente;
         this.destinatario = destinatario;
         this.origem = origem;
@@ -63,12 +65,12 @@ public class PedidoDTO {
         this.fotos = fotos;
     }
 
-    public Status getStatus() {
-        return status;
+    public StatusPedido getStatus() {
+        return statusPedido;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
+    public void setStatus(StatusPedido statusPedido) {
+        this.statusPedido = statusPedido;
     }
 
     public String getRemetente() {
@@ -125,5 +127,21 @@ public class PedidoDTO {
 
     public void setDataAtualizacao(LocalDateTime dataAtualizacao) {
         this.dataAtualizacao = dataAtualizacao;
+    }
+
+    public StatusPedido getStatusPedido() {
+        return statusPedido;
+    }
+
+    public void setStatusPedido(StatusPedido statusPedido) {
+        this.statusPedido = statusPedido;
+    }
+
+    public AcompanhaStatus getAcompanhaStatus() {
+        return acompanhaStatus;
+    }
+
+    public void setAcompanhaStatus(AcompanhaStatus acompanhaStatus) {
+        this.acompanhaStatus = acompanhaStatus;
     }
 }

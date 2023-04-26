@@ -12,7 +12,7 @@
 	<artifactId>intravio</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Intravio Logistica</name>
-	<description>O Intravio é o sistema interno de rastreamento de entregas da empresa. Com nossa plataforma online, você pode facilmente agendar entregas, acompanhar o status do pacote e receber notificações em tempo real em cada etapa do processo. Fornecemos soluções técnicas intralogísticas eficientes que permitem às empresas gerir as suas entregas de forma rápida e segura. Com o Intravio, você pode ter certeza de que suas embalagens estarão sempre em boas condições. Simplifique sua intralogística com o Intravio.</description>
+	<description>O Intravio é o sistema interno de rastreamento de entregas da empresa. Com nossa plataforma online, você pode facilmente agendar entregas, acompanhar o statusPedido do pacote e receber notificações em tempo real em cada etapa do processo. Fornecemos soluções técnicas intralogísticas eficientes que permitem às empresas gerir as suas entregas de forma rápida e segura. Com o Intravio, você pode ter certeza de que suas embalagens estarão sempre em boas condições. Simplifique sua intralogística com o Intravio.</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>

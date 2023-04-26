@@ -21,13 +21,13 @@ public class TransportadorController {
 
     @GetMapping("/{id}")
     public ResponseEntity<TransportadorDTO> buscaTransportadorPorId(@PathVariable Long id) {
-        TransportadorDTO transportadorDTO = transportadorService.buscaTransportadorPorIdDTO(id);
+        TransportadorDTO transportadorDTO = transportadorService.buscaTransportadorPorId(id);
         return ResponseEntity.ok(transportadorDTO);
     }
 
     @GetMapping
     public ResponseEntity<List<TransportadorDTO>> lista() {
-        List<TransportadorDTO> transportadorDTOList = transportadorService.lista();
+        List<TransportadorDTO> transportadorDTOList = transportadorService.listaTodosTransportadores();
         return ResponseEntity.ok(transportadorDTOList);
     }
 

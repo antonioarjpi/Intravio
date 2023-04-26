@@ -20,13 +20,13 @@ public class TransportadorService {
     }
 
     @Transactional
-    public TransportadorDTO buscaTransportadorPorIdDTO(Long id) {
-        Transportador transportador = buscaTransportadorPorId(id);
+    public TransportadorDTO buscaTransportadorPorId(Long id) {
+        Transportador transportador = findById(id);
         return toDTO(transportador);
     }
 
     @Transactional
-    public List<TransportadorDTO> lista() {
+    public List<TransportadorDTO> listaTodosTransportadores() {
         return transportadorRepository.findAll()
                 .stream()
                 .map(this::toDTO)
@@ -41,7 +41,7 @@ public class TransportadorService {
 
     @Transactional
     public Transportador atualiza(TransportadorDTO dto) {
-        Transportador novoTransportador = buscaTransportadorPorId(dto.getId());
+        Transportador novoTransportador = findById(dto.getId());
 
         novoTransportador.setId(dto.getId());
         novoTransportador.setNome(dto.getNome());
@@ -59,7 +59,7 @@ public class TransportadorService {
     }
 
     @Transactional
-    private Transportador buscaTransportadorPorId(Long id) {
+    public Transportador findById(Long id) {
         return transportadorRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Transportador não encontrado"));
     }
