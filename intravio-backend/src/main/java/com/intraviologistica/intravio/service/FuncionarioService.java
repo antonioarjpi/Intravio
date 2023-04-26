@@ -23,52 +23,52 @@ public class FuncionarioService {
     }
 
     @Transactional
-    public List<FuncionarioDTO> findAll() {
+    public List<FuncionarioDTO> listaFuncionarios() {
         List<Funcionario> funcionarios = funcionarioRepository.findAll();
         return funcionarios.stream().map(this::toDTO).collect(Collectors.toList());
     }
 
     @Transactional
-    public Funcionario buscarFuncionarioPorId(Long id) {
+    public Funcionario findById(Long id) {
         return funcionarioRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Funcionário não encontrado"));
     }
 
     @Transactional
-    public Funcionario buscarPorEmail(String email) {
+    public Funcionario buscaFuncionarioPorEmail(String email) {
         return funcionarioRepository.findByEmail(email);
     }
 
     @Transactional
-    public FuncionarioDTO buscarFuncionarioPorIdDTO(Long id) {
-        return toDTO(buscarFuncionarioPorId(id));
+    public FuncionarioDTO buscaFuncionarioPorId(Long id) {
+        return toDTO(findById(id));
     }
 
     @Transactional
-    public FuncionarioDTO salvar(FuncionarioDTO funcionarioDTO) {
+    public FuncionarioDTO salvaFuncionario(FuncionarioDTO funcionarioDTO) {
         Funcionario funcionario = toEntity(funcionarioDTO);
-        setDepartamento(funcionarioDTO, funcionario);
+        buscarEInserirDepartamento(funcionarioDTO, funcionario);
         Funcionario funcionarioSalvo = funcionarioRepository.save(funcionario);
         return toDTO(funcionarioSalvo);
     }
 
     @Transactional
-    public FuncionarioDTO atualizar(Long id, FuncionarioDTO funcionarioDTO) {
-        Funcionario funcionario = buscarFuncionarioPorId(id);
+    public FuncionarioDTO atualizaFuncionario(Long id, FuncionarioDTO funcionarioDTO) {
+        Funcionario funcionario = findById(id);
         funcionario.setNome(funcionarioDTO.getNome());
         funcionario.setEmail(funcionarioDTO.getEmail());
-        setDepartamento(funcionarioDTO, funcionario);
+        buscarEInserirDepartamento(funcionarioDTO, funcionario);
         Funcionario updatedFuncionario = funcionarioRepository.save(funcionario);
         return toDTO(updatedFuncionario);
     }
 
-    private void setDepartamento(FuncionarioDTO funcionarioDTO, Funcionario funcionario) {
+    private void buscarEInserirDepartamento(FuncionarioDTO funcionarioDTO, Funcionario funcionario) {
         Departamento departamento = departamentoService.buscarDepartamentoPorNome(funcionarioDTO.getDepartamentoNome());
         funcionario.setDepartamento(departamento);
     }
 
     @Transactional
-    public void deletar(Long id) {
+    public void deletarFuncionario(Long id) {
         funcionarioRepository.deleteById(id);
     }
 

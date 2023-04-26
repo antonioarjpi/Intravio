@@ -34,13 +34,13 @@ public class TransportadorService {
     }
 
     @Transactional
-    public Transportador salva(TransportadorDTO dto) {
+    public Transportador salvaTransportador(TransportadorDTO dto) {
         Transportador transportador = toEntity(dto);
         return transportadorRepository.save(transportador);
     }
 
     @Transactional
-    public Transportador atualiza(TransportadorDTO dto) {
+    public Transportador atualizaTransportador(TransportadorDTO dto) {
         Transportador novoTransportador = findById(dto.getId());
 
         novoTransportador.setId(dto.getId());
@@ -54,7 +54,7 @@ public class TransportadorService {
     }
 
     @Transactional
-    public void deleta(Long id) {
+    public void deletaTransportador(Long id) {
         transportadorRepository.deleteById(id);
     }
 

@@ -26,27 +26,27 @@ public class TransportadorController {
     }
 
     @GetMapping
-    public ResponseEntity<List<TransportadorDTO>> lista() {
+    public ResponseEntity<List<TransportadorDTO>> listaTransportadores() {
         List<TransportadorDTO> transportadorDTOList = transportadorService.listaTodosTransportadores();
         return ResponseEntity.ok(transportadorDTOList);
     }
 
     @PostMapping
-    public ResponseEntity<Transportador> salva(@RequestBody TransportadorDTO dto) {
-        Transportador transportador = transportadorService.salva(dto);
+    public ResponseEntity<Transportador> salvaTransportador(@RequestBody TransportadorDTO dto) {
+        Transportador transportador = transportadorService.salvaTransportador(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(transportador);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Transportador> atualiza(@PathVariable Long id, @RequestBody TransportadorDTO dto) {
+    public ResponseEntity<Transportador> atualizaTransportador(@PathVariable Long id, @RequestBody TransportadorDTO dto) {
         dto.setId(id);
-        Transportador transportador = transportadorService.atualiza(dto);
+        Transportador transportador = transportadorService.atualizaTransportador(dto);
         return ResponseEntity.ok(transportador);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleta(@PathVariable Long id) {
-        transportadorService.deleta(id);
+    public ResponseEntity<Void> deletaTransportador(@PathVariable Long id) {
+        transportadorService.deletaTransportador(id);
         return ResponseEntity.noContent().build();
     }
 

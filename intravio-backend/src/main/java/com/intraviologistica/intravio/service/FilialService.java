@@ -20,7 +20,7 @@ public class FilialService {
     }
 
     @Transactional
-    public List<FilialDTO> listar() {
+    public List<FilialDTO> listarFiliais() {
         return filialRepository.findAll()
                 .stream()
                 .map(this::toDTO)
@@ -28,36 +28,36 @@ public class FilialService {
     }
 
     @Transactional
-    public Filial buscarPorId(Long id) {
+    public Filial findById(Long id) {
         return filialRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Filial não encontrada: " + id));
     }
 
     @Transactional
-    public Filial buscarPorNome(String nome) {
+    public Filial buscarFilialPorNome(String nome) {
         return filialRepository.findByNome(nome);
     }
 
     @Transactional
-    public FilialDTO buscarPorIdDTO(Long id) {
-        return toDTO(buscarPorId(id));
+    public FilialDTO buscarFilialPorId(Long id) {
+        return toDTO(findById(id));
     }
 
     @Transactional
-    public Filial salvar(FilialDTO dto) {
+    public Filial salvaFilial(FilialDTO dto) {
         return filialRepository.save(toEntity(dto));
     }
 
     @Transactional
-    public Filial atualizar(FilialDTO dto) {
-        Filial filial = buscarPorId(dto.getId());
+    public Filial atualizaFilial(FilialDTO dto) {
+        Filial filial = findById(dto.getId());
         filial.setId(dto.getId());
         filial.setNome(dto.getNome());
         return filialRepository.save(filial);
     }
 
     @Transactional
-    public void excluir(Long id) {
+    public void excluiFilial(Long id) {
         filialRepository.deleteById(id);
     }
 

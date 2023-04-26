@@ -23,20 +23,20 @@ public class FilialController {
     }
 
     @GetMapping
-    public ResponseEntity<List<FilialDTO>> listar() {
-        List<FilialDTO> filiais = filialService.listar();
+    public ResponseEntity<List<FilialDTO>> listarFiliais() {
+        List<FilialDTO> filiais = filialService.listarFiliais();
         return ResponseEntity.ok(filiais);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<FilialDTO> buscarPorId(@PathVariable Long id) {
-        FilialDTO filialDTO = filialService.buscarPorIdDTO(id);
+        FilialDTO filialDTO = filialService.buscarFilialPorId(id);
         return ResponseEntity.ok(filialDTO);
     }
 
     @PostMapping
-    public ResponseEntity<Filial> salvar(@RequestBody @Valid FilialDTO filialDTO, HttpServletResponse response) {
-        Filial filialSalva = filialService.salvar(filialDTO);
+    public ResponseEntity<Filial> salvaFilial(@RequestBody @Valid FilialDTO filialDTO, HttpServletResponse response) {
+        Filial filialSalva = filialService.salvaFilial(filialDTO);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}")
                 .buildAndExpand(filialSalva.getId()).toUri();
         response.setHeader("Location", uri.toASCIIString());
@@ -44,15 +44,15 @@ public class FilialController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Filial> atualizar(@PathVariable Long id, @RequestBody @Valid FilialDTO filialDTO) {
+    public ResponseEntity<Filial> atualizaFilial(@PathVariable Long id, @RequestBody @Valid FilialDTO filialDTO) {
         filialDTO.setId(id);
-        Filial filialAtualizada = filialService.atualizar(filialDTO);
+        Filial filialAtualizada = filialService.atualizaFilial(filialDTO);
         return ResponseEntity.ok(filialAtualizada);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> excluir(@PathVariable Long id) {
-        filialService.excluir(id);
+    public ResponseEntity<Void> excluiFilial(@PathVariable Long id) {
+        filialService.excluiFilial(id);
         return ResponseEntity.noContent().build();
     }
 }

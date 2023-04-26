@@ -36,7 +36,7 @@ public class PedidoService {
     }
 
     @Transactional
-    public List<PedidoDTO> listar() {
+    public List<PedidoDTO> listarPedidos() {
         return pedidoRepository.findAll()
                 .stream()
                 .map(this::toDTO)
@@ -44,15 +44,15 @@ public class PedidoService {
     }
 
     @Transactional
-    public PedidoDTO buscarPorId(Long id) {
+    public PedidoDTO buscarPedidosPorId(Long id) {
         return toDTO(findById(id));
     }
 
     @Transactional
-    public Pedido salvar(PedidoDTO dto) {
+    public Pedido salvarPedido(PedidoDTO dto) {
         Pedido pedido = toEntity(dto);
 
-        setPedido(dto, pedido);
+        atribuiOrigemDestinoRemetenteEDestinarioAoPedido(dto, pedido);
 
         pedido.setStatus(StatusPedido.PENDENTE);
 
@@ -72,10 +72,10 @@ public class PedidoService {
     }
 
     @Transactional
-    public Pedido atualizar(PedidoDTO dto) {
+    public Pedido atualizaPedido(PedidoDTO dto) {
         Pedido pedido = findById(dto.getId());
 
-        setPedido(dto, pedido);
+        atribuiOrigemDestinoRemetenteEDestinarioAoPedido(dto, pedido);
 
         pedido.setItens(dto.getItens());
         pedido.setFotos(dto.getFotos());
@@ -96,20 +96,8 @@ public class PedidoService {
     }
 
     @Transactional
-    public void excluir(Long id) {
+    public void deletaPedido(Long id) {
         pedidoRepository.deleteById(id);
-    }
-
-    private void setPedido(PedidoDTO dto, Pedido pedido) {
-        Filial origem = filialService.buscarPorNome(dto.getOrigem());
-        Filial destino = filialService.buscarPorNome(dto.getDestino());
-        Funcionario remetente = funcionarioService.buscarPorEmail(dto.getRemetente());
-        Funcionario destinatario = funcionarioService.buscarPorEmail(dto.getDestinatario());
-
-        pedido.setOrigem(origem);
-        pedido.setDestino(destino);
-        pedido.setRemetente(remetente);
-        pedido.setDestinatario(destinatario);
     }
 
     public PedidoDTO toDTO(Pedido pedido) {
@@ -129,6 +117,18 @@ public class PedidoService {
         dto.setDestinatario(pedido.getDestinatario().getNome());
 
         return dto;
+    }
+
+    private void atribuiOrigemDestinoRemetenteEDestinarioAoPedido(PedidoDTO dto, Pedido pedido) {
+        Filial origem = filialService.buscarFilialPorNome(dto.getOrigem());
+        Filial destino = filialService.buscarFilialPorNome(dto.getDestino());
+        Funcionario remetente = funcionarioService.buscaFuncionarioPorEmail(dto.getRemetente());
+        Funcionario destinatario = funcionarioService.buscaFuncionarioPorEmail(dto.getDestinatario());
+
+        pedido.setOrigem(origem);
+        pedido.setDestino(destino);
+        pedido.setRemetente(remetente);
+        pedido.setDestinatario(destinatario);
     }
 
     public Pedido toEntity(PedidoDTO dto) {

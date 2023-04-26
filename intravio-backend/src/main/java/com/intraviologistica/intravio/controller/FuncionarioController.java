@@ -19,32 +19,32 @@ public class FuncionarioController {
     }
 
     @GetMapping
-    public ResponseEntity<List<FuncionarioDTO>> listar() {
-        List<FuncionarioDTO> funcionarios = funcionarioService.findAll();
+    public ResponseEntity<List<FuncionarioDTO>> listarFuncionarios() {
+        List<FuncionarioDTO> funcionarios = funcionarioService.listaFuncionarios();
         return ResponseEntity.ok(funcionarios);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<FuncionarioDTO> buscarFuncionarioPorId(@PathVariable Long id) {
-        FuncionarioDTO funcionario = funcionarioService.buscarFuncionarioPorIdDTO(id);
+        FuncionarioDTO funcionario = funcionarioService.buscaFuncionarioPorId(id);
         return ResponseEntity.ok(funcionario);
     }
 
     @PostMapping
-    public ResponseEntity<FuncionarioDTO> salvar(@RequestBody FuncionarioDTO funcionarioDTO) {
-        FuncionarioDTO savedFuncionario = funcionarioService.salvar(funcionarioDTO);
+    public ResponseEntity<FuncionarioDTO> salvaFuncionario(@RequestBody FuncionarioDTO funcionarioDTO) {
+        FuncionarioDTO savedFuncionario = funcionarioService.salvaFuncionario(funcionarioDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedFuncionario);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<FuncionarioDTO> atualizar(@PathVariable Long id, @RequestBody FuncionarioDTO funcionarioDTO) {
-        FuncionarioDTO updatedFuncionario = funcionarioService.atualizar(id, funcionarioDTO);
+    public ResponseEntity<FuncionarioDTO> atualizaFuncionario(@PathVariable Long id, @RequestBody FuncionarioDTO funcionarioDTO) {
+        FuncionarioDTO updatedFuncionario = funcionarioService.atualizaFuncionario(id, funcionarioDTO);
         return ResponseEntity.ok(updatedFuncionario);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletar(@PathVariable Long id) {
-        funcionarioService.deletar(id);
+    public ResponseEntity<Void> deletaFuncionario(@PathVariable Long id) {
+        funcionarioService.deletarFuncionario(id);
         return ResponseEntity.noContent().build();
     }
 }
