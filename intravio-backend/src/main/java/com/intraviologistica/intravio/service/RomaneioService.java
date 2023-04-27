@@ -1,12 +1,12 @@
 package com.intraviologistica.intravio.service;
 
 import com.intraviologistica.intravio.dto.RomaneioDTO;
+import com.intraviologistica.intravio.dto.input.RomaneioInputDTO;
 import com.intraviologistica.intravio.model.Pedido;
 import com.intraviologistica.intravio.model.Romaneio;
 import com.intraviologistica.intravio.model.Transportador;
 import com.intraviologistica.intravio.model.enums.StatusPedido;
 import com.intraviologistica.intravio.model.enums.StatusRomaneio;
-import com.intraviologistica.intravio.repository.PedidoRepository;
 import com.intraviologistica.intravio.repository.RomaneioRepository;
 import com.intraviologistica.intravio.service.exceptions.ResourceNotFoundException;
 import com.intraviologistica.intravio.service.exceptions.RuleOfBusinessException;
@@ -14,8 +14,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class RomaneioService {
@@ -23,109 +26,231 @@ public class RomaneioService {
     private final RomaneioRepository romaneioRepository;
     private final PedidoService pedidoService;
     private final TransportadorService transportadorService;
-    private final PedidoRepository pedidoRepository;
 
-    public RomaneioService(RomaneioRepository romaneioRepository, PedidoService pedidoService, TransportadorService transportadorService, PedidoRepository pedidoRepository) {
+    public RomaneioService(RomaneioRepository romaneioRepository, PedidoService pedidoService, TransportadorService transportadorService) {
         this.romaneioRepository = romaneioRepository;
         this.pedidoService = pedidoService;
         this.transportadorService = transportadorService;
-        this.pedidoRepository = pedidoRepository;
     }
 
     public RomaneioDTO buscarPorId(Long id) {
         Romaneio romaneio = findById(id);
-        return toDTO(romaneio);
+        return new RomaneioDTO(romaneio);
     }
 
     @Transactional
     public List<RomaneioDTO> listar() {
         return romaneioRepository.findAll()
                 .stream()
-                .map(this::toDTO)
+                .map(x -> new RomaneioDTO(x))
                 .collect(Collectors.toList());
     }
 
     @Transactional
-    public Romaneio salvar(RomaneioDTO romaneioDTO) {
-        Romaneio romaneio = toEntity(romaneioDTO);
+    public RomaneioDTO salvar(RomaneioInputDTO romaneioInputDTO) {
+        Romaneio romaneio = toEntity(romaneioInputDTO);
 
-        insereTransportadorNoRomaneio(romaneioDTO, romaneio);
+        insereTransportadorNoRomaneio(romaneioInputDTO, romaneio);
 
         LocalDateTime now = LocalDateTime.now();
-
-        romaneio.setStatus(StatusRomaneio.ABERTO);
         romaneio.setDataCriacao(now);
         romaneio.setDataAtualizacao(now);
 
+        if (romaneioInputDTO.isProcessa()) {
+            romaneio.setStatus(StatusRomaneio.EM_TRANSITO);
+        } else {
+            romaneio.setStatus(StatusRomaneio.ABERTO);
+        }
+
+        validatePedidos(romaneioInputDTO.getPedidos(), romaneio.getId());
+
         romaneio = romaneioRepository.save(romaneio);
 
-        adicionaPedidos(romaneioDTO, romaneio);
+        adicionaPedidosNoRomaneio(romaneioInputDTO, romaneio);
 
-        return romaneio;
+        return new RomaneioDTO(romaneio);
     }
-
 
     @Transactional
-    public Romaneio AtualizarRomaneio(RomaneioDTO romaneioDTO) {
-        Romaneio romaneio = findById(romaneioDTO.getId());
+    public Romaneio AtualizarRomaneio(RomaneioInputDTO dto) {
+        Romaneio romaneio = findById(dto.getId());
 
-        insereTransportadorNoRomaneio(romaneioDTO, romaneio);
+        if (romaneio.getStatus().ordinal() == 3) {
+            throw new RuleOfBusinessException("Romaneio fechado, não pode ser alterado");
+        }
 
-        romaneio.setId(romaneio.getId());
-        romaneio.setDataAtualizacao(LocalDateTime.now());
-        romaneio.setTaxaFrete(romaneio.getTaxaFrete());
-        romaneio.setObservacao(romaneioDTO.getObservacao());
+        if (dto.isProcessa()) {
+            romaneio.setStatus(StatusRomaneio.EM_TRANSITO);
+        } else {
+            romaneio.setStatus(StatusRomaneio.ABERTO);
+        }
+
+        insereTransportadorNoRomaneio(dto, romaneio);
+
+        attRomaneio(dto, romaneio);
+
+        removePedidosDoRomaneio(dto, romaneio);
+
+        adicionaPedidosNoRomaneio(dto, romaneio);
 
         romaneio = romaneioRepository.save(romaneio);
-
-        adicionaPedidos(romaneioDTO, romaneio);
 
         return romaneio;
     }
 
+    // Exclui o Romaneio se status não for igual a "FECHADO"
     @Transactional
     public void excluiRomaneio(Long id) {
-        findById(id);
-        Pedido pedido = pedidoRepository.findByRomaneioId(id);
-        if (pedido != null) {
-            pedido.setRomaneio(null);
-            pedido.setStatus(StatusPedido.PENDENTE);
-            pedidoRepository.save(pedido);
+        Romaneio romaneio = findById(id);
+
+        // Se Status do Romaneio for igual a fechado, retorna um Erro
+        if (romaneio.getStatus().ordinal() == 2) {
+            throw new RuleOfBusinessException("Romaneio com status de fechado não pode ser excluído.");
         }
+
+        // Remove o romaneio dos pedidos antes de excluir o romaneio
+        List<Pedido> pedidos = pedidoService.listaPedidosPorRomaneioId(id);
+        if (!pedidos.isEmpty()) {
+            for (Pedido pedido : pedidos) {
+                pedido.setRomaneio(null);
+                pedido.atualizarStatus(StatusPedido.PENDENTE, "Pedido retorno para setor de suprimentos");
+
+                pedidoService.salvaPedidoRetornandoEntidade(pedido);
+            }
+        }
+
         romaneioRepository.deleteById(id);
     }
 
+    @Transactional
+    public void alterarStatusDeTodosPedidosParaEmTransito(Long id, Integer status) {
+        Romaneio romaneio = findById(id);
+        List<Pedido> pedidos = pedidoService.listaPedidosPorRomaneioId(id);
+
+        // Atualiza status de todos os pedidos do romaneio
+        for (Pedido pedido : pedidos) {
+            atualizarStatusDoPedido(pedido, status);
+        }
+
+        atualizarStatusDoRomaneio(romaneio, status);
+    }
+
+    private void atualizarStatusDoPedido(Pedido pedido, Integer status) {
+        String mensagem = null;
+        StatusPedido novoStatus = null;
+
+        switch (status) {
+            case 0 -> {
+                novoStatus = StatusPedido.SEPARADO;
+                mensagem = "Pedido separado na unidade " + pedido.getOrigem().getNome().toUpperCase(Locale.ROOT);
+            }
+            case 1 -> {
+                novoStatus = StatusPedido.ENTREGUE_AO_TRANSPORTADOR;
+                mensagem = "Pedido entregue ao transportador";
+            }
+            case 2 -> {
+                novoStatus = StatusPedido.EM_TRANSITO;
+                mensagem = "Pedido encaminhado para filial " + pedido.getDestino().getNome().toUpperCase(Locale.ROOT);
+            }
+            case 4 -> {
+                novoStatus = StatusPedido.ENTREGUE;
+                mensagem = "Pedido recebido pelo destinatário";
+            }
+            default -> throw new RuleOfBusinessException("Não foi possível encontrar status: " + status);
+        }
+
+        pedido.atualizarStatus(novoStatus, mensagem);
+    }
+
+    private void atualizarStatusDoRomaneio(Romaneio romaneio, Integer status) {
+        switch (status) {
+            case 0 -> romaneio.setStatus(StatusRomaneio.ABERTO);
+            case 1 -> romaneio.setStatus(StatusRomaneio.PROCESSADO);
+            case 2 -> romaneio.setStatus(StatusRomaneio.EM_TRANSITO);
+            case 4 -> romaneio.setStatus(StatusRomaneio.FECHADO);
+            default -> throw new RuleOfBusinessException("Não foi possível encontrar status: " + status);
+        }
+    }
+
+    // Busca Romaneio Retornando a Entidade
     @Transactional
     public Romaneio findById(Long id) {
         return romaneioRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Romaneio não encontrado."));
     }
 
-    private void insereTransportadorNoRomaneio(RomaneioDTO romaneioDTO, Romaneio romaneio) {
-        Transportador transportador = transportadorService.findById(romaneioDTO.getTransportadorCodigo());
+    // Valida se os pedidos atendem os requisitos antes de inserir no romaneio
+    private void validatePedidos(List<Long> pedidos, Long romaneioId) {
+        for (Long idPedido : pedidos) {
+            Pedido pedido = pedidoService.findById(idPedido);
+            if (pedido.getStatus() == StatusPedido.CANCELADO) {
+                throw new RuleOfBusinessException("Não é possível adicionar pedido cancelado em romaneio. " +
+                        "Por favor, remova o pedido " + idPedido + " do romaneio.");
+            } else if (pedido.getStatus() != StatusPedido.PENDENTE && pedido.getRomaneio().getId() != romaneioId) {
+                throw new RuleOfBusinessException("Pedido " + pedido.getId() + " já possui romaneio e não pode ser adicionado");
+            }
+        }
+    }
+
+    // Compara e remove os pedidos que não existe no romaneioDTO
+    private void removePedidosDoRomaneio(RomaneioInputDTO romaneioInputDTO, Romaneio romaneio) {
+        List<Long> list = romaneio.getPedidos().stream().map(Pedido::getId).collect(Collectors.toList());
+        List<Long> pedidos = romaneioInputDTO.getPedidos();
+
+        List<Long> pedidosNaoRepetidos = Stream.concat(list.stream(), pedidos.stream())
+                .filter(n -> !list.contains(n) || !pedidos.contains(n))
+                .collect(Collectors.toList());
+
+        for (Long id : pedidosNaoRepetidos) {
+            Pedido pedido = pedidoService.findById(id);
+            pedido.setRomaneio(null);
+            pedido.setStatus(StatusPedido.PENDENTE);
+        }
+    }
+
+    // Adiciona os pedidos DTO no romaneio
+    private void adicionaPedidosNoRomaneio(RomaneioInputDTO dto, Romaneio romaneio) {
+        List<Pedido> pedidos = new ArrayList<>();
+
+        for (Long idPedido : dto.getPedidos()) {
+            Pedido pedido = pedidoService.findById(idPedido);
+            pedido.setRomaneio(romaneio);
+            if (dto.isProcessa()) {
+                pedido.atualizarStatus(StatusPedido.EM_TRANSITO, "Pedido encaminhado para filial " +
+                        pedido.getDestino().getNome().toUpperCase(Locale.ROOT));
+            } else {
+                pedido.atualizarStatus(StatusPedido.SEPARADO, "Pedido separado na unidade " +
+                        pedido.getOrigem().getNome().toUpperCase(Locale.ROOT));
+            }
+            pedido = pedidoService.salvaPedidoRetornandoEntidade(pedido);
+
+            pedidos.add(pedido);
+        }
+
+        romaneio.setPedidos(pedidos);
+    }
+
+    // Busca e atribuir transportador no Romaneio
+    private void insereTransportadorNoRomaneio(RomaneioInputDTO romaneioInputDTO, Romaneio romaneio) {
+        Transportador transportador = transportadorService.findById(romaneioInputDTO.getTransportadorCodigo());
         romaneio.setTransportador(transportador);
     }
 
-    private void adicionaPedidos(RomaneioDTO romaneioDTO, Romaneio romaneio) {
-        for (Long idPedido : romaneioDTO.getPedidos()) {
-            Pedido pedido = pedidoService.findById(idPedido);
-            if (pedido.getStatus().name() != "PENDENTE" && pedido.getRomaneio().getId() != romaneio.getId()) {
-                throw new RuleOfBusinessException("Pedido " + pedido.getId() + " já possui romaneio e não pode ser adicionado");
-            }
-            pedido.setRomaneio(romaneio);
-            pedido.setStatus(StatusPedido.EM_TRANSITO);
-        }
-
-        pedidoRepository.saveAll(romaneio.getPedidos());
+    // Atribui DTO na entidade Romaneio
+    private static void attRomaneio(RomaneioInputDTO romaneioInputDTO, Romaneio romaneio) {
+        romaneio.setId(romaneio.getId());
+        romaneio.setDataAtualizacao(LocalDateTime.now());
+        romaneio.setTaxaFrete(romaneioInputDTO.getTaxaFrete());
+        romaneio.setObservacao(romaneioInputDTO.getObservacao());
     }
 
-    public RomaneioDTO toDTO(Romaneio romaneio) {
-        RomaneioDTO dto = new RomaneioDTO();
+    // Converte a entidade para DTO
+    public RomaneioInputDTO toDTO(Romaneio romaneio) {
+        RomaneioInputDTO dto = new RomaneioInputDTO();
 
         dto.setId(romaneio.getId());
         dto.setPedidos(romaneio.getPedidos().stream().map(x -> x.getId()).collect(Collectors.toList()));
         dto.setTransportadorCodigo(romaneio.getTransportador().getId());
-        dto.setStatus(romaneio.getStatus());
         dto.setTaxaFrete(romaneio.getTaxaFrete());
         dto.setDataCriacao(romaneio.getDataCriacao());
         dto.setDataAtualizacao(romaneio.getDataAtualizacao());
@@ -134,13 +259,13 @@ public class RomaneioService {
         return dto;
     }
 
-    public Romaneio toEntity(RomaneioDTO dto) {
+    // Converte o DTO para Entidade
+    public Romaneio toEntity(RomaneioInputDTO dto) {
         Romaneio romaneio = new Romaneio();
 
         romaneio.setId(dto.getId());
         romaneio.setDataAtualizacao(dto.getDataAtualizacao());
-        romaneio.setStatus(dto.getStatus());
-        romaneio.setTaxaFrete(dto.getTaxaFrete());
+        romaneio.setTaxaFrete(dto.getTaxaFrete() == null ? 00.0 : dto.getTaxaFrete());
         romaneio.setObservacao(dto.getObservacao());
 
         return romaneio;

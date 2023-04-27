@@ -1,6 +1,6 @@
 package com.intraviologistica.intravio.dto;
 
-import java.time.LocalDateTime;
+import com.intraviologistica.intravio.model.Produto;
 
 public class ProdutoDTO {
 
@@ -9,24 +9,17 @@ public class ProdutoDTO {
     private String descricao;
     private Double preco;
     private Double peso;
-    private String fabricante;
-    private String modelo;
-    private LocalDateTime dataCriacao;
-    private LocalDateTime dataAtualizacao;
+
 
     public ProdutoDTO() {
     }
 
-    public ProdutoDTO(Long id, String nome, String descricao, Double preco, Double peso, String fabricante, String modelo, LocalDateTime dataCriacao, LocalDateTime dataAtualizacao) {
-        this.id = id;
-        this.nome = nome;
-        this.descricao = descricao;
-        this.preco = preco;
-        this.peso = peso;
-        this.fabricante = fabricante;
-        this.modelo = modelo;
-        this.dataCriacao = dataCriacao;
-        this.dataAtualizacao = dataAtualizacao;
+    public ProdutoDTO(Produto produto) {
+        this.id = produto.getId();
+        this.nome = produto.getNome();
+        this.descricao = produto.getDescricao();
+        this.preco = produto.getPreco();
+        this.peso = produto.getPeso();
     }
 
     public Long getId() {
@@ -67,37 +60,5 @@ public class ProdutoDTO {
 
     public void setPeso(Double peso) {
         this.peso = peso;
-    }
-
-    public String getFabricante() {
-        return fabricante;
-    }
-
-    public void setFabricante(String fabricante) {
-        this.fabricante = fabricante;
-    }
-
-    public String getModelo() {
-        return modelo;
-    }
-
-    public void setModelo(String modelo) {
-        this.modelo = modelo;
-    }
-
-    public LocalDateTime getDataCriacao() {
-        return dataCriacao;
-    }
-
-    public void setDataCriacao(LocalDateTime dataCriacao) {
-        this.dataCriacao = dataCriacao;
-    }
-
-    public LocalDateTime getDataAtualizacao() {
-        return dataAtualizacao;
-    }
-
-    public void setDataAtualizacao(LocalDateTime dataAtualizacao) {
-        this.dataAtualizacao = dataAtualizacao;
     }
 }

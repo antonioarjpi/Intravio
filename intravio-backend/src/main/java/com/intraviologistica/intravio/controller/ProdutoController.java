@@ -1,6 +1,6 @@
 package com.intraviologistica.intravio.controller;
 
-import com.intraviologistica.intravio.dto.ProdutoDTO;
+import com.intraviologistica.intravio.dto.input.ProdutoInputDTO;
 import com.intraviologistica.intravio.service.ProdutoService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,34 +20,34 @@ public class ProdutoController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ProdutoDTO>> listarProdutos() {
-        List<ProdutoDTO> produtos = produtoService.listarProdutos();
+    public ResponseEntity<List<ProdutoInputDTO>> listarProdutos() {
+        List<ProdutoInputDTO> produtos = produtoService.listaProdutos();
         return ResponseEntity.ok(produtos);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProdutoDTO> buscarProdutoPorId(@PathVariable Long id) {
-        ProdutoDTO produto = produtoService.buscarProdutoPorIdDTO(id);
+    public ResponseEntity<ProdutoInputDTO> buscarProdutoPorId(@PathVariable Long id) {
+        ProdutoInputDTO produto = produtoService.buscaProdutoPorIdDTO(id);
         return ResponseEntity.ok(produto);
     }
 
     @PostMapping
-    public ResponseEntity<ProdutoDTO> criarProduto(@RequestBody ProdutoDTO produtoDTO) {
-        ProdutoDTO produtoCriado = produtoService.salvarProduto(produtoDTO);
+    public ResponseEntity<ProdutoInputDTO> criarProduto(@RequestBody ProdutoInputDTO produtoInputDTO) {
+        ProdutoInputDTO produtoCriado = produtoService.salvaProduto(produtoInputDTO);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(produtoCriado.getId()).toUri();
         return ResponseEntity.created(location).body(produtoCriado);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProdutoDTO> atualizarProduto(@PathVariable Long id, @RequestBody ProdutoDTO produtoDTO) {
-        ProdutoDTO produtoAtualizado = produtoService.atualizarProduto(id, produtoDTO);
+    public ResponseEntity<ProdutoInputDTO> atualizarProduto(@PathVariable Long id, @RequestBody ProdutoInputDTO produtoInputDTO) {
+        ProdutoInputDTO produtoAtualizado = produtoService.atualizaProduto(id, produtoInputDTO);
         return ResponseEntity.ok(produtoAtualizado);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletarProduto(@PathVariable Long id) {
-        produtoService.deletarProduto(id);
+        produtoService.deletaProduto(id);
         return ResponseEntity.noContent().build();
     }
 }

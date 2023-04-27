@@ -32,7 +32,7 @@ public class Item {
         id.setPedido(pedido);
     }
 
-    public Double getSubtotal() {
+    public Double getPrecoTotal() {
         return this.preco * quantidade;
     }
 

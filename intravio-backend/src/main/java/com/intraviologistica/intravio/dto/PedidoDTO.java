@@ -1,44 +1,58 @@
 package com.intraviologistica.intravio.dto;
 
-import com.intraviologistica.intravio.model.Item;
-import com.intraviologistica.intravio.model.enums.AcompanhaStatus;
-import com.intraviologistica.intravio.model.enums.Prioridade;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.intraviologistica.intravio.model.Pedido;
 import com.intraviologistica.intravio.model.enums.StatusPedido;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class PedidoDTO {
 
     private Long id;
-    private List<Item> itens = new ArrayList<>();
-    private List<String> fotos = new ArrayList<>();
+    private List<ItemDTO> itens = new ArrayList<>();
+    private List<String> imagens = new ArrayList<>();
     private StatusPedido statusPedido;
-    private String remetente;
-    private String destinatario;
+    private String remetenteNome;
+    private String remetenteEmail;
+    private String destinatarioNome;
+    private String destinatarioEmail;
     private String origem;
     private String destino;
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     private LocalDateTime dataPedido;
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     private LocalDateTime dataAtualizacao;
-    private Prioridade prioridade;
-    private AcompanhaStatus acompanhaStatus;
+    private Integer prioridade;
+    private Integer acompanhaStatus;
+    private String codigoRastreio;
+    private Double pesoPedido;
+    private Double valorPedido;
 
     public PedidoDTO() {
     }
 
-    public PedidoDTO(Long id, List<Item> itens, List<String> fotos, StatusPedido statusPedido, String remetente, String destinatario, String origem, String destino, LocalDateTime dataPedido, LocalDateTime dataAtualizacao, Prioridade prioridade) {
-        this.id = id;
-        this.itens = itens;
-        this.fotos = fotos;
-        this.statusPedido = statusPedido;
-        this.remetente = remetente;
-        this.destinatario = destinatario;
-        this.origem = origem;
-        this.destino = destino;
-        this.dataPedido = dataPedido;
-        this.prioridade = prioridade;
-        this.dataAtualizacao = dataAtualizacao;
+    public PedidoDTO(Pedido pedido) {
+        System.out.println(pedido.getImagens().toString());
+        this.id = pedido.getId();
+        this.itens = pedido.getItens().stream().map(x -> new ItemDTO(x)).collect(Collectors.toList());
+        this.imagens = pedido.getImagens();
+        this.statusPedido = pedido.getStatusPedido();
+        this.remetenteNome = pedido.getRemetente().getNome();
+        this.remetenteEmail = pedido.getRemetente().getEmail();
+        this.destinatarioNome = pedido.getDestinatario().getNome();
+        this.destinatarioEmail = pedido.getDestinatario().getEmail();
+        this.origem = pedido.getOrigem().getNome();
+        this.destino = pedido.getDestino().getNome();
+        this.dataPedido = pedido.getDataPedido();
+        this.dataAtualizacao = pedido.getDataAtualizacao();
+        this.prioridade = pedido.getPrioridade().ordinal();
+        this.acompanhaStatus = pedido.getAcompanhaStatus().ordinal();
+        this.pesoPedido = pedido.getPesoTotal();
+        this.valorPedido = pedido.getValorTotal();
+        this.codigoRastreio = pedido.getCodigoRastreio();
     }
 
     public Long getId() {
@@ -49,44 +63,52 @@ public class PedidoDTO {
         this.id = id;
     }
 
-    public List<Item> getItens() {
+    public List<ItemDTO> getItens() {
         return itens;
     }
 
-    public void setItens(List<Item> itens) {
+    public void setItens(List<ItemDTO> itens) {
         this.itens = itens;
     }
 
-    public List<String> getFotos() {
-        return fotos;
-    }
-
-    public void setFotos(List<String> fotos) {
-        this.fotos = fotos;
-    }
-
-    public StatusPedido getStatus() {
+    public StatusPedido getStatusPedido() {
         return statusPedido;
     }
 
-    public void setStatus(StatusPedido statusPedido) {
+    public void setStatusPedido(StatusPedido statusPedido) {
         this.statusPedido = statusPedido;
     }
 
-    public String getRemetente() {
-        return remetente;
+    public String getRemetenteNome() {
+        return remetenteNome;
     }
 
-    public void setRemetente(String remetente) {
-        this.remetente = remetente;
+    public void setRemetenteNome(String remetenteNome) {
+        this.remetenteNome = remetenteNome;
     }
 
-    public String getDestinatario() {
-        return destinatario;
+    public String getRemetenteEmail() {
+        return remetenteEmail;
     }
 
-    public void setDestinatario(String destinatario) {
-        this.destinatario = destinatario;
+    public void setRemetenteEmail(String remetenteEmail) {
+        this.remetenteEmail = remetenteEmail;
+    }
+
+    public String getDestinatarioNome() {
+        return destinatarioNome;
+    }
+
+    public void setDestinatarioNome(String destinatarioNome) {
+        this.destinatarioNome = destinatarioNome;
+    }
+
+    public String getDestinatarioEmail() {
+        return destinatarioEmail;
+    }
+
+    public void setDestinatarioEmail(String destinatarioEmail) {
+        this.destinatarioEmail = destinatarioEmail;
     }
 
     public String getOrigem() {
@@ -113,14 +135,6 @@ public class PedidoDTO {
         this.dataPedido = dataPedido;
     }
 
-    public Prioridade getPrioridade() {
-        return prioridade;
-    }
-
-    public void setPrioridade(Prioridade prioridade) {
-        this.prioridade = prioridade;
-    }
-
     public LocalDateTime getDataAtualizacao() {
         return dataAtualizacao;
     }
@@ -129,19 +143,51 @@ public class PedidoDTO {
         this.dataAtualizacao = dataAtualizacao;
     }
 
-    public StatusPedido getStatusPedido() {
-        return statusPedido;
+    public Integer getPrioridade() {
+        return prioridade;
     }
 
-    public void setStatusPedido(StatusPedido statusPedido) {
-        this.statusPedido = statusPedido;
+    public void setPrioridade(Integer prioridade) {
+        this.prioridade = prioridade;
     }
 
-    public AcompanhaStatus getAcompanhaStatus() {
+    public Integer getAcompanhaStatus() {
         return acompanhaStatus;
     }
 
-    public void setAcompanhaStatus(AcompanhaStatus acompanhaStatus) {
+    public void setAcompanhaStatus(Integer acompanhaStatus) {
         this.acompanhaStatus = acompanhaStatus;
+    }
+
+    public String getCodigoRastreio() {
+        return codigoRastreio;
+    }
+
+    public void setCodigoRastreio(String codigoRastreio) {
+        this.codigoRastreio = codigoRastreio;
+    }
+
+    public Double getPesoPedido() {
+        return pesoPedido;
+    }
+
+    public void setPesoPedido(Double pesoPedido) {
+        this.pesoPedido = pesoPedido;
+    }
+
+    public Double getValorPedido() {
+        return valorPedido;
+    }
+
+    public void setValorPedido(Double valorPedido) {
+        this.valorPedido = valorPedido;
+    }
+
+    public List<String> getImagens() {
+        return imagens;
+    }
+
+    public void setImagens(List<String> imagens) {
+        this.imagens = imagens;
     }
 }

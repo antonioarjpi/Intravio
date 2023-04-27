@@ -1,8 +1,11 @@
 package com.intraviologistica.intravio.dto;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class DepartamentoDTO {
 
     private Long id;
+    @NotBlank(message = "Preenchimento do nome do departamento é obrigatório")
     private String nome;
 
     public DepartamentoDTO() {

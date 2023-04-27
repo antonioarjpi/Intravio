@@ -20,7 +20,8 @@ public class Pedido {
     @OneToMany(mappedBy = "id.pedido")
     private List<Item> itens = new ArrayList<>();
 
-    private List<String> fotos = new ArrayList<>();
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
+    private List<HistoricoPedido> historicoPedidos = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "remetente_id")
@@ -37,45 +38,45 @@ public class Pedido {
     @ManyToOne
     @JoinColumn(name = "destino_id")
     private Filial destino;
-    private LocalDateTime dataPedido = LocalDateTime.now();
-    private LocalDateTime dataAtualizacao;
-
-    @Enumerated(EnumType.STRING)
-    private AcompanhaStatus acompanhaStatus;
-
-    @Enumerated(EnumType.STRING)
-    private StatusPedido statusPedido;
-
-    @Enumerated(EnumType.STRING)
-    private Prioridade prioridade;
 
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "romaneio_id")
     private Romaneio romaneio;
 
+    @ElementCollection
+    private List<String> imagens = new ArrayList<>();
+    private LocalDateTime dataPedido = LocalDateTime.now();
+    private LocalDateTime dataAtualizacao;
+    private String codigoRastreio;
+    private AcompanhaStatus acompanhaStatus;
+    private StatusPedido statusPedido;
+    private Prioridade prioridade;
+
     public Pedido() {
     }
 
-    public Pedido(Long id, List<Item> itens, List<String> fotos, StatusPedido statusPedido, Funcionario remetente, Funcionario destinatario, Filial origem, Filial destino, LocalDateTime dataPedido, LocalDateTime dataAtualizacao, Prioridade prioridade, AcompanhaStatus acompanhaStatus) {
+    public Pedido(Long id, List<Item> itens, List<String> imagens, Funcionario remetente, Funcionario destinatario, Filial origem, Filial destino, LocalDateTime dataPedido, LocalDateTime dataAtualizacao, String codigoRastreio, AcompanhaStatus acompanhaStatus, StatusPedido statusPedido, Prioridade prioridade, Romaneio romaneio) {
         this.id = id;
         this.itens = itens;
-        this.fotos = fotos;
-        this.statusPedido = statusPedido;
+        this.imagens = imagens;
         this.remetente = remetente;
         this.destinatario = destinatario;
         this.origem = origem;
         this.destino = destino;
         this.dataPedido = dataPedido;
-        this.prioridade = prioridade;
         this.dataAtualizacao = dataAtualizacao;
+        this.codigoRastreio = codigoRastreio;
         this.acompanhaStatus = acompanhaStatus;
+        this.statusPedido = statusPedido;
+        this.prioridade = prioridade;
+        this.romaneio = romaneio;
     }
 
     public Double getValorTotal() {
         Double soma = 0.0;
         for (Item item : itens) {
-            soma += item.getSubtotal();
+            soma += item.getPrecoTotal();
         }
         return soma;
     }
@@ -86,6 +87,18 @@ public class Pedido {
             soma += item.getPesoTotal();
         }
         return soma;
+    }
+
+    public void atualizarStatus(StatusPedido novoStatus, String comentario) {
+        StatusPedido statusAnterior = this.statusPedido;
+        this.statusPedido = novoStatus;
+        HistoricoPedido historico = new HistoricoPedido();
+        historico.setPedido(this);
+        historico.setDataAtualizacao(LocalDateTime.now());
+        historico.setStatusAnterior(statusAnterior);
+        historico.setStatusAtual(novoStatus);
+        historico.setComentario(comentario);
+        this.historicoPedidos.add(historico);
     }
 
     public Long getId() {
@@ -104,12 +117,12 @@ public class Pedido {
         this.itens = itens;
     }
 
-    public List<String> getFotos() {
-        return fotos;
+    public List<String> getImagens() {
+        return imagens;
     }
 
-    public void setFotos(List<String> fotos) {
-        this.fotos = fotos;
+    public void setImagens(List<String> imagens) {
+        this.imagens = imagens;
     }
 
     public StatusPedido getStatus() {
@@ -190,5 +203,29 @@ public class Pedido {
 
     public void setRomaneio(Romaneio romaneio) {
         this.romaneio = romaneio;
+    }
+
+    public String getCodigoRastreio() {
+        return codigoRastreio;
+    }
+
+    public void setCodigoRastreio(String codigoRastreio) {
+        this.codigoRastreio = codigoRastreio;
+    }
+
+    public StatusPedido getStatusPedido() {
+        return statusPedido;
+    }
+
+    public void setStatusPedido(StatusPedido statusPedido) {
+        this.statusPedido = statusPedido;
+    }
+
+    public List<HistoricoPedido> getHistoricoPedidos() {
+        return historicoPedidos;
+    }
+
+    public void setHistoricoPedidos(List<HistoricoPedido> historicoPedidos) {
+        this.historicoPedidos = historicoPedidos;
     }
 }

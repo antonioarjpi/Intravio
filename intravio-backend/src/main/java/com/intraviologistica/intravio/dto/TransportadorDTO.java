@@ -1,8 +1,11 @@
 package com.intraviologistica.intravio.dto;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class TransportadorDTO {
 
     private Long id;
+    @NotBlank(message = "Preenchimento do nome do Transportador é obrigatório")
     private String nome;
     private String motorista;
     private String placa;

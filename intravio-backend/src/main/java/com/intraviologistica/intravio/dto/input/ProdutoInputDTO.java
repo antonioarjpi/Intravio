@@ -1,17 +1,13 @@
-package com.intraviologistica.intravio.model;
+package com.intraviologistica.intravio.dto.input;
 
-import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 import java.time.LocalDateTime;
 
-@Entity
-public class Produto {
+public class ProdutoInputDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(unique = true)
+    @NotBlank(message = "Preenchumento de nome é obrigatório")
     private String nome;
     private String descricao;
     private Double preco;
@@ -21,23 +17,20 @@ public class Produto {
     private LocalDateTime dataCriacao;
     private LocalDateTime dataAtualizacao;
 
-    // Construtores
-
-    public Produto() {
+    public ProdutoInputDTO() {
     }
 
-    public Produto(String nome, String descricao, Double preco, Double peso, String fabricante, String modelo) {
+    public ProdutoInputDTO(Long id, String nome, String descricao, Double preco, Double peso, String fabricante, String modelo, LocalDateTime dataCriacao, LocalDateTime dataAtualizacao) {
+        this.id = id;
         this.nome = nome;
         this.descricao = descricao;
         this.preco = preco;
         this.peso = peso;
         this.fabricante = fabricante;
         this.modelo = modelo;
-        this.dataCriacao = LocalDateTime.now();
-        this.dataAtualizacao = LocalDateTime.now();
+        this.dataCriacao = dataCriacao;
+        this.dataAtualizacao = dataAtualizacao;
     }
-
-    // Getters e Setters
 
     public Long getId() {
         return id;
@@ -109,20 +102,5 @@ public class Produto {
 
     public void setDataAtualizacao(LocalDateTime dataAtualizacao) {
         this.dataAtualizacao = dataAtualizacao;
-    }
-
-    @Override
-    public String toString() {
-        return "Produto{" +
-                "id=" + id +
-                ", nome='" + nome + '\'' +
-                ", descricao='" + descricao + '\'' +
-                ", preco=" + preco +
-                ", peso=" + peso +
-                ", fabricante='" + fabricante + '\'' +
-                ", modelo='" + modelo + '\'' +
-                ", dataCriacao=" + dataCriacao +
-                ", dataAtualizacao=" + dataAtualizacao +
-                '}';
     }
 }

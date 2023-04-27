@@ -1,9 +1,13 @@
 package com.intraviologistica.intravio.dto;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class FuncionarioDTO {
 
     private Long id;
+    @NotBlank(message = "Preenchimento do nome é obrigatório")
     private String nome;
+    @NotBlank(message = "Preenchimento do e-mail é obrigatório")
     private String email;
     private String departamentoNome;
 

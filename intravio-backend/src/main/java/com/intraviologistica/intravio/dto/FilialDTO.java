@@ -1,8 +1,13 @@
 package com.intraviologistica.intravio.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 public class FilialDTO {
 
+    @NotNull(message = "Preenchimento do código da filial é obrigatório")
     private Long id;
+    @NotBlank(message = "Preenchimento do nome da filial é obrigatório")
     private String nome;
 
     public FilialDTO() {

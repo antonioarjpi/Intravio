@@ -1,27 +1,49 @@
 package com.intraviologistica.intravio.dto;
 
-import com.intraviologistica.intravio.model.enums.StatusRomaneio;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.intraviologistica.intravio.model.Romaneio;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class RomaneioDTO {
 
     private Long id;
 
-    @NotNull(message = "A lista de pedidos não pode ser nula")
-    @NotEmpty(message = "A lista de pedidos não pode estar vazia")
-    private List<Long> pedidos;
-    private Long transportadorCodigo;
-    private StatusRomaneio Status;
+    private List<PedidoDTO> pedidos = new ArrayList<>();
+    private String transportadora;
+    private String placa;
+    private String veiculo;
+    private String motorista;
+    private Integer statusRomaneio;
     private Double taxaFrete;
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     private LocalDateTime dataCriacao;
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     private LocalDateTime dataAtualizacao;
     private String observacao;
+    private Double pesoCarga;
+    private Double valorCarga;
 
     public RomaneioDTO() {
+    }
+
+    public RomaneioDTO(Romaneio romaneio) {
+        this.id = romaneio.getId();
+        this.pedidos = romaneio.getPedidos().stream().map(x -> new PedidoDTO(x)).collect(Collectors.toList());
+        this.transportadora = romaneio.getTransportador().getNome();
+        this.placa = romaneio.getTransportador().getPlaca();
+        this.veiculo = romaneio.getTransportador().getVeiculo();
+        this.motorista = romaneio.getTransportador().getMotorista();
+        this.statusRomaneio = romaneio.getStatus().ordinal();
+        this.taxaFrete = romaneio.getTaxaFrete();
+        this.dataCriacao = romaneio.getDataCriacao();
+        this.dataAtualizacao = romaneio.getDataAtualizacao();
+        this.observacao = romaneio.getObservacao();
+        this.valorCarga = romaneio.getValorTotal();
+        this.pesoCarga = romaneio.getPesoTotal();
     }
 
     public Long getId() {
@@ -32,28 +54,52 @@ public class RomaneioDTO {
         this.id = id;
     }
 
-    public List<Long> getPedidos() {
+    public List<PedidoDTO> getPedidos() {
         return pedidos;
     }
 
-    public void setPedidos(List<Long> pedidos) {
+    public void setPedidos(List<PedidoDTO> pedidos) {
         this.pedidos = pedidos;
     }
 
-    public Long getTransportadorCodigo() {
-        return transportadorCodigo;
+    public String getTransportadora() {
+        return transportadora;
     }
 
-    public void setTransportadorCodigo(Long transportadorCodigo) {
-        this.transportadorCodigo = transportadorCodigo;
+    public void setTransportadora(String transportadora) {
+        this.transportadora = transportadora;
     }
 
-    public StatusRomaneio getStatus() {
-        return Status;
+    public String getPlaca() {
+        return placa;
     }
 
-    public void setStatus(StatusRomaneio status) {
-        Status = status;
+    public void setPlaca(String placa) {
+        this.placa = placa;
+    }
+
+    public String getVeiculo() {
+        return veiculo;
+    }
+
+    public void setVeiculo(String veiculo) {
+        this.veiculo = veiculo;
+    }
+
+    public String getMotorista() {
+        return motorista;
+    }
+
+    public void setMotorista(String motorista) {
+        this.motorista = motorista;
+    }
+
+    public Integer getStatusRomaneio() {
+        return statusRomaneio;
+    }
+
+    public void setStatusRomaneio(Integer statusRomaneio) {
+        this.statusRomaneio = statusRomaneio;
     }
 
     public Double getTaxaFrete() {
@@ -86,5 +132,21 @@ public class RomaneioDTO {
 
     public void setObservacao(String observacao) {
         this.observacao = observacao;
+    }
+
+    public Double getPesoCarga() {
+        return pesoCarga;
+    }
+
+    public void setPesoCarga(Double pesoCarga) {
+        this.pesoCarga = pesoCarga;
+    }
+
+    public Double getValorCarga() {
+        return valorCarga;
+    }
+
+    public void setValorCarga(Double valorCarga) {
+        this.valorCarga = valorCarga;
     }
 }
