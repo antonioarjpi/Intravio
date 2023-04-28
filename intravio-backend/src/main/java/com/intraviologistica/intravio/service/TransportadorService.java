@@ -54,6 +54,7 @@ public class TransportadorService {
         novoTransportador.setMotorista(dto.getMotorista());
         novoTransportador.setPlaca(dto.getPlaca());
         novoTransportador.setVeiculo(dto.getVeiculo());
+        novoTransportador.setCnpj(dto.getCnpj());
         novoTransportador.setObservacao(dto.getObservacao());
 
         return transportadorRepository.save(novoTransportador);
@@ -90,6 +91,7 @@ public class TransportadorService {
         dto.setObservacao(transportador.getObservacao());
         dto.setPlaca(transportador.getPlaca());
         dto.setVeiculo(transportador.getVeiculo());
+        dto.setCnpj(transportador.getCnpj());
         return dto;
     }
 }

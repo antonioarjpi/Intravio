@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 public class PedidoDTO {
 
-    private Long id;
+    private String id;
     private Integer numeroPedido;
     private StatusPedido statusPedido;
     private String remetenteNome;
@@ -56,11 +56,11 @@ public class PedidoDTO {
         this.numeroPedido = pedido.getNumeroPedido();
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

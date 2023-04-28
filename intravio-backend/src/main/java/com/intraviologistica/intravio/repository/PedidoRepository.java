@@ -3,12 +3,13 @@ package com.intraviologistica.intravio.repository;
 import com.intraviologistica.intravio.model.HistoricoPedido;
 import com.intraviologistica.intravio.model.Pedido;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface PedidoRepository extends JpaRepository<Pedido, Long> {
+public interface PedidoRepository extends JpaRepository<Pedido, String> {
 
     @Query("SELECT p FROM Pedido p where p.romaneio.id = :id")
     List<Pedido> findByRomaneioId(String id);
@@ -18,6 +19,10 @@ public interface PedidoRepository extends JpaRepository<Pedido, Long> {
 
     Optional<Pedido> findByNumeroPedido(Integer numeroPedido);
 
-    @Query("SELECT MAX(p.numeroPedido) FROM Pedido p")
+    @Query("SELECT COALESCE(MAX(p.numeroPedido), 0) FROM Pedido p")
     Integer getMaxNumeroPedido();
+
+    @Modifying
+    @Query("DELETE FROM Item obj WHERE obj.id.pedido.id = :pedidoId")
+    void deleteItemPedidoByPedidoId(String pedidoId);
 }

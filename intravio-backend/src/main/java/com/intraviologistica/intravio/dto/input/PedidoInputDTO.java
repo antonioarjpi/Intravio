@@ -13,7 +13,7 @@ import java.util.List;
 
 public class PedidoInputDTO {
 
-    private Long id;
+    private String id;
     @NotNull(message = "A lista de itens não pode ser nula")
     @NotEmpty(message = "Não é possível criar pedido sem item")
     private List<Item> itens = new ArrayList<>();
@@ -34,7 +34,7 @@ public class PedidoInputDTO {
     public PedidoInputDTO() {
     }
 
-    public PedidoInputDTO(Long id, List<Item> itens, List<String> fotos, String remetente, String destinatario, String origem, String destino, LocalDateTime dataPedido, LocalDateTime dataAtualizacao, Prioridade prioridade) {
+    public PedidoInputDTO(String id, List<Item> itens, List<String> fotos, String remetente, String destinatario, String origem, String destino, LocalDateTime dataPedido, LocalDateTime dataAtualizacao, Prioridade prioridade) {
         this.id = id;
         this.itens = itens;
         this.fotos = fotos;
@@ -47,11 +47,11 @@ public class PedidoInputDTO {
         this.dataAtualizacao = dataAtualizacao;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

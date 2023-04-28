@@ -12,7 +12,7 @@ public class RomaneioInputDTO {
 
     @NotNull(message = "A lista de pedidos não pode ser nula")
     @NotEmpty(message = "Não é possível criar romaneio sem pedido")
-    private List<Long> pedidos;
+    private List<Integer> pedidos;
     private String transportadorCodigo;
     private Double taxaFrete;
     private LocalDateTime dataCriacao;
@@ -32,11 +32,11 @@ public class RomaneioInputDTO {
         this.id = id;
     }
 
-    public List<Long> getPedidos() {
+    public List<Integer> getPedidos() {
         return pedidos;
     }
 
-    public void setPedidos(List<Long> pedidos) {
+    public void setPedidos(List<Integer> pedidos) {
         this.pedidos = pedidos;
     }
 

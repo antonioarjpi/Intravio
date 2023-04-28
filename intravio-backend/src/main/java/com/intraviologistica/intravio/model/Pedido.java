@@ -14,13 +14,12 @@ import java.util.List;
 public class Pedido {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     @Column(unique = true)
     private Integer numeroPedido;
 
-    @OneToMany(mappedBy = "id.pedido")
+    @OneToMany(mappedBy = "id.pedido", cascade = CascadeType.ALL)
     private List<Item> itens = new ArrayList<>();
 
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
@@ -59,7 +58,7 @@ public class Pedido {
     public Pedido() {
     }
 
-    public Pedido(Long id, List<Item> itens, List<String> imagens, Funcionario remetente, Funcionario destinatario, Filial origem, Filial destino, LocalDateTime dataPedido, LocalDateTime dataAtualizacao, String codigoRastreio, AcompanhaStatus acompanhaStatus, StatusPedido statusPedido, Prioridade prioridade, Romaneio romaneio) {
+    public Pedido(String id, List<Item> itens, List<String> imagens, Funcionario remetente, Funcionario destinatario, Filial origem, Filial destino, LocalDateTime dataPedido, LocalDateTime dataAtualizacao, String codigoRastreio, AcompanhaStatus acompanhaStatus, StatusPedido statusPedido, Prioridade prioridade, Romaneio romaneio) {
         this.id = id;
         this.itens = itens;
         this.imagens = imagens;
@@ -104,11 +103,11 @@ public class Pedido {
         this.historicoPedidos.add(historico);
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

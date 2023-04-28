@@ -16,10 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,8 +27,11 @@ public class PedidoService {
     private final FuncionarioService funcionarioService;
     private final ItemService itemService;
     private FileService fileService;
-
     private final ProdutoService produtoService;
+
+    private static String getUuid() {
+        return UUID.randomUUID().toString().replace("-", "");
+    }
 
     public PedidoService(PedidoRepository pedidoRepository, FilialService filialService, FuncionarioService funcionarioService, ItemService itemService, FileService fileService, ProdutoService produtoService) {
         this.pedidoRepository = pedidoRepository;
@@ -43,9 +43,15 @@ public class PedidoService {
     }
 
     @Transactional
-    public Pedido findById(Long id) {
+    public Pedido findById(String id) {
         return pedidoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Pedido não encontrado: " + id));
+    }
+
+    @Transactional
+    public Pedido buscaPorNumeroPedido(Integer numeroPedido) {
+        return pedidoRepository.findByNumeroPedido(numeroPedido)
+                .orElseThrow(() -> new ResourceNotFoundException("Pedido não encontrado: " + numeroPedido));
     }
 
     @Transactional
@@ -78,7 +84,7 @@ public class PedidoService {
 
     // Busca por ID e Retorna a entidade convertida para DTO
     @Transactional
-    public PedidoDTO buscarPedidosPorId(Long id) {
+    public PedidoDTO buscarPedidosPorId(String id) {
         Pedido pedido = findById(id);
         return new PedidoDTO(pedido);
     }
@@ -91,12 +97,10 @@ public class PedidoService {
 
     @Transactional
     public Pedido salvarPedido(PedidoInputDTO dto) {
+        dto.setId(getUuid());
         Pedido pedido = toEntity(dto);
 
         Integer maxNumeroPedido = pedidoRepository.getMaxNumeroPedido(); //Busca o maior numero de pedido
-        if (maxNumeroPedido == null){
-            maxNumeroPedido = 0;
-        }
         pedido.setNumeroPedido(maxNumeroPedido + 1); // Atribui no numero de Pedido o maior numero encontrado + 1
 
         atribuiDadosDtoAoPedido(dto, pedido);
@@ -116,6 +120,8 @@ public class PedidoService {
     public Pedido atualizaPedido(PedidoInputDTO dto) {
         Pedido pedido = findById(dto.getId());
 
+        pedidoRepository.deleteItemPedidoByPedidoId(pedido.getId()); // Remove os itens desse pedido antes de adicionar os itens que veio no parametro.
+
         atribuiDadosDtoAoPedido(dto, pedido);
 
         attPedido(dto, pedido);
@@ -128,7 +134,7 @@ public class PedidoService {
     }
 
     @Transactional
-    public void adicionaImagensPedido(Long id, MultipartFile[] files) throws Exception {
+    public void adicionaImagensPedido(String id, MultipartFile[] files) throws Exception {
         Pedido pedido = findById(id);
         String path = "src/main/resources/static/pedidos/enviadas/";
 
@@ -145,6 +151,22 @@ public class PedidoService {
             list.add(filename);
         }
         pedido.setImagens(list);
+    }
+
+    //Exibe imagem do pedido
+    public Resource exibeImagensPedido(String id) {
+        Pedido pedido = findById(id);
+        Resource resource = new FileSystemResource("");
+
+        if (pedido.getImagens().isEmpty()) {
+            return resource;
+        }
+
+        String path = "src/main/resources/static/pedidos/enviadas/";
+        String caminhoImagem = path + pedido.getImagens().get(0);
+        resource = new FileSystemResource(caminhoImagem);
+
+        return resource;
     }
 
     // Procura e remove os fotos do pedido
@@ -164,7 +186,7 @@ public class PedidoService {
 
     // Altera Status do Pedido para Cancelado.
     @Transactional
-    public void cancelaPedido(Long id, String motivo) {
+    public void cancelaPedido(String id, String motivo) {
         Pedido pedido = findById(id);
         if (pedido.getStatus().ordinal() == 1) {
             throw new RuleOfBusinessException("Erro: Pedido já foi cancelado e não pode ser cancelado novamente");
@@ -233,28 +255,13 @@ public class PedidoService {
     public Pedido toEntity(PedidoInputDTO dto) {
         Pedido pedido = new Pedido();
 
-        pedido.setId(dto.getId());
         pedido.setItens(dto.getItens());
+        pedido.setId(dto.getId());
         pedido.setImagens(dto.getFotos());
         pedido.setDataAtualizacao(LocalDateTime.now());
         pedido.setPrioridade(dto.getPrioridade());
         pedido.setAcompanhaStatus(dto.getAcompanhaStatus());
 
         return pedido;
-    }
-
-    public Resource exibeImagensPedido(Long id) {
-        Pedido pedido = findById(id);
-        Resource resource = new FileSystemResource("");
-
-        if (pedido.getImagens().isEmpty()) {
-            return resource;
-        }
-
-        String path = "src/main/resources/static/pedidos/enviadas/";
-        String caminhoImagem = path + pedido.getImagens().get(0);
-        resource = new FileSystemResource(caminhoImagem);
-
-        return resource;
     }
 }

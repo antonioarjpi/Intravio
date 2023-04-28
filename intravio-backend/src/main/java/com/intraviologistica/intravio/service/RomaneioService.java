@@ -34,7 +34,6 @@ public class RomaneioService {
         this.transportadorService = transportadorService;
     }
 
-
     private static String getUuid() {
         return UUID.randomUUID().toString().replace("-", "");
     }
@@ -190,9 +189,9 @@ public class RomaneioService {
     }
 
     // Valida se os pedidos atendem os requisitos antes de inserir no romaneio
-    private void validatePedidos(List<Long> pedidos, String romaneioId) {
-        for (Long idPedido : pedidos) {
-            Pedido pedido = pedidoService.findById(idPedido);
+    private void validatePedidos(List<Integer> pedidos, String romaneioId) {
+        for (Integer idPedido : pedidos) {
+            Pedido pedido = pedidoService.buscaPorNumeroPedido(idPedido);
             if (pedido.getStatus() == StatusPedido.CANCELADO) {
                 throw new RuleOfBusinessException("Não é possível adicionar pedido cancelado em romaneio. " +
                         "Por favor, remova o pedido " + idPedido + " do romaneio.");
@@ -204,15 +203,15 @@ public class RomaneioService {
 
     // Compara e remove os pedidos que não existe no romaneioDTO
     private void removePedidosDoRomaneio(RomaneioInputDTO romaneioInputDTO, Romaneio romaneio) {
-        List<Long> list = romaneio.getPedidos().stream().map(Pedido::getId).collect(Collectors.toList());
-        List<Long> pedidos = romaneioInputDTO.getPedidos();
+        List<Integer> list = romaneio.getPedidos().stream().map(Pedido::getNumeroPedido).collect(Collectors.toList());
+        List<Integer> pedidos = romaneioInputDTO.getPedidos();
 
-        List<Long> pedidosNaoRepetidos = Stream.concat(list.stream(), pedidos.stream())
+        List<Integer> pedidosNaoRepetidos = Stream.concat(list.stream(), pedidos.stream())
                 .filter(n -> !list.contains(n) || !pedidos.contains(n))
                 .collect(Collectors.toList());
 
-        for (Long id : pedidosNaoRepetidos) {
-            Pedido pedido = pedidoService.findById(id);
+        for (Integer id : pedidosNaoRepetidos) {
+            Pedido pedido = pedidoService.buscaPorNumeroPedido(id);
             pedido.setRomaneio(null);
             pedido.setStatus(StatusPedido.PENDENTE);
         }
@@ -222,8 +221,8 @@ public class RomaneioService {
     private void adicionaPedidosNoRomaneio(RomaneioInputDTO dto, Romaneio romaneio) {
         List<Pedido> pedidos = new ArrayList<>();
 
-        for (Long idPedido : dto.getPedidos()) {
-            Pedido pedido = pedidoService.findById(idPedido);
+        for (Integer idPedido : dto.getPedidos()) {
+            Pedido pedido = pedidoService.buscaPorNumeroPedido(idPedido);
             pedido.setRomaneio(romaneio);
             if (dto.isProcessa()) {
                 pedido.atualizarStatus(StatusPedido.EM_TRANSITO, "Pedido encaminhado para filial " +
@@ -259,7 +258,7 @@ public class RomaneioService {
         RomaneioInputDTO dto = new RomaneioInputDTO();
 
         dto.setId(romaneio.getId());
-        dto.setPedidos(romaneio.getPedidos().stream().map(x -> x.getId()).collect(Collectors.toList()));
+        dto.setPedidos(romaneio.getPedidos().stream().map(x -> x.getNumeroPedido()).collect(Collectors.toList()));
         dto.setTransportadorCodigo(romaneio.getTransportador().getId());
         dto.setTaxaFrete(romaneio.getTaxaFrete());
         dto.setDataCriacao(romaneio.getDataCriacao());
