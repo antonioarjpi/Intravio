@@ -8,12 +8,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
 public class DepartamentoService {
 
     private DepartamentoRepository departamentoRepository;
+
+    private static String getUuid(){
+        return UUID.randomUUID().toString().replace("-", "");
+    }
 
     public DepartamentoService(DepartamentoRepository departamentoRepository) {
         this.departamentoRepository = departamentoRepository;
@@ -33,31 +38,32 @@ public class DepartamentoService {
     }
 
     @Transactional
-    public Departamento buscarDepartamentoPorId(Long id) {
+    public Departamento buscarDepartamentoPorId(String id) {
         return departamentoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Departamento não encontrado com id: " + id));
     }
 
     @Transactional
-    public DepartamentoDTO buscarDepartamentoPorIdRetornandoDTO(Long id){
+    public DepartamentoDTO buscarDepartamentoPorIdRetornandoDTO(String id){
         return toDTO(buscarDepartamentoPorId(id));
     }
 
     @Transactional
     public Departamento salvarDepartamento(DepartamentoDTO dto) {
         Departamento departamento = toEntity(dto);
+        departamento.setId(getUuid());
         return departamentoRepository.save(departamento);
     }
 
     @Transactional
-    public Departamento atualizarDepartamento(Long id, DepartamentoDTO departamentoAtualizado) {
+    public Departamento atualizarDepartamento(String id, DepartamentoDTO departamentoAtualizado) {
         Departamento departamento = buscarDepartamentoPorId(id);
         departamento.setNome(departamentoAtualizado.getNome());
         return departamentoRepository.save(departamento);
     }
 
     @Transactional
-    public void excluirDepartamento(Long id) {
+    public void excluirDepartamento(String id) {
         departamentoRepository.deleteById(id);
     }
 

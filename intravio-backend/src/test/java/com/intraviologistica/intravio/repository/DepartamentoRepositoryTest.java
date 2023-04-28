@@ -49,11 +49,10 @@ class DepartamentoRepositoryTest {
 
         Departamento departamentoA = getDepartamento();
         departamentoA.setNome("Departamento A");
-        departamentoRepository.save(departamentoA);
+        departamentoA = departamentoRepository.save(departamentoA);
 
-        Departamento departamentoB = getDepartamento();
-        departamentoB.setNome("Departamento B");
-        departamentoRepository.save(departamentoB);
+        Departamento departamentoB = new Departamento("id2", "Departamento B");
+        departamentoB = departamentoRepository.save(departamentoB);
 
         departamentos = departamentoRepository.findAll();
 
@@ -64,7 +63,7 @@ class DepartamentoRepositoryTest {
     @Test
     public void testBuscarDepartamentoPorId() {
         Departamento departamento = getDepartamento();
-        departamentoRepository.save(departamento);
+        departamento = departamentoRepository.save(departamento);
 
         Departamento encontrado = departamentoRepository.findById(departamento.getId()).orElse(null);
 
@@ -101,7 +100,7 @@ class DepartamentoRepositoryTest {
 
     private static Departamento getDepartamento() {
         Departamento departamento = new Departamento();
-        departamento.setId(null);
+        departamento.setId("id1");
         departamento.setNome("Departamento A");
         return departamento;
     }

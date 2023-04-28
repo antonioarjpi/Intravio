@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface DepartamentoRepository extends JpaRepository<Departamento, Long> {
+public interface DepartamentoRepository extends JpaRepository<Departamento, String> {
 
     Departamento findByNomeIgnoreCase(String name);
 }

@@ -47,10 +47,10 @@ class ProdutoRepositoryTest {
         assertThat(produtos).isEmpty();
 
         Produto notebook = getProduto();
-        produtoRepository.save(notebook);
+        notebook = produtoRepository.save(notebook);
 
         Produto smartphone = getProduto2();
-        produtoRepository.save(smartphone);
+        smartphone = produtoRepository.save(smartphone);
 
         produtos = produtoRepository.findAll();
 
@@ -115,6 +115,7 @@ class ProdutoRepositoryTest {
 
     private static Produto getProduto() {
         Produto produto = new Produto();
+        produto.setId("pid1");
         produto.setNome("Notebook");
         produto.setDescricao("Notebook Dell Inspiron 15");
         produto.setPreco(3500.00);
@@ -128,6 +129,7 @@ class ProdutoRepositoryTest {
 
     private static Produto getProduto2() {
         Produto smartphone = new Produto();
+        smartphone.setId("pid2");
         smartphone.setNome("Smartphone");
         smartphone.setDescricao("Smartphone Samsung Galaxy S20");
         smartphone.setPreco(4000.00);

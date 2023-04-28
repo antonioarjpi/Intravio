@@ -20,7 +20,7 @@ public class TransportadorController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TransportadorDTO> buscaTransportadorPorId(@PathVariable Long id) {
+    public ResponseEntity<TransportadorDTO> buscaTransportadorPorId(@PathVariable String id) {
         TransportadorDTO transportadorDTO = transportadorService.buscaTransportadorPorId(id);
         return ResponseEntity.ok(transportadorDTO);
     }
@@ -38,14 +38,14 @@ public class TransportadorController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Transportador> atualizaTransportador(@PathVariable Long id, @RequestBody TransportadorDTO dto) {
+    public ResponseEntity<Transportador> atualizaTransportador(@PathVariable String id, @RequestBody TransportadorDTO dto) {
         dto.setId(id);
         Transportador transportador = transportadorService.atualizaTransportador(dto);
         return ResponseEntity.ok(transportador);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletaTransportador(@PathVariable Long id) {
+    public ResponseEntity<Void> deletaTransportador(@PathVariable String id) {
         transportadorService.deletaTransportador(id);
         return ResponseEntity.noContent().build();
     }

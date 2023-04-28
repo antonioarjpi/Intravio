@@ -12,8 +12,7 @@ import java.util.stream.Collectors;
 public class PedidoDTO {
 
     private Long id;
-    private List<ItemDTO> itens = new ArrayList<>();
-    private List<String> imagens = new ArrayList<>();
+    private Integer numeroPedido;
     private StatusPedido statusPedido;
     private String remetenteNome;
     private String remetenteEmail;
@@ -30,12 +29,13 @@ public class PedidoDTO {
     private String codigoRastreio;
     private Double pesoPedido;
     private Double valorPedido;
+    private List<ItemDTO> itens = new ArrayList<>();
+    private List<String> imagens = new ArrayList<>();
 
     public PedidoDTO() {
     }
 
     public PedidoDTO(Pedido pedido) {
-        System.out.println(pedido.getImagens().toString());
         this.id = pedido.getId();
         this.itens = pedido.getItens().stream().map(x -> new ItemDTO(x)).collect(Collectors.toList());
         this.imagens = pedido.getImagens();
@@ -53,6 +53,7 @@ public class PedidoDTO {
         this.pesoPedido = pedido.getPesoTotal();
         this.valorPedido = pedido.getValorTotal();
         this.codigoRastreio = pedido.getCodigoRastreio();
+        this.numeroPedido = pedido.getNumeroPedido();
     }
 
     public Long getId() {
@@ -189,5 +190,13 @@ public class PedidoDTO {
 
     public void setImagens(List<String> imagens) {
         this.imagens = imagens;
+    }
+
+    public Integer getNumeroPedido() {
+        return numeroPedido;
+    }
+
+    public void setNumeroPedido(Integer numeroPedido) {
+        this.numeroPedido = numeroPedido;
     }
 }

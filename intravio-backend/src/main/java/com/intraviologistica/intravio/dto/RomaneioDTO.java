@@ -10,9 +10,8 @@ import java.util.stream.Collectors;
 
 public class RomaneioDTO {
 
-    private Long id;
-
-    private List<PedidoDTO> pedidos = new ArrayList<>();
+    private String id;
+    private Integer numeroRomaneio;
     private String transportadora;
     private String placa;
     private String veiculo;
@@ -26,6 +25,8 @@ public class RomaneioDTO {
     private String observacao;
     private Double pesoCarga;
     private Double valorCarga;
+    private List<PedidoDTO> pedidos = new ArrayList<>();
+
 
     public RomaneioDTO() {
     }
@@ -44,13 +45,14 @@ public class RomaneioDTO {
         this.observacao = romaneio.getObservacao();
         this.valorCarga = romaneio.getValorTotal();
         this.pesoCarga = romaneio.getPesoTotal();
+        this.numeroRomaneio = romaneio.getNumeroRomaneio();
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -148,5 +150,13 @@ public class RomaneioDTO {
 
     public void setValorCarga(Double valorCarga) {
         this.valorCarga = valorCarga;
+    }
+
+    public Integer getNumeroRomaneio() {
+        return numeroRomaneio;
+    }
+
+    public void setNumeroRomaneio(Integer numeroRomaneio) {
+        this.numeroRomaneio = numeroRomaneio;
     }
 }

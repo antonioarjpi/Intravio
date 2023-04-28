@@ -1,6 +1,8 @@
 package com.intraviologistica.intravio.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 
 import java.time.LocalDateTime;
 
@@ -8,8 +10,7 @@ import java.time.LocalDateTime;
 public class Produto {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     @Column(unique = true)
     private String nome;
@@ -26,7 +27,7 @@ public class Produto {
     public Produto() {
     }
 
-    public Produto(Long id, String nome, String descricao, Double preco, Double peso, String fabricante, String modelo, LocalDateTime dataAtualizacao) {
+    public Produto(String id, String nome, String descricao, Double preco, Double peso, String fabricante, String modelo, LocalDateTime dataAtualizacao) {
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;
@@ -39,11 +40,11 @@ public class Produto {
 
     // Getters e Setters
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -109,5 +110,20 @@ public class Produto {
 
     public void setDataAtualizacao(LocalDateTime dataAtualizacao) {
         this.dataAtualizacao = dataAtualizacao;
+    }
+
+    @Override
+    public String toString() {
+        return "Produto{" +
+                "id='" + id + '\'' +
+                ", nome='" + nome + '\'' +
+                ", descricao='" + descricao + '\'' +
+                ", preco=" + preco +
+                ", peso=" + peso +
+                ", fabricante='" + fabricante + '\'' +
+                ", modelo='" + modelo + '\'' +
+                ", dataCriacao=" + dataCriacao +
+                ", dataAtualizacao=" + dataAtualizacao +
+                '}';
     }
 }

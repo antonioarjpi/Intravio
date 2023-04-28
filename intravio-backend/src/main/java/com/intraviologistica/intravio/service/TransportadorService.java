@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -15,12 +16,16 @@ public class TransportadorService {
 
     private TransportadorRepository transportadorRepository;
 
+    private static String getUuid() {
+        return UUID.randomUUID().toString().replace("-", "");
+    }
+
     public TransportadorService(TransportadorRepository transportadorRepository) {
         this.transportadorRepository = transportadorRepository;
     }
 
     @Transactional
-    public TransportadorDTO buscaTransportadorPorId(Long id) {
+    public TransportadorDTO buscaTransportadorPorId(String id) {
         Transportador transportador = findById(id);
         return toDTO(transportador);
     }
@@ -36,6 +41,7 @@ public class TransportadorService {
     @Transactional
     public Transportador salvaTransportador(TransportadorDTO dto) {
         Transportador transportador = toEntity(dto);
+        transportador.setId(getUuid());
         return transportadorRepository.save(transportador);
     }
 
@@ -54,12 +60,12 @@ public class TransportadorService {
     }
 
     @Transactional
-    public void deletaTransportador(Long id) {
+    public void deletaTransportador(String id) {
         transportadorRepository.deleteById(id);
     }
 
     @Transactional
-    public Transportador findById(Long id) {
+    public Transportador findById(String id) {
         return transportadorRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Transportador não encontrado"));
     }
@@ -72,6 +78,7 @@ public class TransportadorService {
         transportador.setObservacao(dto.getObservacao());
         transportador.setPlaca(dto.getPlaca());
         transportador.setVeiculo(dto.getVeiculo());
+        transportador.setCnpj(dto.getCnpj());
         return transportador;
     }
 

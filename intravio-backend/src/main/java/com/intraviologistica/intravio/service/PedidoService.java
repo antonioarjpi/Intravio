@@ -57,7 +57,7 @@ public class PedidoService {
     }
 
     @Transactional
-    public List<Pedido> listaPedidosPorRomaneioId(Long id) {
+    public List<Pedido> listaPedidosPorRomaneioId(String id) {
         List<Pedido> pedidos = pedidoRepository.findByRomaneioId(id);
         return pedidos;
     }
@@ -93,10 +93,15 @@ public class PedidoService {
     public Pedido salvarPedido(PedidoInputDTO dto) {
         Pedido pedido = toEntity(dto);
 
+        Integer maxNumeroPedido = pedidoRepository.getMaxNumeroPedido(); //Busca o maior numero de pedido
+        if (maxNumeroPedido == null){
+            maxNumeroPedido = 0;
+        }
+        pedido.setNumeroPedido(maxNumeroPedido + 1); // Atribui no numero de Pedido o maior numero encontrado + 1
+
         atribuiDadosDtoAoPedido(dto, pedido);
 
-        //Atribui o código de rastreio ao pedido
-        pedido.setCodigoRastreio(geraCodigoRastreio(pedido));
+        pedido.setCodigoRastreio(geraCodigoRastreio(pedido));  // Atribui o código de rastreio ao pedido
 
         pedido.atualizarStatus(StatusPedido.PENDENTE, "Pedido recebido pelo setor de suprimentos");
 
@@ -242,7 +247,7 @@ public class PedidoService {
         Pedido pedido = findById(id);
         Resource resource = new FileSystemResource("");
 
-        if (pedido.getImagens().isEmpty()){
+        if (pedido.getImagens().isEmpty()) {
             return resource;
         }
 

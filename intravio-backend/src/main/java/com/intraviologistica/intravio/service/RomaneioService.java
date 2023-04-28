@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -33,7 +34,12 @@ public class RomaneioService {
         this.transportadorService = transportadorService;
     }
 
-    public RomaneioDTO buscarPorId(Long id) {
+
+    private static String getUuid() {
+        return UUID.randomUUID().toString().replace("-", "");
+    }
+
+    public RomaneioDTO buscarPorId(String id) {
         Romaneio romaneio = findById(id);
         return new RomaneioDTO(romaneio);
     }
@@ -48,13 +54,17 @@ public class RomaneioService {
 
     @Transactional
     public RomaneioDTO salvar(RomaneioInputDTO romaneioInputDTO) {
+        romaneioInputDTO.setId(getUuid());
         Romaneio romaneio = toEntity(romaneioInputDTO);
 
         insereTransportadorNoRomaneio(romaneioInputDTO, romaneio);
 
         LocalDateTime now = LocalDateTime.now();
+        Integer maxNumeroRomaneio = romaneioRepository.getMaxNumeroRomaneio();
+
         romaneio.setDataCriacao(now);
         romaneio.setDataAtualizacao(now);
+        romaneio.setNumeroRomaneio(maxNumeroRomaneio + 1);
 
         if (romaneioInputDTO.isProcessa()) {
             romaneio.setStatus(StatusRomaneio.EM_TRANSITO);
@@ -100,7 +110,7 @@ public class RomaneioService {
 
     // Exclui o Romaneio se status não for igual a "FECHADO"
     @Transactional
-    public void excluiRomaneio(Long id) {
+    public void excluiRomaneio(String id) {
         Romaneio romaneio = findById(id);
 
         // Se Status do Romaneio for igual a fechado, retorna um Erro
@@ -123,7 +133,7 @@ public class RomaneioService {
     }
 
     @Transactional
-    public void alterarStatusDeTodosPedidosParaEmTransito(Long id, Integer status) {
+    public void alterarStatusDeTodosPedidosParaEmTransito(String id, Integer status) {
         Romaneio romaneio = findById(id);
         List<Pedido> pedidos = pedidoService.listaPedidosPorRomaneioId(id);
 
@@ -174,13 +184,13 @@ public class RomaneioService {
 
     // Busca Romaneio Retornando a Entidade
     @Transactional
-    public Romaneio findById(Long id) {
+    public Romaneio findById(String id) {
         return romaneioRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Romaneio não encontrado."));
     }
 
     // Valida se os pedidos atendem os requisitos antes de inserir no romaneio
-    private void validatePedidos(List<Long> pedidos, Long romaneioId) {
+    private void validatePedidos(List<Long> pedidos, String romaneioId) {
         for (Long idPedido : pedidos) {
             Pedido pedido = pedidoService.findById(idPedido);
             if (pedido.getStatus() == StatusPedido.CANCELADO) {

@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 public class ProdutoInputDTO {
 
-    private Long id;
+    private String id;
     @NotBlank(message = "Preenchumento de nome é obrigatório")
     private String nome;
     private String descricao;
@@ -20,7 +20,7 @@ public class ProdutoInputDTO {
     public ProdutoInputDTO() {
     }
 
-    public ProdutoInputDTO(Long id, String nome, String descricao, Double preco, Double peso, String fabricante, String modelo, LocalDateTime dataCriacao, LocalDateTime dataAtualizacao) {
+    public ProdutoInputDTO(String id, String nome, String descricao, Double preco, Double peso, String fabricante, String modelo, LocalDateTime dataCriacao, LocalDateTime dataAtualizacao) {
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;
@@ -32,11 +32,11 @@ public class ProdutoInputDTO {
         this.dataAtualizacao = dataAtualizacao;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

@@ -50,15 +50,17 @@ class TransportadorRepositoryTest {
     @Test
     public void testBuscarTodosTransportadores() {
         Transportador transportador1 = getTransportador();
-        transportadorRepository.save(transportador1);
+        transportador1 = transportadorRepository.save(transportador1);
 
         Transportador transportador2 = getTransportador();
+        transportador2.setId("id2");
         transportador2.setNome("Nova Transportadora");
         transportador2.setMotorista("João");
         transportador2.setPlaca("XXX-2222");
         transportador2.setVeiculo("Fiat");
         transportador2.setObservacao("Sem observação");
-        transportadorRepository.save(transportador2);
+        transportador2.setCnpj("00.000.000/0001-99");
+        transportador2 = transportadorRepository.save(transportador2);
 
         List<Transportador> transportadores = transportadorRepository.findAll();
         assertThat(transportadores.size()).isEqualTo(2);
@@ -69,7 +71,7 @@ class TransportadorRepositoryTest {
     public void testAtualizarTransportador() {
         Transportador transportadorSalvo = transportadorRepository.save(getTransportador());
 
-       transportadorSalvo = new Transportador(transportadorSalvo.getId(), "Transportador", "Eduardo", "III-0000", "Volks", "Nova Observacao", "99.999.999/0001-99");
+        transportadorSalvo = new Transportador(transportadorSalvo.getId(), "Transportador", "Eduardo", "III-0000", "Volks", "Nova Observacao", "99.999.999/0001-99");
 
         transportadorRepository.save(transportadorSalvo);
 
@@ -92,14 +94,13 @@ class TransportadorRepositoryTest {
 
         transportadorRepository.deleteById(transportadorSalvo.getId());
 
-
         Optional<Transportador> transportadorExcluido = transportadorRepository.findById(transportadorSalvo.getId());
         assertThat(transportadorExcluido).isNotPresent();
     }
 
     private static Transportador getTransportador() {
         Transportador transportador = new Transportador();
-        transportador.setId(null);
+        transportador.setId("id1");
         transportador.setNome("VIP Transportadora");
         transportador.setMotorista("Carlos");
         transportador.setPlaca("PPP-1111");

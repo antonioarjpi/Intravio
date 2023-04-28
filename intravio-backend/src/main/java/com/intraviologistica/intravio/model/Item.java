@@ -96,4 +96,15 @@ public class Item {
     public void setProduto(Produto produto) {
         id.setProduto(produto);
     }
+
+    @Override
+    public String toString() {
+        return "Item{" +
+                "id=" + id +
+                ", descricao='" + descricao + '\'' +
+                ", quantidade=" + quantidade +
+                ", preco=" + preco +
+                ", peso=" + peso +
+                '}';
+    }
 }

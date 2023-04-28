@@ -28,7 +28,7 @@ public class DepartamentoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<DepartamentoDTO> buscarDepartamentoPorId(@PathVariable Long id) {
+    public ResponseEntity<DepartamentoDTO> buscarDepartamentoPorId(@PathVariable String id) {
         return ResponseEntity.ok(departamentoService.buscarDepartamentoPorIdRetornandoDTO(id));
     }
 
@@ -39,12 +39,12 @@ public class DepartamentoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Departamento> atualizarDepartamento(@PathVariable Long id, @RequestBody @Valid DepartamentoDTO departamentoAtualizado) {
+    public ResponseEntity<Departamento> atualizarDepartamento(@PathVariable String id, @RequestBody @Valid DepartamentoDTO departamentoAtualizado) {
         return ResponseEntity.ok(departamentoService.atualizarDepartamento(id, departamentoAtualizado));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> excluirDepartamento(@PathVariable Long id) {
+    public ResponseEntity<Void> excluirDepartamento(@PathVariable String id) {
         departamentoService.excluirDepartamento(id);
         return ResponseEntity.noContent().build();
     }

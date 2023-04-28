@@ -4,31 +4,33 @@ import jakarta.validation.constraints.NotBlank;
 
 public class TransportadorDTO {
 
-    private Long id;
+    private String id;
     @NotBlank(message = "Preenchimento do nome do Transportador é obrigatório")
     private String nome;
     private String motorista;
     private String placa;
     private String veiculo;
     private String observacao;
+    private String cnpj;
 
     public TransportadorDTO() {
     }
 
-    public TransportadorDTO(Long id, String nome, String motorista, String placa, String veiculo, String observacao) {
+    public TransportadorDTO(String id, String nome, String motorista, String placa, String veiculo, String observacao, String cnpj) {
         this.id = id;
         this.nome = nome;
         this.motorista = motorista;
         this.placa = placa;
         this.veiculo = veiculo;
         this.observacao = observacao;
+        this.cnpj = cnpj;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -70,6 +72,14 @@ public class TransportadorDTO {
 
     public void setObservacao(String observacao) {
         this.observacao = observacao;
+    }
+
+    public String getCnpj() {
+        return cnpj;
+    }
+
+    public void setCnpj(String cnpj) {
+        this.cnpj = cnpj;
     }
 }
 

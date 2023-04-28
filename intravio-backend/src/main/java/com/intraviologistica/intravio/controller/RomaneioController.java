@@ -28,7 +28,7 @@ public class RomaneioController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<RomaneioDTO> buscaRomaneioPorId(@PathVariable Long id) {
+    public ResponseEntity<RomaneioDTO> buscaRomaneioPorId(@PathVariable String id) {
         return ResponseEntity.ok(romaneioService.buscarPorId(id));
     }
 
@@ -41,19 +41,19 @@ public class RomaneioController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Romaneio> atualizarRomaneio(@PathVariable Long id, @Valid @RequestBody RomaneioInputDTO romaneioInputDTO) {
+    public ResponseEntity<Romaneio> atualizarRomaneio(@PathVariable String id, @Valid @RequestBody RomaneioInputDTO romaneioInputDTO) {
         romaneioInputDTO.setId(id);
         return ResponseEntity.ok(romaneioService.AtualizarRomaneio(romaneioInputDTO));
     }
 
     @PutMapping("/{id}/status/{status}")
-    public ResponseEntity<Void> alterarStatusDeTodosPedidosDoRomaneio(@PathVariable Long id, @PathVariable Integer status) {
+    public ResponseEntity<Void> alterarStatusDeTodosPedidosDoRomaneio(@PathVariable String id, @PathVariable Integer status) {
         romaneioService.alterarStatusDeTodosPedidosParaEmTransito(id, status);
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> excluiRomaneio(@PathVariable Long id) {
+    public ResponseEntity<Void> excluiRomaneio(@PathVariable String id) {
         romaneioService.excluiRomaneio(id);
         return ResponseEntity.noContent().build();
     }

@@ -8,12 +8,12 @@ import java.util.List;
 
 public class RomaneioInputDTO {
 
-    private Long id;
+    private String id;
 
     @NotNull(message = "A lista de pedidos não pode ser nula")
     @NotEmpty(message = "Não é possível criar romaneio sem pedido")
     private List<Long> pedidos;
-    private Long transportadorCodigo;
+    private String transportadorCodigo;
     private Double taxaFrete;
     private LocalDateTime dataCriacao;
     private LocalDateTime dataAtualizacao;
@@ -24,11 +24,11 @@ public class RomaneioInputDTO {
     public RomaneioInputDTO() {
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -40,11 +40,11 @@ public class RomaneioInputDTO {
         this.pedidos = pedidos;
     }
 
-    public Long getTransportadorCodigo() {
+    public String getTransportadorCodigo() {
         return transportadorCodigo;
     }
 
-    public void setTransportadorCodigo(Long transportadorCodigo) {
+    public void setTransportadorCodigo(String transportadorCodigo) {
         this.transportadorCodigo = transportadorCodigo;
     }
 

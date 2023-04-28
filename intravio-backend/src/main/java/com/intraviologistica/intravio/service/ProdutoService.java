@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -20,6 +21,10 @@ public class ProdutoService {
         this.produtoRepository = produtoRepository;
     }
 
+    private static String getUuid() {
+        return UUID.randomUUID().toString().replace("-", "");
+    }
+
     @Transactional
     public List<ProdutoInputDTO> listaProdutos() {
         List<Produto> produtos = produtoRepository.findAll();
@@ -29,26 +34,27 @@ public class ProdutoService {
     }
 
     @Transactional
-    public Produto buscaProdutoPorId(Long id) {
+    public Produto buscaProdutoPorId(String id) {
         return produtoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Produto não encontrado"));
     }
 
     @Transactional
-    public ProdutoInputDTO buscaProdutoPorIdDTO(Long id) {
+    public ProdutoInputDTO buscaProdutoPorIdDTO(String id) {
         return toDTO(buscaProdutoPorId(id));
     }
 
     @Transactional
     public ProdutoInputDTO salvaProduto(ProdutoInputDTO produtoInputDTO) {
         Produto produto = toEntity(produtoInputDTO);
+        produto.setId(getUuid());
         produto.setDataCriacao(LocalDateTime.now());
         Produto produtoSalvo = produtoRepository.save(produto);
         return toDTO(produtoSalvo);
     }
 
     @Transactional
-    public ProdutoInputDTO atualizaProduto(Long id, ProdutoInputDTO produtoInputDTO) {
+    public ProdutoInputDTO atualizaProduto(String id, ProdutoInputDTO produtoInputDTO) {
         Produto produto = produtoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Produto não encontrado"));
         Produto produtoConvertido = toEntity(produtoInputDTO);
@@ -59,7 +65,7 @@ public class ProdutoService {
     }
 
     @Transactional
-    public void deletaProduto(Long id) {
+    public void deletaProduto(String id) {
         Produto produto = produtoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Produto não encontrado"));
         produtoRepository.delete(produto);

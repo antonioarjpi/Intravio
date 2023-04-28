@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 
 public class FuncionarioDTO {
 
-    private Long id;
+    private String id;
     @NotBlank(message = "Preenchimento do nome é obrigatório")
     private String nome;
     @NotBlank(message = "Preenchimento do e-mail é obrigatório")
@@ -14,18 +14,18 @@ public class FuncionarioDTO {
     public FuncionarioDTO() {
     }
 
-    public FuncionarioDTO(Long id, String nome, String email, String departamentoNome) {
+    public FuncionarioDTO(String id, String nome, String email, String departamentoNome) {
         this.id = id;
         this.nome = nome;
         this.email = email;
         this.departamentoNome = departamentoNome;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

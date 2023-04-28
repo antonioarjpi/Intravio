@@ -12,8 +12,9 @@ import java.util.List;
 public class Romaneio {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
+
+    private Integer numeroRomaneio;
 
     @OneToMany(mappedBy = "romaneio", cascade = CascadeType.PERSIST)
     private List<Pedido> pedidos = new ArrayList<>();
@@ -50,7 +51,7 @@ public class Romaneio {
         return soma;
     }
 
-    public Romaneio(Long id, List<Pedido> pedidos, Transportador transportador, StatusRomaneio status, Double taxaFrete, LocalDateTime dataCriacao, LocalDateTime dataAtualizacao, String observacao) {
+    public Romaneio(String id, List<Pedido> pedidos, Transportador transportador, StatusRomaneio status, Double taxaFrete, LocalDateTime dataCriacao, LocalDateTime dataAtualizacao, String observacao) {
         this.id = id;
         this.pedidos = pedidos;
         this.transportador = transportador;
@@ -61,11 +62,11 @@ public class Romaneio {
         this.observacao = observacao;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -123,6 +124,29 @@ public class Romaneio {
 
     public void setObservacao(String observacao) {
         this.observacao = observacao;
+    }
+
+    public Integer getNumeroRomaneio() {
+        return numeroRomaneio;
+    }
+
+    public void setNumeroRomaneio(Integer numeroRomaneio) {
+        this.numeroRomaneio = numeroRomaneio;
+    }
+
+    @Override
+    public String toString() {
+        return "Romaneio{" +
+                "id='" + id + '\'' +
+                ", numeroRomaneio=" + numeroRomaneio +
+                ", pedidos=" + pedidos +
+                ", transportador=" + transportador +
+                ", Status=" + Status +
+                ", taxaFrete=" + taxaFrete +
+                ", dataCriacao=" + dataCriacao +
+                ", dataAtualizacao=" + dataAtualizacao +
+                ", observacao='" + observacao + '\'' +
+                '}';
     }
 }
 

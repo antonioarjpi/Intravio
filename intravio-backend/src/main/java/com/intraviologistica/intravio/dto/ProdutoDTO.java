@@ -4,7 +4,7 @@ import com.intraviologistica.intravio.model.Produto;
 
 public class ProdutoDTO {
 
-    private Long id;
+    private String id;
     private String nome;
     private String descricao;
     private Double preco;
@@ -22,11 +22,11 @@ public class ProdutoDTO {
         this.peso = produto.getPeso();
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

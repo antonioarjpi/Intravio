@@ -4,23 +4,23 @@ import jakarta.validation.constraints.NotBlank;
 
 public class DepartamentoDTO {
 
-    private Long id;
+    private String id;
     @NotBlank(message = "Preenchimento do nome do departamento é obrigatório")
     private String nome;
 
     public DepartamentoDTO() {
     }
 
-    public DepartamentoDTO(Long id, String nome) {
+    public DepartamentoDTO(String id, String nome) {
         this.id = id;
         this.nome = nome;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

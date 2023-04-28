@@ -6,8 +6,7 @@ import jakarta.persistence.*;
 public class Funcionario {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     private String nome;
     @Column(unique = true)
@@ -20,18 +19,18 @@ public class Funcionario {
     public Funcionario() {
     }
 
-    public Funcionario(Long id, String nome, String email, Departamento departamento) {
+    public Funcionario(String id, String nome, String email, Departamento departamento) {
         this.id = id;
         this.nome = nome;
         this.email = email;
         this.departamento = departamento;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -57,5 +56,15 @@ public class Funcionario {
 
     public void setDepartamento(Departamento departamento) {
         this.departamento = departamento;
+    }
+
+    @Override
+    public String toString() {
+        return "Funcionario{" +
+                "id='" + id + '\'' +
+                ", nome='" + nome + '\'' +
+                ", email='" + email + '\'' +
+                ", departamento=" + departamento +
+                '}';
     }
 }

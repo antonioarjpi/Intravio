@@ -52,4 +52,11 @@ public class ItemPedidoPK {
         return Objects.hash(pedido, produto);
     }
 
+    @Override
+    public String toString() {
+        return "ItemPedidoPK{" +
+                "pedido=" + pedido +
+                ", produto=" + produto +
+                '}';
+    }
 }

@@ -55,10 +55,10 @@ class FuncionarioRepositoryTest {
         Departamento departamento = getDepartamento();
 
         Funcionario joao = getFuncionario(departamento);
-        funcionarioRepository.save(joao);
+        joao = funcionarioRepository.save(joao);
 
         Funcionario maria = getFuncionarioB(departamento);
-        funcionarioRepository.save(maria);
+        maria = funcionarioRepository.save(maria);
 
         funcionarios = funcionarioRepository.findAll();
 
@@ -70,16 +70,13 @@ class FuncionarioRepositoryTest {
     public void testBuscarFuncionarioPorId() {
         Departamento departamento = getDepartamento();
 
-        Funcionario joao = getFuncionario(departamento);
-        funcionarioRepository.save(joao);
+        Funcionario funcionario = getFuncionario(departamento);
+        funcionario = funcionarioRepository.save(funcionario);
 
-        Funcionario maria = getFuncionarioB(departamento);
-        funcionarioRepository.save(maria);
-
-        Funcionario encontrado = funcionarioRepository.findById(maria.getId()).orElse(null);
+        Funcionario encontrado = funcionarioRepository.findById(funcionario.getId()).orElse(null);
 
         assertThat(encontrado).isNotNull();
-        assertThat(encontrado).isEqualTo(maria);
+        assertThat(encontrado).isEqualTo(funcionario);
     }
 
     @Test
@@ -115,7 +112,7 @@ class FuncionarioRepositoryTest {
 
     private static Funcionario getFuncionario(Departamento departamento) {
         Funcionario funcionario = new Funcionario();
-        funcionario.setId(null);
+        funcionario.setId("id1");
         funcionario.setNome("João");
         funcionario.setEmail("joao@teste.com");
         funcionario.setDepartamento(departamento);
@@ -124,7 +121,7 @@ class FuncionarioRepositoryTest {
 
     private static Funcionario getFuncionarioB(Departamento departamento) {
         Funcionario maria = new Funcionario();
-        maria.setId(null);
+        maria.setId("id2");
         maria.setNome("Maria");
         maria.setEmail("maria@teste.com");
         maria.setDepartamento(departamento);
@@ -133,6 +130,7 @@ class FuncionarioRepositoryTest {
 
     private Departamento getDepartamento() {
         Departamento departamento = new Departamento();
+        departamento.setId("id-3");
         departamento.setNome("TI");
         departamento = departamentoRepository.save(departamento);
         return departamento;

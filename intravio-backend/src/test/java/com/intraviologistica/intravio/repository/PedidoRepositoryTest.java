@@ -191,9 +191,15 @@ class PedidoRepositoryTest {
         Filial filialA = filialRepository.save(getFilialA());
         Filial filialB = filialRepository.save(getFilialB());
 
-        Romaneio romaneio1 = romaneioRepository.save(getRomaneio());
-        Romaneio romaneio2 = romaneioRepository.save(getRomaneio());
-        Romaneio romaneio3 = romaneioRepository.save(getRomaneio());
+        Romaneio romaneio1 = getRomaneio();
+        romaneio1.setId("id1");
+        romaneio1 = romaneioRepository.save(romaneio1);
+        Romaneio romaneio2 = getRomaneio();
+        romaneio2.setId("id2");
+        romaneio2 = romaneioRepository.save(romaneio2);
+        Romaneio romaneio3 = getRomaneio();
+        romaneio3.setId("id3");
+        romaneio3 = romaneioRepository.save(romaneio3);
 
         Pedido pedido1 = getPedido();
         pedido1.setRemetente(funcionario1);
@@ -229,20 +235,21 @@ class PedidoRepositoryTest {
         pedidoRepository.save(pedido4);
 
         // Buscando todos os pedidos com o romaneio de id 1
-        List<Pedido> pedidosEncontrados = pedidoRepository.findByRomaneioId(1l);
+        List<Pedido> pedidosEncontrados = pedidoRepository.findByRomaneioId("id1");
         assertThat(pedidosEncontrados.size()).isEqualTo(2);
 
         // Buscando todos os pedidos com o romaneio de id 2
-        pedidosEncontrados = pedidoRepository.findByRomaneioId(2L);
+        pedidosEncontrados = pedidoRepository.findByRomaneioId("id2");
         assertThat(pedidosEncontrados.size()).isEqualTo(1);
 
         // Buscando todos os pedidos com o romaneio de id 3
-        pedidosEncontrados = pedidoRepository.findByRomaneioId(3L);
+        pedidosEncontrados = pedidoRepository.findByRomaneioId("id3");
         assertThat(pedidosEncontrados.size()).isEqualTo(1);
     }
 
     private Romaneio getRomaneio() {
         Romaneio romaneio = new Romaneio();
+        romaneio.setId("id1");
         romaneio.setStatus(StatusRomaneio.ABERTO);
         romaneio.setObservacao("Observação");
         romaneio.setTaxaFrete(3.00);
@@ -254,6 +261,7 @@ class PedidoRepositoryTest {
 
     private Transportador getTransportador() {
         Transportador transportador = new Transportador();
+        transportador.setId("tid1");
         transportador.setNome("VIP Transportadora");
         transportador.setMotorista("Carlos");
         transportador.setPlaca("PPP-1111");
@@ -267,7 +275,7 @@ class PedidoRepositoryTest {
         id.setPedido(getPedido());
         id.getPedido().setId(1l);
         id.setProduto(getProduto());
-        id.getProduto().setId(1l);
+        id.getProduto().setId("id1");
         Item item = new Item();
         item.setId(id);
         item.setDescricao("Item teste");
@@ -292,30 +300,32 @@ class PedidoRepositoryTest {
 
     private Filial getFilialA() {
         Filial filial = new Filial();
-        filial.setId(1L);
+        filial.setId(1l);
         filial.setNome("Filial A");
         return filial;
     }
 
     private Filial getFilialB() {
         Filial filialB = new Filial();
-        filialB.setId(2L);
+        filialB.setId(2l);
         filialB.setNome("Filial B");
         return filialB;
     }
 
     private Funcionario getFuncionarioA() {
         Funcionario funcionario = new Funcionario();
+        funcionario.setId("fidA");
         funcionario.setNome("João");
         funcionario.setEmail("joao@teste.com");
         return funcionario;
     }
 
     private Funcionario getFuncionarioB() {
-        Funcionario maria = new Funcionario();
-        maria.setNome("Maria");
-        maria.setEmail("maria@teste.com");
-        return maria;
+        Funcionario funcionario = new Funcionario();
+        funcionario.setId("fidB");
+        funcionario.setNome("Maria");
+        funcionario.setEmail("maria@teste.com");
+        return funcionario;
     }
 
     private Pedido getPedido() {

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -16,6 +17,10 @@ public class FuncionarioService {
 
     private final FuncionarioRepository funcionarioRepository;
     private final DepartamentoService departamentoService;
+
+    private static String getUuid(){
+        return UUID.randomUUID().toString().replace("-", "");
+    }
 
     public FuncionarioService(FuncionarioRepository funcionarioRepository, DepartamentoService departamentoService) {
         this.funcionarioRepository = funcionarioRepository;
@@ -29,7 +34,7 @@ public class FuncionarioService {
     }
 
     @Transactional
-    public Funcionario findById(Long id) {
+    public Funcionario findById(String id) {
         return funcionarioRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Funcionário não encontrado"));
     }
@@ -40,7 +45,7 @@ public class FuncionarioService {
     }
 
     @Transactional
-    public FuncionarioDTO buscaFuncionarioPorId(Long id) {
+    public FuncionarioDTO buscaFuncionarioPorId(String id) {
         return toDTO(findById(id));
     }
 
@@ -48,12 +53,13 @@ public class FuncionarioService {
     public FuncionarioDTO salvaFuncionario(FuncionarioDTO funcionarioDTO) {
         Funcionario funcionario = toEntity(funcionarioDTO);
         buscarEInserirDepartamento(funcionarioDTO, funcionario);
+        funcionario.setId(getUuid());
         Funcionario funcionarioSalvo = funcionarioRepository.save(funcionario);
         return toDTO(funcionarioSalvo);
     }
 
     @Transactional
-    public FuncionarioDTO atualizaFuncionario(Long id, FuncionarioDTO funcionarioDTO) {
+    public FuncionarioDTO atualizaFuncionario(String id, FuncionarioDTO funcionarioDTO) {
         Funcionario funcionario = findById(id);
         funcionario.setNome(funcionarioDTO.getNome());
         funcionario.setEmail(funcionarioDTO.getEmail());
@@ -68,7 +74,7 @@ public class FuncionarioService {
     }
 
     @Transactional
-    public void deletarFuncionario(Long id) {
+    public void deletarFuncionario(String id) {
         funcionarioRepository.deleteById(id);
     }
 

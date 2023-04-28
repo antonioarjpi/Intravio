@@ -35,4 +35,11 @@ public class Filial {
         this.nome = nome;
     }
 
+    @Override
+    public String toString() {
+        return "Filial{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                '}';
+    }
 }
