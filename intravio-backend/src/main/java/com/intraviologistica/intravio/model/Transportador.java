@@ -16,17 +16,19 @@ public class Transportador {
     private String placa;
     private String veiculo;
     private String observacao;
+    private String cnpj;
 
     public Transportador() {
     }
 
-    public Transportador(Long id, String nome, String motorista, String placa, String veiculo, String observacao) {
+    public Transportador(Long id, String nome, String motorista, String placa, String veiculo, String observacao, String cnpj) {
         this.id = id;
         this.nome = nome;
         this.motorista = motorista;
         this.placa = placa;
         this.veiculo = veiculo;
         this.observacao = observacao;
+        this.cnpj = cnpj;
     }
 
     public Long getId() {
@@ -75,5 +77,13 @@ public class Transportador {
 
     public void setMotorista(String motorista) {
         this.motorista = motorista;
+    }
+
+    public String getCnpj() {
+        return cnpj;
+    }
+
+    public void setCnpj(String cnpj) {
+        this.cnpj = cnpj;
     }
 }

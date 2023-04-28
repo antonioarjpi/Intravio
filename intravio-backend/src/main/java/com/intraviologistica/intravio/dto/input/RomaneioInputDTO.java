@@ -18,6 +18,7 @@ public class RomaneioInputDTO {
     private LocalDateTime dataCriacao;
     private LocalDateTime dataAtualizacao;
     private String observacao;
+    private Integer cnpj;
     private boolean isProcessa;
 
     public RomaneioInputDTO() {
@@ -85,5 +86,13 @@ public class RomaneioInputDTO {
 
     public void setProcessa(boolean processa) {
         isProcessa = processa;
+    }
+
+    public Integer getCnpj() {
+        return cnpj;
+    }
+
+    public void setCnpj(Integer cnpj) {
+        this.cnpj = cnpj;
     }
 }

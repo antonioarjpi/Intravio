@@ -26,15 +26,15 @@ public class Produto {
     public Produto() {
     }
 
-    public Produto(String nome, String descricao, Double preco, Double peso, String fabricante, String modelo) {
+    public Produto(Long id, String nome, String descricao, Double preco, Double peso, String fabricante, String modelo, LocalDateTime dataAtualizacao) {
+        this.id = id;
         this.nome = nome;
         this.descricao = descricao;
         this.preco = preco;
         this.peso = peso;
         this.fabricante = fabricante;
         this.modelo = modelo;
-        this.dataCriacao = LocalDateTime.now();
-        this.dataAtualizacao = LocalDateTime.now();
+        this.dataAtualizacao = dataAtualizacao;
     }
 
     // Getters e Setters
@@ -109,20 +109,5 @@ public class Produto {
 
     public void setDataAtualizacao(LocalDateTime dataAtualizacao) {
         this.dataAtualizacao = dataAtualizacao;
-    }
-
-    @Override
-    public String toString() {
-        return "Produto{" +
-                "id=" + id +
-                ", nome='" + nome + '\'' +
-                ", descricao='" + descricao + '\'' +
-                ", preco=" + preco +
-                ", peso=" + peso +
-                ", fabricante='" + fabricante + '\'' +
-                ", modelo='" + modelo + '\'' +
-                ", dataCriacao=" + dataCriacao +
-                ", dataAtualizacao=" + dataAtualizacao +
-                '}';
     }
 }

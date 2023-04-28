@@ -224,8 +224,4 @@ public class Pedido {
     public List<HistoricoPedido> getHistoricoPedidos() {
         return historicoPedidos;
     }
-
-    public void setHistoricoPedidos(List<HistoricoPedido> historicoPedidos) {
-        this.historicoPedidos = historicoPedidos;
-    }
 }
