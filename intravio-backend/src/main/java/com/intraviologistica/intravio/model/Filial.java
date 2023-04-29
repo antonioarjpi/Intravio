@@ -11,6 +11,10 @@ public class Filial {
     @Column(unique = true)
     private String nome;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "endereco_id")
+    private Endereco endereco;
+
     public Filial() {
     }
 
@@ -33,6 +37,14 @@ public class Filial {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public Endereco getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
     }
 
     @Override

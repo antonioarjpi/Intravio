@@ -1,41 +1,38 @@
-package com.intraviologistica.intravio.dto;
+package com.intraviologistica.intravio.model;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 
-public class FilialDTO {
+@Entity
+public class Endereco {
 
-    @NotNull(message = "Preenchimento do código da filial é obrigatório")
-    private Long id;
-    @NotBlank(message = "Preenchimento do nome da filial é obrigatório")
-    private String nome;
+    @Id
+    private String id;
     private String rua;
     private String cep;
     private String bairro;
     private Integer numero;
     private String complemento;
-    @NotBlank(message = "Preenchimento do Estado é obrigatório")
     private String estado;
-    @NotBlank(message = "Preenchimento da Cidade é obrigatório")
     private String cidade;
 
-    public FilialDTO() {
+    public Endereco() {
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public String getNome() {
-        return nome;
+    public String getRua() {
+        return rua;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setRua(String rua) {
+        this.rua = rua;
     }
 
     public String getCep() {
@@ -86,11 +83,17 @@ public class FilialDTO {
         this.cidade = cidade;
     }
 
-    public String getRua() {
-        return rua;
-    }
-
-    public void setRua(String rua) {
-        this.rua = rua;
+    @Override
+    public String toString() {
+        return "Endereco{" +
+                "id='" + id + '\'' +
+                ", rua='" + rua + '\'' +
+                ", cep='" + cep + '\'' +
+                ", bairro='" + bairro + '\'' +
+                ", numero='" + numero + '\'' +
+                ", complemento='" + complemento + '\'' +
+                ", estado='" + estado + '\'' +
+                ", cidade='" + cidade + '\'' +
+                '}';
     }
 }
