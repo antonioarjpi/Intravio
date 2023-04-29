@@ -13,7 +13,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/departamentos")
+@RequestMapping("/api/v1/departamentos")
 public class DepartamentoController {
 
     private DepartamentoService departamentoService;

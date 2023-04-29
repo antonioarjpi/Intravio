@@ -13,7 +13,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/romaneios")
+@RequestMapping("/api/v1/romaneios")
 public class RomaneioController {
 
     private final RomaneioService romaneioService;

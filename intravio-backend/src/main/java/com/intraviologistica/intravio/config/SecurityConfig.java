@@ -27,16 +27,21 @@ public class SecurityConfig {
     }
 
     private final static String[] PUBLIC_MATCHERS = {
-            "/api/v1/usuarios/cadastrar",
             "/api/v1/usuarios/autenticar"
     };
 
     private final static String[] ADMIN_MATCHERS = {
-
+            "/api/v1/usuarios/cadastrar",
+            "/api/v1/filiais/**"
     };
 
     private final static String[] STANDARD_MATCHERS = {
-      
+            "/api/v1/departamentos/**",
+            "/api/v1/funcionarios/**",
+            "/api/v1/pedidos/**",
+            "/api/v1/produtos/**",
+            "/api/v1/romaneios/**",
+            "/api/v1/transportadores/**",
     };
 
     @Bean

@@ -13,7 +13,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/filiais")
+@RequestMapping("/api/v1/filiais")
 public class FilialController {
 
     private final FilialService filialService;
