@@ -31,7 +31,8 @@ public class UsuarioController {
     @PostMapping("/autenticar")
     public ResponseEntity<TokenDTO> fazerLogin(@RequestBody CredenciaisDTO dto, HttpServletResponse response) {
         TokenDTO tokenDTO = usuarioService.fazerLogin(dto);
-        response.addHeader("Authorization", "Bearer" + tokenDTO.getToken());
+        response.addHeader("Authorization", "Bearer " + tokenDTO.getToken());
         response.addHeader("access-control-expose-headers", "Authorization");
+        return ResponseEntity.ok(tokenDTO);
     }
 }

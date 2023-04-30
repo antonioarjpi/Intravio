@@ -1,4 +1,21 @@
 /* You can add global styles to this file, and also import other style files */
 @import url("../node_modules/ngx-toastr/toastr.css");
+
+.cadastro{
+    margin-top: 80px;
+}
+
+.card {
+    width: 100%;
+    margin: 1rem auto;
+    padding: 20px;
+    background-color: #ffff;
+}
+
+.mr-1{
+    margin-right: 10px;
+}
+
+
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

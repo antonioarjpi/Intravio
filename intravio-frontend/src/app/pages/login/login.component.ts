@@ -27,6 +27,7 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void { }
 
   login() {
+    localStorage.clear();
     this.service.autenticar(this.creds).subscribe((response) => {
         console.log(response)
         this.service.sucessoLogin(

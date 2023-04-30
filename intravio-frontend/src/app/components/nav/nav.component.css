@@ -59,7 +59,9 @@
 
 .menu {
    position: absolute;
-   top: 5%;
+   top: 3%;
+   left: 3%;
    color: white;
    background: linear-gradient(135deg, #fc8f74, #FF8264 100%);
+   outline: none;
 }

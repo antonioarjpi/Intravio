@@ -30,13 +30,21 @@ import { NavComponent } from './components/nav/nav.component';
 import { LoginComponent } from './pages/login/login.component';
 import { AuthInterceptorProvider } from './interceptors/auth.interceptor';
 import { LogoComponent } from './components/logo/logo.component';
+import { CadastrarDepartamentoComponent } from './pages/departamentos/cadastrar-departamento/cadastrar-departamento.component';
+import { AtualizarDepartamentoComponent } from './pages/departamentos/atualizar-departamento/atualizar-departamento.component';
+import { DeletarDepartamentoComponent } from './pages/departamentos/deletar-departamento/deletar-departamento.component';
+import { ListarDepartamentoComponent } from './pages/departamentos/listar-departamento/listar-departamento.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavComponent,
     LoginComponent,
-    LogoComponent
+    LogoComponent,
+    CadastrarDepartamentoComponent,
+    AtualizarDepartamentoComponent,
+    DeletarDepartamentoComponent,
+    ListarDepartamentoComponent
   ],
   imports: [
     BrowserModule,
