@@ -1,0 +1,57 @@
+<mat-drawer-container class="nav" autosize>
+    <mat-drawer #drawer class="sidenav" mode="side">
+ 
+        <mat-nav-list class="nav-list">
+            <div class="sidenav-logo">
+                <app-logo />
+            </div>
+            <a routerLink="home">
+                <i class="material-icons">home</i>
+                <label>Inicio</label>
+            </a>
+            <a routerLink="home">
+                <i class="material-icons">assignment</i>
+                <label>Usuários</label>
+            </a>
+            <a routerLink="home">
+                <i class="material-icons">receipt</i>
+                <label>Romaneios</label>
+            </a>
+            <a routerLink="home">
+                <i class="material-icons">supervisor_account</i>
+                <label>Usuários</label>
+            </a>
+            <a routerLink="home">
+                <i class="material-icons">inbox</i>
+                <label> Produtos</label>
+            </a>
+            <a routerLink="home">
+                <i class="material-icons">local_shipping</i>
+                <label>Transportadores</label>
+            </a>
+            <a routerLink="home">
+                <i class="material-icons">domain</i>
+                <label>Departamentos</label>
+            </a>
+            <a routerLink="home">
+                <i class="material-icons">location_city</i>
+                <label>Filiais</label>
+            </a>
+            <a (click)="[logout()]" routerLink="login">
+                <i class="material-icons">exit_to_app</i>
+                <label>Sair</label>
+            </a>
+        </mat-nav-list>
+    </mat-drawer>
+
+    <div class="sidenav-content">
+        <!-- <app-header></app-header> -->
+        <div class="container">
+            <button class="menu mat-elevation-z8" (click)="drawer.toggle()" mat-icon-button>
+                <mat-icon>menu</mat-icon>
+            </button>
+        </div>
+        <router-outlet></router-outlet>
+    </div>
+
+</mat-drawer-container>

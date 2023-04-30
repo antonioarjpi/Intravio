@@ -1,0 +1,22 @@
+<div class="login">
+    <div class="col-12 col-md-4">
+    <mat-card class="card mat-elevation-z8">
+        <mat-card-content>
+            <form class="form">
+                <div class="card-image">
+                    <app-logo/>
+                </div>
+                <mat-form-field appearance="fill">
+                    <mat-label>E-mail</mat-label>
+                    <input [formControl]="email" required [(ngModel)]="creds.email" name="email" placeholder="Digite seu e-mail"  matInput>
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>Senha</mat-label>
+                    <input [formControl]="senha" required [(ngModel)]="creds.senha" name="senha" matInput type="password">
+                </mat-form-field>
+                <button (click)="login()" [disabled]="!validateFields()" mat-raised-button color="primary" type="submit">Entrar</button>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>
+</div>

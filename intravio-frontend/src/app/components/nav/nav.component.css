@@ -1,0 +1,65 @@
+.nav {
+   height: 100%;
+   color: white;
+}
+
+.sidenav {
+   width: 13rem;
+   color: white;
+   background-color: #32373d;
+}
+
+.sidenav-logo{
+   width: 100%;
+   padding: 10px 10px 40px 10px;
+   margin-top: 20px;
+   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.sidenav a {
+   padding-left: 20px;
+   text-decoration: none solid rgba(255, 255, 255, 0.6);
+   color: rgba(255, 255, 255, 0.6);
+   display: flex;
+   justify-content: stretch;
+   text-decoration: none;
+   align-items: center;
+   vertical-align: middle;
+   height: 55px;
+   transition: 0.2s;
+   font-size: 16px;
+   border-top: 0px none rgba(255, 255, 255, 0.6);
+   border-right: 0px none rgba(255, 255, 255, 0.6);
+   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+   border-left: 0px none rgba(255, 255, 255, 0.6);
+   position: relative;
+}
+
+.sidenav a:hover {
+   cursor: pointer;
+   color: rgba(255, 255, 255, 0.877);
+   background-color: #2F89FC;
+}
+
+.sidenav label {
+   width: 8rem;
+   white-space: nowrap;
+   margin-right: 0;
+   margin-left: 5px;
+   cursor: pointer;
+   height: 20px !important;
+   vertical-align: middle;
+   padding-top: 5px;
+}
+
+.sidenav i {
+   margin-right: .6rem;
+   height: 20px !important;
+}
+
+.menu {
+   position: absolute;
+   top: 5%;
+   color: white;
+   background: linear-gradient(135deg, #fc8f74, #FF8264 100%);
+}
