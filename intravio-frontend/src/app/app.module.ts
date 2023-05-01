@@ -25,6 +25,7 @@ import { MatDialogModule } from "@angular/material/dialog";
 import {MatChipsModule} from '@angular/material/chips';
 
 import { ToastrModule } from "ngx-toastr";
+import { NgxMaskModule } from 'ngx-mask';
 
 import { NavComponent } from './components/nav/nav.component';
 import { LoginComponent } from './pages/login/login.component';
@@ -34,6 +35,10 @@ import { CadastrarDepartamentoComponent } from './pages/departamentos/cadastrar-
 import { AtualizarDepartamentoComponent } from './pages/departamentos/atualizar-departamento/atualizar-departamento.component';
 import { DeletarDepartamentoComponent } from './pages/departamentos/deletar-departamento/deletar-departamento.component';
 import { ListarDepartamentoComponent } from './pages/departamentos/listar-departamento/listar-departamento.component';
+import { FilialAtualizarComponent } from './pages/filiais/filial-atualizar/filial-atualizar.component';
+import { FilialCadastrarComponent } from './pages/filiais/filial-cadastrar/filial-cadastrar.component';
+import { FilialDeletarComponent } from './pages/filiais/filial-deletar/filial-deletar.component';
+import { FilialListarComponent } from './pages/filiais/filial-listar/filial-listar.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +49,11 @@ import { ListarDepartamentoComponent } from './pages/departamentos/listar-depart
     CadastrarDepartamentoComponent,
     AtualizarDepartamentoComponent,
     DeletarDepartamentoComponent,
-    ListarDepartamentoComponent
+    ListarDepartamentoComponent,
+    FilialAtualizarComponent,
+    FilialCadastrarComponent,
+    FilialDeletarComponent,
+    FilialListarComponent
   ],
   imports: [
     BrowserModule,
@@ -79,7 +88,7 @@ import { ListarDepartamentoComponent } from './pages/departamentos/listar-depart
       progressBar: true,
     }),
 
-
+    NgxMaskModule.forRoot(),
   ],
   providers: [AuthInterceptorProvider],
   bootstrap: [AppComponent]

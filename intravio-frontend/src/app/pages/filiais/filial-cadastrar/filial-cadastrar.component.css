@@ -1,0 +1,41 @@
+.cadastro {
+    padding: 15px;
+    border-radius: .6rem;
+    background-color: #ffff;
+    width: 50rem;
+}
+
+.header {
+    text-align: center;
+}
+
+.footer {
+    display: flex;
+    justify-content: center;
+}
+
+h1{
+    color: #00000080;
+    margin-bottom: 10px;
+}
+
+.fullWidth {
+    width: 100%;
+}
+
+img {
+    margin: auto;
+    margin-bottom: 40px;
+    width: 15rem;
+}
+
+.section {
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.footer button {
+    margin-top: .5rem;
+    width: 70%;
+}

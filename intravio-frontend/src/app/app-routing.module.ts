@@ -8,6 +8,10 @@ import { CadastrarDepartamentoComponent } from './pages/departamentos/cadastrar-
 import { ListarDepartamentoComponent } from './pages/departamentos/listar-departamento/listar-departamento.component';
 import { DeletarDepartamentoComponent } from './pages/departamentos/deletar-departamento/deletar-departamento.component';
 import { AtualizarDepartamentoComponent } from './pages/departamentos/atualizar-departamento/atualizar-departamento.component';
+import { FilialListarComponent } from './pages/filiais/filial-listar/filial-listar.component';
+import { FilialCadastrarComponent } from './pages/filiais/filial-cadastrar/filial-cadastrar.component';
+import { FilialAtualizarComponent } from './pages/filiais/filial-atualizar/filial-atualizar.component';
+import { FilialDeletarComponent } from './pages/filiais/filial-deletar/filial-deletar.component';
 
 const routes: Routes = [
   {
@@ -38,6 +42,22 @@ const routes: Routes = [
       {
         path: "departamentos/atualizar/:id",
         component: AtualizarDepartamentoComponent,
+      },
+      {
+        path: "filiais",
+        component: FilialListarComponent
+      },
+      {
+        path: "filiais/cadastrar",
+        component: FilialCadastrarComponent
+      },
+      {
+        path: "filiais/atualizar/:id",
+        component: FilialAtualizarComponent
+      },
+      {
+        path: "filiais/deletar/:id",
+        component: FilialDeletarComponent
       },
     ]
   },
