@@ -20,6 +20,10 @@ import { ProdutoListarComponent } from './pages/produtos/produto-listar/produto-
 import { ProdutoCadastrarComponent } from './pages/produtos/produto-cadastrar/produto-cadastrar.component';
 import { ProdutoAtualizarComponent } from './pages/produtos/produto-atualizar/produto-atualizar.component';
 import { ProdutoDeletarComponent } from './pages/produtos/produto-deletar/produto-deletar.component';
+import { FuncionarioListarComponent } from './pages/funcionarios/funcionario-listar/funcionario-listar.component';
+import { FuncionarioCadastrarComponent } from './pages/funcionarios/funcionario-cadastrar/funcionario-cadastrar.component';
+import { FuncionarioAtualizarComponent } from './pages/funcionarios/funcionario-atualizar/funcionario-atualizar.component';
+import { FuncionarioDeletarComponent } from './pages/funcionarios/funcionario-deletar/funcionario-deletar.component';
 
 const routes: Routes = [
   {
@@ -98,6 +102,22 @@ const routes: Routes = [
       {
         path: "produtos/deletar/:id",
         component: ProdutoDeletarComponent
+      },
+      {
+        path:"usuarios",
+        component: FuncionarioListarComponent
+      },
+      {
+        path:"usuarios/cadastrar",
+        component: FuncionarioCadastrarComponent
+      },
+      {
+        path:"usuarios/atualizar/:id",
+        component: FuncionarioAtualizarComponent
+      },
+      {
+        path:"usuarios/deletar/:id",
+        component: FuncionarioDeletarComponent
       },
     ]
   },

@@ -1,6 +1,7 @@
 package com.intraviologistica.intravio.service;
 
 import com.intraviologistica.intravio.dto.FuncionarioDTO;
+import com.intraviologistica.intravio.dto.input.FuncionarioInputDTO;
 import com.intraviologistica.intravio.model.Departamento;
 import com.intraviologistica.intravio.model.Filial;
 import com.intraviologistica.intravio.model.Funcionario;
@@ -11,6 +12,7 @@ import com.intraviologistica.intravio.service.exceptions.ResourceNotFoundExcepti
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -36,7 +38,10 @@ public class FuncionarioService {
     @Transactional
     public List<FuncionarioDTO> listaFuncionarios() {
         List<Funcionario> funcionarios = funcionarioRepository.findAll();
-        return funcionarios.stream().map(this::toDTO).collect(Collectors.toList());
+        return funcionarios.stream()
+                .sorted(Comparator.comparing(Funcionario::getNome))
+                .map(x -> new FuncionarioDTO(x))
+                .collect(Collectors.toList());
     }
 
     @Transactional
@@ -51,34 +56,43 @@ public class FuncionarioService {
     }
 
     @Transactional
-    public FuncionarioDTO buscaFuncionarioPorId(String id) {
+    public FuncionarioInputDTO buscaFuncionarioPorId(String id) {
         return toDTO(findById(id));
     }
 
     @Transactional
-    public FuncionarioDTO salvaFuncionario(FuncionarioDTO funcionarioDTO) {
-        Funcionario funcionario = toEntity(funcionarioDTO);
-        buscarInserirDepartamentoEFilial(funcionarioDTO, funcionario);
+    public FuncionarioInputDTO salvaFuncionario(FuncionarioInputDTO funcionarioInputDTO) {
+        Funcionario funcionario = toEntity(funcionarioInputDTO);
+        buscarInserirDepartamentoEFilial(funcionarioInputDTO, funcionario);
         funcionario.setId(getUuid());
         Funcionario funcionarioSalvo = funcionarioRepository.save(funcionario);
         return toDTO(funcionarioSalvo);
     }
 
     @Transactional
-    public FuncionarioDTO atualizaFuncionario(String id, FuncionarioDTO funcionarioDTO) {
+    public FuncionarioInputDTO atualizaFuncionario(String id, FuncionarioInputDTO funcionarioInputDTO) {
         Funcionario funcionario = findById(id);
-        funcionario.setNome(funcionarioDTO.getNome());
-        funcionario.setEmail(funcionarioDTO.getEmail());
-        buscarInserirDepartamentoEFilial(funcionarioDTO, funcionario);
+        funcionario.setNome(funcionarioInputDTO.getNome());
+        funcionario.setEmail(funcionarioInputDTO.getEmail());
+        buscarInserirDepartamentoEFilial(funcionarioInputDTO, funcionario);
         Funcionario updatedFuncionario = funcionarioRepository.save(funcionario);
         return toDTO(updatedFuncionario);
     }
 
-    private void buscarInserirDepartamentoEFilial(FuncionarioDTO funcionarioDTO, Funcionario funcionario) {
-        Optional<Departamento> departamento = departamentoRepository.findById(funcionarioDTO.getDepartamento());
-        departamento.ifPresent(funcionario::setDepartamento);
-        Optional<Filial> filial = filialRepository.findById(funcionarioDTO.getFilial());
-        filial.ifPresent(funcionario::setFilial);
+    private void buscarInserirDepartamentoEFilial(FuncionarioInputDTO funcionarioInputDTO, Funcionario funcionario) {
+        if (funcionarioInputDTO.getDepartamento() != null){
+            Optional<Departamento> departamento = departamentoRepository.findById(funcionarioInputDTO.getDepartamento());
+            departamento.ifPresent(funcionario::setDepartamento);
+        }else {
+            funcionario.setDepartamento(null);
+        }
+
+        if (funcionarioInputDTO.getFilial() != null){
+            Optional<Filial> filial = filialRepository.findById(funcionarioInputDTO.getFilial());
+            filial.ifPresent(funcionario::setFilial);
+        }else {
+            funcionario.setFilial(null);
+        }
     }
 
     @Transactional
@@ -86,21 +100,21 @@ public class FuncionarioService {
         funcionarioRepository.deleteById(id);
     }
 
-    private FuncionarioDTO toDTO(Funcionario funcionario) {
-        FuncionarioDTO funcionarioDTO = new FuncionarioDTO();
-        funcionarioDTO.setId(funcionario.getId());
-        funcionarioDTO.setNome(funcionario.getNome());
-        funcionarioDTO.setEmail(funcionario.getEmail());
-        funcionarioDTO.setDepartamento(funcionario.getDepartamento() != null ? funcionario.getDepartamento().getNome() : null);
-        funcionarioDTO.setFilial(funcionario.getFilial() != null ? funcionario.getFilial().getId() : null);
-        return funcionarioDTO;
+    private FuncionarioInputDTO toDTO(Funcionario funcionario) {
+        FuncionarioInputDTO funcionarioInputDTO = new FuncionarioInputDTO();
+        funcionarioInputDTO.setId(funcionario.getId());
+        funcionarioInputDTO.setNome(funcionario.getNome());
+        funcionarioInputDTO.setEmail(funcionario.getEmail());
+        funcionarioInputDTO.setDepartamento(funcionario.getDepartamento() != null ? funcionario.getDepartamento().getId() : null);
+        funcionarioInputDTO.setFilial(funcionario.getFilial() != null ? funcionario.getFilial().getId() : null);
+        return funcionarioInputDTO;
     }
 
-    public Funcionario toEntity(FuncionarioDTO funcionarioDTO) {
+    public Funcionario toEntity(FuncionarioInputDTO funcionarioInputDTO) {
         Funcionario funcionario = new Funcionario();
-        funcionario.setId(funcionarioDTO.getId());
-        funcionario.setNome(funcionarioDTO.getNome());
-        funcionario.setEmail(funcionarioDTO.getEmail());
+        funcionario.setId(funcionarioInputDTO.getId());
+        funcionario.setNome(funcionarioInputDTO.getNome());
+        funcionario.setEmail(funcionarioInputDTO.getEmail());
         return funcionario;
     }
 }

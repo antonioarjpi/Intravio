@@ -2,5 +2,6 @@ export interface Funcionario {
     id: String;
     nome: String;
     email: String;
-    departamentoNome: String;
+    departamento: String;
+    filial: Number
 }

@@ -1,24 +1,26 @@
-package com.intraviologistica.intravio.dto;
+package com.intraviologistica.intravio.dto.input;
 
-import com.intraviologistica.intravio.model.Funcionario;
+import jakarta.validation.constraints.NotBlank;
 
-public class FuncionarioDTO {
+public class FuncionarioInputDTO {
 
     private String id;
+    @NotBlank(message = "Preenchimento do nome é obrigatório")
     private String nome;
+    @NotBlank(message = "Preenchimento do e-mail é obrigatório")
     private String email;
     private String departamento;
-    private String filial;
+    private Long filial;
 
-    public FuncionarioDTO() {
+    public FuncionarioInputDTO() {
     }
 
-    public FuncionarioDTO(Funcionario funcionario) {
-        this.id = funcionario.getId();
-        this.nome = funcionario.getNome();
-        this.email = funcionario.getEmail();
-        this.departamento = funcionario.getDepartamento() != null ? funcionario.getDepartamento().getNome() : null;
-        this.filial = funcionario.getFilial() != null ? funcionario.getFilial().getNome() : null;
+    public FuncionarioInputDTO(String id, String nome, String email, String departamento, Long filial) {
+        this.id = id;
+        this.nome = nome;
+        this.email = email;
+        this.departamento = departamento;
+        this.filial = filial;
     }
 
     public String getId() {
@@ -53,11 +55,11 @@ public class FuncionarioDTO {
         this.departamento = departamento;
     }
 
-    public String getFilial() {
+    public Long getFilial() {
         return filial;
     }
 
-    public void setFilial(String filial) {
+    public void setFilial(Long filial) {
         this.filial = filial;
     }
 }
