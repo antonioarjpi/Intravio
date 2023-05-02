@@ -74,6 +74,7 @@ public class ProdutoService {
     public Produto toEntity(ProdutoInputDTO dto) {
         Produto produto = new Produto();
         produto.setId(dto.getId());
+        produto.setCodigo(dto.getCodigo());
         produto.setNome(dto.getNome());
         produto.setDescricao(dto.getDescricao());
         produto.setPreco(dto.getPreco() == null ? 00.0 : dto.getPreco());
@@ -87,6 +88,7 @@ public class ProdutoService {
     public ProdutoInputDTO toDTO(Produto produto) {
         ProdutoInputDTO dto = new ProdutoInputDTO();
         dto.setId(produto.getId());
+        dto.setCodigo(produto.getCodigo());
         dto.setNome(produto.getNome());
         dto.setDescricao(produto.getDescricao());
         dto.setPreco(produto.getPreco());

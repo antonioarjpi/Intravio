@@ -9,16 +9,18 @@ public class FuncionarioDTO {
     private String nome;
     @NotBlank(message = "Preenchimento do e-mail é obrigatório")
     private String email;
-    private String departamentoNome;
+    private String departamento;
+    private Long filial;
 
     public FuncionarioDTO() {
     }
 
-    public FuncionarioDTO(String id, String nome, String email, String departamentoNome) {
+    public FuncionarioDTO(String id, String nome, String email, String departamento, Long filial) {
         this.id = id;
         this.nome = nome;
         this.email = email;
-        this.departamentoNome = departamentoNome;
+        this.departamento = departamento;
+        this.filial = filial;
     }
 
     public String getId() {
@@ -45,11 +47,19 @@ public class FuncionarioDTO {
         this.email = email;
     }
 
-    public String getDepartamentoNome() {
-        return departamentoNome;
+    public String getDepartamento() {
+        return departamento;
     }
 
-    public void setDepartamentoNome(String departamentoNome) {
-        this.departamentoNome = departamentoNome;
+    public void setDepartamento(String departamento) {
+        this.departamento = departamento;
+    }
+
+    public Long getFilial() {
+        return filial;
+    }
+
+    public void setFilial(Long filial) {
+        this.filial = filial;
     }
 }

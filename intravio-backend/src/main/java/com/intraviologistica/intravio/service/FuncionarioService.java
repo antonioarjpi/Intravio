@@ -2,13 +2,17 @@ package com.intraviologistica.intravio.service;
 
 import com.intraviologistica.intravio.dto.FuncionarioDTO;
 import com.intraviologistica.intravio.model.Departamento;
+import com.intraviologistica.intravio.model.Filial;
 import com.intraviologistica.intravio.model.Funcionario;
+import com.intraviologistica.intravio.repository.DepartamentoRepository;
+import com.intraviologistica.intravio.repository.FilialRepository;
 import com.intraviologistica.intravio.repository.FuncionarioRepository;
 import com.intraviologistica.intravio.service.exceptions.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -16,15 +20,17 @@ import java.util.stream.Collectors;
 public class FuncionarioService {
 
     private final FuncionarioRepository funcionarioRepository;
-    private final DepartamentoService departamentoService;
+    private final DepartamentoRepository departamentoRepository;
+    private final FilialRepository filialRepository;
 
-    private static String getUuid(){
+    private static String getUuid() {
         return UUID.randomUUID().toString().replace("-", "");
     }
 
-    public FuncionarioService(FuncionarioRepository funcionarioRepository, DepartamentoService departamentoService) {
+    public FuncionarioService(FuncionarioRepository funcionarioRepository, DepartamentoRepository departamentoRepository, FilialRepository filialRepository) {
         this.funcionarioRepository = funcionarioRepository;
-        this.departamentoService = departamentoService;
+        this.departamentoRepository = departamentoRepository;
+        this.filialRepository = filialRepository;
     }
 
     @Transactional
@@ -52,7 +58,7 @@ public class FuncionarioService {
     @Transactional
     public FuncionarioDTO salvaFuncionario(FuncionarioDTO funcionarioDTO) {
         Funcionario funcionario = toEntity(funcionarioDTO);
-        buscarEInserirDepartamento(funcionarioDTO, funcionario);
+        buscarInserirDepartamentoEFilial(funcionarioDTO, funcionario);
         funcionario.setId(getUuid());
         Funcionario funcionarioSalvo = funcionarioRepository.save(funcionario);
         return toDTO(funcionarioSalvo);
@@ -63,14 +69,16 @@ public class FuncionarioService {
         Funcionario funcionario = findById(id);
         funcionario.setNome(funcionarioDTO.getNome());
         funcionario.setEmail(funcionarioDTO.getEmail());
-        buscarEInserirDepartamento(funcionarioDTO, funcionario);
+        buscarInserirDepartamentoEFilial(funcionarioDTO, funcionario);
         Funcionario updatedFuncionario = funcionarioRepository.save(funcionario);
         return toDTO(updatedFuncionario);
     }
 
-    private void buscarEInserirDepartamento(FuncionarioDTO funcionarioDTO, Funcionario funcionario) {
-        Departamento departamento = departamentoService.buscarDepartamentoPorNome(funcionarioDTO.getDepartamentoNome());
-        funcionario.setDepartamento(departamento);
+    private void buscarInserirDepartamentoEFilial(FuncionarioDTO funcionarioDTO, Funcionario funcionario) {
+        Optional<Departamento> departamento = departamentoRepository.findById(funcionarioDTO.getDepartamento());
+        departamento.ifPresent(funcionario::setDepartamento);
+        Optional<Filial> filial = filialRepository.findById(funcionarioDTO.getFilial());
+        filial.ifPresent(funcionario::setFilial);
     }
 
     @Transactional
@@ -83,7 +91,8 @@ public class FuncionarioService {
         funcionarioDTO.setId(funcionario.getId());
         funcionarioDTO.setNome(funcionario.getNome());
         funcionarioDTO.setEmail(funcionario.getEmail());
-        funcionarioDTO.setDepartamentoNome(funcionario.getDepartamento() != null ? funcionario.getDepartamento().getNome() : null);
+        funcionarioDTO.setDepartamento(funcionario.getDepartamento() != null ? funcionario.getDepartamento().getNome() : null);
+        funcionarioDTO.setFilial(funcionario.getFilial() != null ? funcionario.getFilial().getId() : null);
         return funcionarioDTO;
     }
 

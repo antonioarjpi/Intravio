@@ -1,16 +1,21 @@
 package com.intraviologistica.intravio.dto.input;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 
 public class ProdutoInputDTO {
 
     private String id;
-    @NotBlank(message = "Preenchumento de nome é obrigatório")
+    @NotBlank(message = "Preenchimento de nome é obrigatório")
     private String nome;
+    @NotBlank(message = "Preenchimento de código é obrigatório")
+    private Integer codigo;
     private String descricao;
+    @NotNull(message = "Preenchimento de Preço é obrigatório")
     private Double preco;
+    @NotNull(message = "Preenchimento de Peso é obrigatório")
     private Double peso;
     private String fabricante;
     private String modelo;
@@ -20,9 +25,10 @@ public class ProdutoInputDTO {
     public ProdutoInputDTO() {
     }
 
-    public ProdutoInputDTO(String id, String nome, String descricao, Double preco, Double peso, String fabricante, String modelo, LocalDateTime dataCriacao, LocalDateTime dataAtualizacao) {
+    public ProdutoInputDTO(String id, String nome, Integer codigo, String descricao, Double preco, Double peso, String fabricante, String modelo, LocalDateTime dataCriacao, LocalDateTime dataAtualizacao) {
         this.id = id;
         this.nome = nome;
+        this.codigo = codigo;
         this.descricao = descricao;
         this.preco = preco;
         this.peso = peso;
@@ -46,6 +52,14 @@ public class ProdutoInputDTO {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public Integer getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(Integer codigo) {
+        this.codigo = codigo;
     }
 
     public String getDescricao() {

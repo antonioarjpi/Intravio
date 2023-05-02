@@ -14,6 +14,8 @@ public class Produto {
 
     @Column(unique = true)
     private String nome;
+    @Column(unique = true)
+    private Integer codigo;
     private String descricao;
     private Double preco;
     private Double peso;
@@ -112,18 +114,11 @@ public class Produto {
         this.dataAtualizacao = dataAtualizacao;
     }
 
-    @Override
-    public String toString() {
-        return "Produto{" +
-                "id='" + id + '\'' +
-                ", nome='" + nome + '\'' +
-                ", descricao='" + descricao + '\'' +
-                ", preco=" + preco +
-                ", peso=" + peso +
-                ", fabricante='" + fabricante + '\'' +
-                ", modelo='" + modelo + '\'' +
-                ", dataCriacao=" + dataCriacao +
-                ", dataAtualizacao=" + dataAtualizacao +
-                '}';
+    public Integer getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(Integer codigo) {
+        this.codigo = codigo;
     }
 }

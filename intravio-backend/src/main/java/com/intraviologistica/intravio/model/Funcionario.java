@@ -16,14 +16,19 @@ public class Funcionario {
     @JoinColumn(name = "departamento_id")
     private Departamento departamento;
 
+    @ManyToOne
+    @JoinColumn(name = "filial_id")
+    private Filial filial;
+
     public Funcionario() {
     }
 
-    public Funcionario(String id, String nome, String email, Departamento departamento) {
+    public Funcionario(String id, String nome, String email, Departamento departamento, Filial filial) {
         this.id = id;
         this.nome = nome;
         this.email = email;
         this.departamento = departamento;
+        this.filial = filial;
     }
 
     public String getId() {
@@ -58,13 +63,11 @@ public class Funcionario {
         this.departamento = departamento;
     }
 
-    @Override
-    public String toString() {
-        return "Funcionario{" +
-                "id='" + id + '\'' +
-                ", nome='" + nome + '\'' +
-                ", email='" + email + '\'' +
-                ", departamento=" + departamento +
-                '}';
+    public Filial getFilial() {
+        return filial;
+    }
+
+    public void setFilial(Filial filial) {
+        this.filial = filial;
     }
 }

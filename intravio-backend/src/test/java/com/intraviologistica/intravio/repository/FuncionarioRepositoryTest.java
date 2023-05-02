@@ -1,6 +1,8 @@
 package com.intraviologistica.intravio.repository;
 
 import com.intraviologistica.intravio.model.Departamento;
+import com.intraviologistica.intravio.model.Endereco;
+import com.intraviologistica.intravio.model.Filial;
 import com.intraviologistica.intravio.model.Funcionario;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,9 @@ class FuncionarioRepositoryTest {
 
     @Autowired
     private DepartamentoRepository departamentoRepository;
+
+    @Autowired
+    private FilialRepository filialRepository;
 
     @Test
     public void testSalvarFuncionario() {
@@ -71,12 +76,15 @@ class FuncionarioRepositoryTest {
         Departamento departamento = getDepartamento();
 
         Funcionario funcionario = getFuncionario(departamento);
+        funcionario.setFilial(getFilial());
         funcionario = funcionarioRepository.save(funcionario);
 
         Funcionario encontrado = funcionarioRepository.findById(funcionario.getId()).orElse(null);
 
         assertThat(encontrado).isNotNull();
         assertThat(encontrado).isEqualTo(funcionario);
+        assertThat(encontrado.getFilial()).isNotNull();
+        assertThat(encontrado.getDepartamento()).isNotNull();
     }
 
     @Test
@@ -84,9 +92,11 @@ class FuncionarioRepositoryTest {
         Departamento departamento = getDepartamento();
         Funcionario funcionario = getFuncionario(departamento);
 
+        funcionario.setFilial(getFilial());
+
         funcionario = funcionarioRepository.save(funcionario);
 
-        funcionario = new Funcionario(funcionario.getId(), "Novo Nome", "email@email.com", departamento);
+        funcionario = new Funcionario(funcionario.getId(), "Novo Nome", "email@email.com", departamento, getFilial());
 
         Funcionario funcionarioAtualizado = funcionarioRepository.save(funcionario);
 
@@ -94,12 +104,14 @@ class FuncionarioRepositoryTest {
         assertThat(funcionarioAtualizado.getNome()).isEqualTo(funcionario.getNome());
         assertThat(funcionarioAtualizado.getEmail()).isEqualTo(funcionario.getEmail());
         assertThat(funcionarioAtualizado.getDepartamento()).isEqualTo(funcionario.getDepartamento());
+        assertThat(funcionarioAtualizado.getFilial()).isEqualTo(funcionario.getFilial());
     }
 
     @Test
     public void testExcluirFuncionario() {
         Departamento departamento = getDepartamento();
         Funcionario funcionario = getFuncionario(departamento);
+        funcionario.setFilial(getFilial());
 
         funcionario = funcionarioRepository.save(funcionario);
 
@@ -134,5 +146,24 @@ class FuncionarioRepositoryTest {
         departamento.setNome("TI");
         departamento = departamentoRepository.save(departamento);
         return departamento;
+    }
+
+    private Filial getFilial() {
+        Endereco endereco = new Endereco();
+        endereco.setId("enderecoID");
+        endereco.setBairro("Bairro");
+        endereco.setRua("Rua");
+        endereco.setCep("CEP");
+        endereco.setNumero(1);
+        endereco.setComplemento("Complemento");
+        endereco.setCidade("cidade");
+        endereco.setEstado("estado");
+
+        Filial filial = new Filial();
+        filial.setId(1L);
+        filial.setNome("Filial A");
+        filial.setEndereco(endereco);
+
+        return filialRepository.save(filial);
     }
 }

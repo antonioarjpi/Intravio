@@ -69,6 +69,7 @@ class ProdutoRepositoryTest {
         assertThat(produtoEncontrado).isPresent().get().isEqualToComparingFieldByField(produto);
         assertThat(produtoEncontrado.isPresent()).isTrue();
         assertThat(produtoEncontrado.get().getNome()).isEqualTo(produto.getNome());
+        assertThat(produtoEncontrado.get().getCodigo()).isEqualTo(produto.getCodigo());
         assertThat(produtoEncontrado.get().getDescricao()).isEqualTo(produto.getDescricao());
         assertThat(produtoEncontrado.get().getPreco()).isEqualTo(produto.getPreco());
         assertThat(produtoEncontrado.get().getPeso()).isEqualTo(produto.getPeso());
@@ -99,6 +100,7 @@ class ProdutoRepositoryTest {
 
         produtoSalvo = new Produto(produtoSalvo.getId(), "Smartphone", "Smartphone Samsung Galaxy S20", 4000.0, 0.3, "Samsung", "Galaxy S20", LocalDateTime.now());
         produtoSalvo.setDataCriacao(produto.getDataCriacao());
+        produto.setCodigo(1245);
 
         Produto produtoAtualizado = produtoRepository.save(produtoSalvo);
 
@@ -111,11 +113,13 @@ class ProdutoRepositoryTest {
         assertThat(produtoAtualizado.getDataAtualizacao()).isEqualTo(produtoSalvo.getDataAtualizacao());
         assertThat(produtoAtualizado.getDataCriacao()).isEqualTo(produtoSalvo.getDataCriacao());
         assertThat(produtoAtualizado.getFabricante()).isEqualTo(produtoSalvo.getFabricante());
+        assertThat(produtoAtualizado.getCodigo()).isEqualTo(produtoSalvo.getCodigo());
     }
 
     private static Produto getProduto() {
         Produto produto = new Produto();
         produto.setId("pid1");
+        produto.setCodigo(123);
         produto.setNome("Notebook");
         produto.setDescricao("Notebook Dell Inspiron 15");
         produto.setPreco(3500.00);
@@ -130,6 +134,7 @@ class ProdutoRepositoryTest {
     private static Produto getProduto2() {
         Produto smartphone = new Produto();
         smartphone.setId("pid2");
+        smartphone.setCodigo(124);
         smartphone.setNome("Smartphone");
         smartphone.setDescricao("Smartphone Samsung Galaxy S20");
         smartphone.setPreco(4000.00);
