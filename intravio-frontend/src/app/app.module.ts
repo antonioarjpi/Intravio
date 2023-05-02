@@ -15,6 +15,7 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { MatListModule } from "@angular/material/list";
 import { MatPaginatorModule } from "@angular/material/paginator";
+import { MatSortModule } from '@angular/material/sort';
 import { MatRadioModule } from "@angular/material/radio";
 import { MatSelectModule } from "@angular/material/select";
 import { MatSidenavModule } from "@angular/material/sidenav";
@@ -22,8 +23,8 @@ import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { MatTableModule } from "@angular/material/table";
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatDialogModule } from "@angular/material/dialog";
-import {MatChipsModule} from '@angular/material/chips';
-
+import { MatChipsModule } from '@angular/material/chips';
+import { CurrencyPipe } from '@angular/common';
 import { ToastrModule } from "ngx-toastr";
 import { NgxMaskModule } from 'ngx-mask';
 
@@ -43,6 +44,10 @@ import { TransportadorCadastrarComponent } from './pages/transportadores/transpo
 import { TransportadorAtualizarComponent } from './pages/transportadores/transportador-atualizar/transportador-atualizar.component';
 import { TransportadorListarComponent } from './pages/transportadores/transportador-listar/transportador-listar.component';
 import { TransportadorDeletarComponent } from './pages/transportadores/transportador-deletar/transportador-deletar.component';
+import { ProdutoCadastrarComponent } from './pages/produtos/produto-cadastrar/produto-cadastrar.component';
+import { ProdutoAtualizarComponent } from './pages/produtos/produto-atualizar/produto-atualizar.component';
+import { ProdutoListarComponent } from './pages/produtos/produto-listar/produto-listar.component';
+import { ProdutoDeletarComponent } from './pages/produtos/produto-deletar/produto-deletar.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +66,11 @@ import { TransportadorDeletarComponent } from './pages/transportadores/transport
     TransportadorCadastrarComponent,
     TransportadorAtualizarComponent,
     TransportadorListarComponent,
-    TransportadorDeletarComponent
+    TransportadorDeletarComponent,
+    ProdutoCadastrarComponent,
+    ProdutoAtualizarComponent,
+    ProdutoListarComponent,
+    ProdutoDeletarComponent
   ],
   imports: [
     BrowserModule,
@@ -72,25 +81,26 @@ import { TransportadorDeletarComponent } from './pages/transportadores/transport
     HttpClientModule,
 
 
-     // Angular Material
-     MatFormFieldModule,
-     MatPaginatorModule,
-     MatCheckboxModule,
-     MatSnackBarModule,
-     MatToolbarModule,
-     MatSidenavModule,
-     MatButtonModule,
-     MatSelectModule,
-     MatInputModule,
-     MatRadioModule,
-     MatTableModule,
-     MatIconModule,
-     MatListModule,
-     MatCardModule,
-     MatDialogModule,
-     MatChipsModule,
+    // Angular Material
+    MatFormFieldModule,
+    MatPaginatorModule,
+    MatCheckboxModule,
+    MatSnackBarModule,
+    MatToolbarModule,
+    MatSidenavModule,
+    MatButtonModule,
+    MatSelectModule,
+    MatInputModule,
+    MatRadioModule,
+    MatTableModule,
+    MatIconModule,
+    MatSortModule,
+    MatListModule,
+    MatCardModule,
+    MatDialogModule,
+    MatChipsModule,
 
-     ToastrModule.forRoot({
+    ToastrModule.forRoot({
       timeOut: 4000,
       closeButton: true,
       progressBar: true,
@@ -98,7 +108,7 @@ import { TransportadorDeletarComponent } from './pages/transportadores/transport
 
     NgxMaskModule.forRoot(),
   ],
-  providers: [AuthInterceptorProvider],
+  providers: [AuthInterceptorProvider, CurrencyPipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

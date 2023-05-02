@@ -16,6 +16,10 @@ import { TransportadorListarComponent } from './pages/transportadores/transporta
 import { TransportadorCadastrarComponent } from './pages/transportadores/transportador-cadastrar/transportador-cadastrar.component';
 import { TransportadorAtualizarComponent } from './pages/transportadores/transportador-atualizar/transportador-atualizar.component';
 import { TransportadorDeletarComponent } from './pages/transportadores/transportador-deletar/transportador-deletar.component';
+import { ProdutoListarComponent } from './pages/produtos/produto-listar/produto-listar.component';
+import { ProdutoCadastrarComponent } from './pages/produtos/produto-cadastrar/produto-cadastrar.component';
+import { ProdutoAtualizarComponent } from './pages/produtos/produto-atualizar/produto-atualizar.component';
+import { ProdutoDeletarComponent } from './pages/produtos/produto-deletar/produto-deletar.component';
 
 const routes: Routes = [
   {
@@ -78,6 +82,22 @@ const routes: Routes = [
       {
         path: "transportadores/deletar/:id",
         component: TransportadorDeletarComponent
+      },
+      {
+        path: "produtos",
+        component: ProdutoListarComponent
+      },
+      {
+        path: "produtos/cadastrar",
+        component: ProdutoCadastrarComponent
+      },
+      {
+        path: "produtos/atualizar/:id",
+        component: ProdutoAtualizarComponent
+      },
+      {
+        path: "produtos/deletar/:id",
+        component: ProdutoDeletarComponent
       },
     ]
   },
