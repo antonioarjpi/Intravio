@@ -9,13 +9,17 @@
     width: 100%;
     margin: 1rem auto;
     padding: 20px;
+    margin-top: 4.1rem;
     background-color: #ffff;
+}
+
+.table-responsive{
+    margin-bottom: 25px;
 }
 
 .mr-1{
     margin-right: 10px;
-}
-
+}  
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { margin: 0; zoom: 1; font-family: Roboto, "Helvetica Neue", sans-serif; }

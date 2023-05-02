@@ -30,6 +30,7 @@ import { NgxMaskModule } from 'ngx-mask';
 
 import { NavComponent } from './components/nav/nav.component';
 import { LoginComponent } from './pages/login/login.component';
+import { HomeComponent } from './pages/home/home.component';
 import { AuthInterceptorProvider } from './interceptors/auth.interceptor';
 import { LogoComponent } from './components/logo/logo.component';
 import { CadastrarDepartamentoComponent } from './pages/departamentos/cadastrar-departamento/cadastrar-departamento.component';
@@ -58,6 +59,7 @@ import { FuncionarioDeletarComponent } from './pages/funcionarios/funcionario-de
     AppComponent,
     NavComponent,
     LoginComponent,
+    HomeComponent,
     LogoComponent,
     CadastrarDepartamentoComponent,
     AtualizarDepartamentoComponent,
