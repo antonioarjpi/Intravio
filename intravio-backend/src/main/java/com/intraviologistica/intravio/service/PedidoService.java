@@ -58,6 +58,7 @@ public class PedidoService {
     public List<PedidoDTO> listaPedidos() {
         return pedidoRepository.findAll()
                 .stream()
+                .sorted(Comparator.comparing(Pedido::getNumeroPedido).reversed())
                 .map(x -> new PedidoDTO(x))
                 .collect(Collectors.toList());
     }
@@ -199,10 +200,10 @@ public class PedidoService {
 
     // Busca e atribui no pedido: origem, destino, remetente e destinatario.
     private void atribuiDadosDtoAoPedido(PedidoInputDTO dto, Pedido pedido) {
-        Filial origem = filialService.buscarFilialPorNome(dto.getOrigem());
-        Filial destino = filialService.buscarFilialPorNome(dto.getDestino());
-        Funcionario remetente = funcionarioService.buscaFuncionarioPorEmail(dto.getRemetente());
-        Funcionario destinatario = funcionarioService.buscaFuncionarioPorEmail(dto.getDestinatario());
+        Filial origem = filialService.findById(dto.getOrigem());
+        Filial destino = filialService.findById(dto.getDestino());
+        Funcionario remetente = funcionarioService.findById(dto.getRemetente());
+        Funcionario destinatario = funcionarioService.findById(dto.getDestinatario());
 
         pedido.setOrigem(origem);
         pedido.setDestino(destino);

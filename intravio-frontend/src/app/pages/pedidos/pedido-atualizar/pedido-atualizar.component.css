@@ -1,0 +1,138 @@
+.cadastro {
+    padding: 15px;
+    border-radius: .6rem;
+    background-color: #ffff;
+    width: 60rem;
+}
+
+.header {
+    text-align: center;
+}
+
+span {
+    color: rgba(49, 48, 48, 0.774);
+    margin-right: 15px;
+}
+
+.footer {
+    display: flex;
+    justify-content: center;
+}
+
+h1 {
+    color: #00000080;
+    margin-bottom: 10px;
+}
+
+.fullWidth {
+    width: 100%;
+}
+
+img {
+    margin: auto;
+    margin-bottom: 20px;
+    width: 10rem;
+    height: 9rem;
+}
+
+.section {
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.footer button {
+    width: 30%;
+    margin: 5px;
+}
+
+.add-item {
+    height: px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    color: black;
+    margin-top: 10px;
+    margin-bottom: 25px;
+}
+
+th,
+td {
+    border: 1px solid #ccc;
+    padding: 2px;
+    text-align: left;
+}
+
+th {
+    background-color: #ddd;
+}
+
+.custom-file-upload {
+    cursor: pointer;
+    color: #050505c4;
+    border: 1px solid #a7a6a6;
+    display: inline-block;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+    display: block;
+    justify-content: center;
+}
+
+.custom-file-upload:hover{
+    border: 1px solid #363636;
+}
+
+.custom-file-upload input[type="file"] {
+    display: none;
+}
+
+.custom-file-upload label{
+    vertical-align: middle;
+    width: 100%;
+    height: 100%;
+    padding-top: 10px;
+    cursor: pointer;
+}
+
+i{
+    cursor: pointer;
+    display: block;
+}
+
+.icon-delete{
+    position: absolute;
+    text-align: right !important;
+    justify-content: flex-end !important;
+    color: red;
+}
+
+.preview-container {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.preview {
+    margin-right: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.preview img {
+    max-width: 150px;
+    max-height: 150px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+}
+
+.preview span {
+    text-align: center;
+}

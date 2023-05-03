@@ -1,6 +1,7 @@
 package com.intraviologistica.intravio.dto.input;
 
 import com.intraviologistica.intravio.model.Item;
+import com.intraviologistica.intravio.model.Pedido;
 import com.intraviologistica.intravio.model.enums.AcompanhaStatus;
 import com.intraviologistica.intravio.model.enums.Prioridade;
 import jakarta.validation.constraints.NotBlank;
@@ -22,10 +23,10 @@ public class PedidoInputDTO {
     private String remetente;
     @NotBlank(message = "Preenchimento do Destinatario é obrigatório")
     private String destinatario;
-    @NotBlank(message = "Preenchimento da Filial da Origem é obrigatório")
-    private String origem;
-    @NotBlank(message = "Preenchimento da Filial do Remetente é obrigatório")
-    private String destino;
+    @NotNull(message = "Preenchimento da Filial da Origem é obrigatório")
+    private Long origem;
+    @NotNull(message = "Preenchimento da Filial do Remetente é obrigatório")
+    private Long destino;
     private LocalDateTime dataPedido;
     private LocalDateTime dataAtualizacao;
     private Prioridade prioridade;
@@ -34,17 +35,18 @@ public class PedidoInputDTO {
     public PedidoInputDTO() {
     }
 
-    public PedidoInputDTO(String id, List<Item> itens, List<String> fotos, String remetente, String destinatario, String origem, String destino, LocalDateTime dataPedido, LocalDateTime dataAtualizacao, Prioridade prioridade) {
-        this.id = id;
-        this.itens = itens;
-        this.fotos = fotos;
-        this.remetente = remetente;
-        this.destinatario = destinatario;
-        this.origem = origem;
-        this.destino = destino;
-        this.dataPedido = dataPedido;
-        this.prioridade = prioridade;
-        this.dataAtualizacao = dataAtualizacao;
+    public PedidoInputDTO(Pedido pedido) {
+        this.id = pedido.getId();
+        this.itens = pedido.getItens();
+        this.fotos = pedido.getImagens();
+        this.remetente = pedido.getRemetente().getId();
+        this.destinatario = pedido.getDestinatario().getId();
+        this.origem = pedido.getOrigem().getId();
+        this.destino = pedido.getDestino().getId();
+        this.dataPedido = pedido.getDataPedido();
+        this.dataAtualizacao = pedido.getDataAtualizacao();
+        this.prioridade = pedido.getPrioridade();
+        this.acompanhaStatus = pedido.getAcompanhaStatus();
     }
 
     public String getId() {
@@ -87,19 +89,19 @@ public class PedidoInputDTO {
         this.destinatario = destinatario;
     }
 
-    public String getOrigem() {
+    public Long getOrigem() {
         return origem;
     }
 
-    public void setOrigem(String origem) {
+    public void setOrigem(Long origem) {
         this.origem = origem;
     }
 
-    public String getDestino() {
+    public Long getDestino() {
         return destino;
     }
 
-    public void setDestino(String destino) {
+    public void setDestino(Long destino) {
         this.destino = destino;
     }
 

@@ -24,6 +24,7 @@ import { MatTableModule } from "@angular/material/table";
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatChipsModule } from '@angular/material/chips';
+import {MatStepperModule} from '@angular/material/stepper';
 import { CurrencyPipe } from '@angular/common';
 import { ToastrModule } from "ngx-toastr";
 import { NgxMaskModule } from 'ngx-mask';
@@ -53,6 +54,10 @@ import { FuncionarioCadastrarComponent } from './pages/funcionarios/funcionario-
 import { FuncionarioAtualizarComponent } from './pages/funcionarios/funcionario-atualizar/funcionario-atualizar.component';
 import { FuncionarioListarComponent } from './pages/funcionarios/funcionario-listar/funcionario-listar.component';
 import { FuncionarioDeletarComponent } from './pages/funcionarios/funcionario-deletar/funcionario-deletar.component';
+import { PedidoListarComponent } from './pages/pedidos/pedido-listar/pedido-listar.component';
+import { PedidoCriarComponent } from './pages/pedidos/pedido-criar/pedido-criar.component';
+import { PedidoAtualizarComponent } from './pages/pedidos/pedido-atualizar/pedido-atualizar.component';
+import { PedidoDeletarComponent } from './pages/pedidos/pedido-deletar/pedido-deletar.component';
 
 @NgModule({
   declarations: [
@@ -80,7 +85,11 @@ import { FuncionarioDeletarComponent } from './pages/funcionarios/funcionario-de
     FuncionarioCadastrarComponent,
     FuncionarioAtualizarComponent,
     FuncionarioListarComponent,
-    FuncionarioDeletarComponent
+    FuncionarioDeletarComponent,
+    PedidoListarComponent,
+    PedidoCriarComponent,
+    PedidoAtualizarComponent,
+    PedidoDeletarComponent
   ],
   imports: [
     BrowserModule,
@@ -109,6 +118,7 @@ import { FuncionarioDeletarComponent } from './pages/funcionarios/funcionario-de
     MatCardModule,
     MatDialogModule,
     MatChipsModule,
+    MatStepperModule,
 
     ToastrModule.forRoot({
       timeOut: 4000,

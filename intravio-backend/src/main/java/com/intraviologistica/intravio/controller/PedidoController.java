@@ -34,10 +34,16 @@ public class PedidoController {
         return ResponseEntity.ok(pedidosDTO);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/busca/completa/{id}")
     public ResponseEntity<PedidoDTO> buscarPedidoPorId(@PathVariable String id) {
         PedidoDTO pedidoDTO = pedidoService.buscarPedidosPorId(id);
         return ResponseEntity.ok(pedidoDTO);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<PedidoInputDTO> buscarPedidoPorIdRetornaDTO(@PathVariable String id) {
+        Pedido pedido = pedidoService.findById(id);
+        return ResponseEntity.ok(new PedidoInputDTO(pedido));
     }
 
     @GetMapping("/rastreio/{codigo}")

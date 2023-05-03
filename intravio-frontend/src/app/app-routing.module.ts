@@ -24,6 +24,10 @@ import { FuncionarioListarComponent } from './pages/funcionarios/funcionario-lis
 import { FuncionarioCadastrarComponent } from './pages/funcionarios/funcionario-cadastrar/funcionario-cadastrar.component';
 import { FuncionarioAtualizarComponent } from './pages/funcionarios/funcionario-atualizar/funcionario-atualizar.component';
 import { FuncionarioDeletarComponent } from './pages/funcionarios/funcionario-deletar/funcionario-deletar.component';
+import { PedidoListarComponent } from './pages/pedidos/pedido-listar/pedido-listar.component';
+import { PedidoCriarComponent } from './pages/pedidos/pedido-criar/pedido-criar.component';
+import { PedidoAtualizarComponent } from './pages/pedidos/pedido-atualizar/pedido-atualizar.component';
+import { PedidoDeletarComponent } from './pages/pedidos/pedido-deletar/pedido-deletar.component';
 
 const routes: Routes = [
   {
@@ -118,6 +122,22 @@ const routes: Routes = [
       {
         path:"usuarios/deletar/:id",
         component: FuncionarioDeletarComponent
+      },
+      {
+        path:"pedidos",
+        component:PedidoListarComponent
+      },
+      {
+        path:"pedidos/cadastrar",
+        component:PedidoCriarComponent
+      },
+      {
+        path:"pedidos/atualizar/:id",
+        component:PedidoAtualizarComponent
+      },
+      {
+        path:"pedidos/deletar/:id",
+        component: PedidoDeletarComponent
       },
     ]
   },
