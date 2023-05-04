@@ -3,13 +3,14 @@ import { Item } from "./item";
 export interface PedidoInput {
     id: String;
     itens: Item[];
-    fotos: String[];
+    fotos: string[];
     origem: String;
     destino: String;
     remetente: String;
     destinatario: String;
-    prioridade: Number;
-    acompanhaStatus: Number
+    prioridade: any;
+    acompanhaStatus: Number;
+    numeroPedido: Number;
 };
 
 export interface Pedido {

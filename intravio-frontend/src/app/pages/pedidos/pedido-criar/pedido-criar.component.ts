@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer2 } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -43,6 +43,7 @@ export class PedidoCriarComponent implements OnInit {
   pedido: PedidoInput = {
     id: "",
     itens: this.itens,
+    numeroPedido: null,
     fotos: [],
     origem: "",
     destino: "",
@@ -64,7 +65,8 @@ export class PedidoCriarComponent implements OnInit {
     private produtoService: ProdutoService,
     private toast: ToastrService,
     private router: Router,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private renderer: Renderer2
   ) { };
 
   ngOnInit(): void {
@@ -125,6 +127,23 @@ export class PedidoCriarComponent implements OnInit {
       const url = URL.createObjectURL(file);
       urls.push(url);
       this.arquivos.push({ file, url });
+    }
+  };
+
+  onDragOver(event: DragEvent) {
+    event.preventDefault();
+    event.stopPropagation();
+    event.dataTransfer.dropEffect = 'copy';
+    this.renderer.addClass(event.target, 'drag-over');
+  }
+
+  onDrop(event: DragEvent) {
+    event.preventDefault();
+    event.stopPropagation();
+    const files = event.dataTransfer.files;
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      this.arquivos.push({ file: file, url: URL.createObjectURL(file) });
     }
   }
 

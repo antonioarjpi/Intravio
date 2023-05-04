@@ -27,6 +27,7 @@ public class PedidoInputDTO {
     private Long origem;
     @NotNull(message = "Preenchimento da Filial do Remetente é obrigatório")
     private Long destino;
+    private Integer numeroPedido;
     private LocalDateTime dataPedido;
     private LocalDateTime dataAtualizacao;
     private Prioridade prioridade;
@@ -47,6 +48,7 @@ public class PedidoInputDTO {
         this.dataAtualizacao = pedido.getDataAtualizacao();
         this.prioridade = pedido.getPrioridade();
         this.acompanhaStatus = pedido.getAcompanhaStatus();
+        this.numeroPedido = pedido.getNumeroPedido();
     }
 
     public String getId() {
@@ -135,5 +137,13 @@ public class PedidoInputDTO {
 
     public void setAcompanhaStatus(AcompanhaStatus acompanhaStatus) {
         this.acompanhaStatus = acompanhaStatus;
+    }
+
+    public Integer getNumeroPedido() {
+        return numeroPedido;
+    }
+
+    public void setNumeroPedido(Integer numeroPedido) {
+        this.numeroPedido = numeroPedido;
     }
 }

@@ -29,7 +29,6 @@ export class LoginComponent implements OnInit {
   login() {
     localStorage.clear();
     this.service.autenticar(this.creds).subscribe((response) => {
-        console.log(response)
         this.service.sucessoLogin(
           response.headers.get("Authorization").substring(7));
         this.router.navigate(['home']);

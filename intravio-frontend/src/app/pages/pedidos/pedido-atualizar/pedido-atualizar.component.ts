@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer2 } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -37,24 +37,36 @@ export class PedidoAtualizarComponent implements OnInit {
   quantidade: number;
   itens: Item[] = [];
   arquivos: { file: File, url: string }[] = [];
-
+  filialList: Filial[] = [];
+  funcionarioList: Funcionario[] = [];
+  produtoList: Produto[] = [];
 
   pedido: PedidoInput = {
     id: "",
     itens: this.itens,
+    numeroPedido: null,
     fotos: [],
     origem: "",
     destino: "",
     remetente: "",
     destinatario: "",
     prioridade: null,
-    acompanhaStatus: null
-
+    acompanhaStatus: null,
   };
 
-  filialList: Filial[] = [];
-  funcionarioList: Funcionario[] = [];
-  produtoList: Produto[] = [];
+  priorityOptions = [
+    { label: 'Baixa', value: 0 },
+    { label: 'Média', value: 1 },
+    { label: 'Alta', value: 2 },
+    { label: 'Urgente', value: 3 }
+  ];
+
+  acompanhaStatusOptions = [
+    { label: 'Ninguém', value: 0 },
+    { label: 'Destinatário', value: 1 },
+    { label: 'Remetente', value: 2 },
+    { label: 'Ambos', value: 3 }
+  ];
 
   constructor(
     private service: PedidoService,
@@ -64,21 +76,23 @@ export class PedidoAtualizarComponent implements OnInit {
     private toast: ToastrService,
     private router: Router,
     private route: ActivatedRoute,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private renderer: Renderer2
   ) { };
 
   ngOnInit(): void {
     this.pedido.id = this.route.snapshot.paramMap.get("id")
+
+    this.produtoService.findAll().subscribe((response) => {
+      this.produtoList = response
+    });
+
     this.funcionarioService.findAll().subscribe((response) => {
       this.funcionarioList = response
     });
 
     this.filialService.findAll().subscribe((response) => {
       this.filialList = response
-    });
-
-    this.produtoService.findAll().subscribe((response) => {
-      this.produtoList = response
     });
 
     this.buscarPedidoPorId();
@@ -88,6 +102,25 @@ export class PedidoAtualizarComponent implements OnInit {
   buscarPedidoPorId(): void {
     this.service.findById(this.pedido.id).subscribe((response) => {
       this.pedido = response;
+      this.pedido.prioridade = this.returnPriority(response.prioridade);
+      this.pedido.acompanhaStatus = this.returnAcompanhaStatus(response.acompanhaStatus);
+
+      // Fotos
+      for (let i = 0; i < response.fotos.length; i++) {
+        const link = response.fotos[i];
+        this.service.exibirImagem(link).subscribe(blob => {
+          const reader = new FileReader();
+          reader.onload = () => {
+            const dataUrl = reader.result as string;
+            const file = new File([blob], link, { lastModified: new Date().getTime(), type: blob.type });
+            this.arquivos.push({ file, url: dataUrl });
+            console.log(this.arquivos)
+          };
+          reader.readAsDataURL(blob);
+        }, error => {
+          console.error(`Erro ao exibir a imagem ${link}: ${error}`);
+        });
+      }
 
       for (let i = 0; i <= response.itens.length; i++) {
         // Adicionando os response nos itens
@@ -98,22 +131,23 @@ export class PedidoAtualizarComponent implements OnInit {
         };
 
         this.itens.push(item);
-
-        // Removendo produtos da lista
+        // Remove produtos da lista
         this.produtoList = this.produtoList.filter(produto =>
           !this.pedido.itens.some(item => item.produto.id === produto.id)
         );
-        
       }
     })
-  }
+  };
 
   finalizarPedido(): void {
     this.pedido.itens = this.itens;
+    if (this.arquivos.length < 1) {
+      this.pedido.fotos = null;
+    }
     this.service.update(this.pedido).subscribe(
       (response) => {
         if (this.arquivos.length < 1) {
-          this.toast.success("Pedido atualizado com sucesso", "Cadastro");
+          this.toast.success("Pedido realizado com sucesso", "Cadastro");
           this.router.navigate(["pedidos"]);
           return;
         }
@@ -138,7 +172,7 @@ export class PedidoAtualizarComponent implements OnInit {
       .subscribe(() => {
         this.toast.success("Pedido atualizado com sucesso", "Atualização");
         this.router.navigate(["pedidos"])
-      }, error => {
+      }, () => {
         this.toast.error("O pedido foi salvo, porém houve erro ao envia as imagens. Tente novamente", "Erro");
       });
   }
@@ -152,6 +186,22 @@ export class PedidoAtualizarComponent implements OnInit {
       const url = URL.createObjectURL(file);
       urls.push(url);
       this.arquivos.push({ file, url });
+    }
+  }
+
+  onDragOver(event: DragEvent) {
+    event.preventDefault();
+    event.stopPropagation();
+    event.dataTransfer.dropEffect = 'copy';
+  }
+
+  onDrop(event: DragEvent) {
+    event.preventDefault();
+    event.stopPropagation();
+    const files = event.dataTransfer.files;
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      this.arquivos.push({ file: file, url: URL.createObjectURL(file) });
     }
   }
 
@@ -174,6 +224,7 @@ export class PedidoAtualizarComponent implements OnInit {
   };
 
   removerArquivo(arquivo) {
+    console.log(arquivo)
     const index = this.arquivos.indexOf(arquivo);
     if (index !== -1) {
       URL.revokeObjectURL(arquivo.url);
@@ -210,6 +261,29 @@ export class PedidoAtualizarComponent implements OnInit {
     };
   }
 
+  returnPriority(status: any): Number {
+    if (status === "BAIXA") {
+      return 0;
+    } else if (status === "MEDIA") {
+      return 1;
+    } else if (status === "ALTA") {
+      return 2;
+    } else {
+      return 3;
+    }
+  }
+
+  returnAcompanhaStatus(status: any): Number {
+    if (status === "NAO") {
+      return 0;
+    } else if (status === "SIM_DESTINATARIO") {
+      return 1;
+    } else if (status === "SIM_REMETENTE") {
+      return 2;
+    } else {
+      return 3;
+    }
+  }
 }
 
 

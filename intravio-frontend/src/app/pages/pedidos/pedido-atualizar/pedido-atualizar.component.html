@@ -1,11 +1,10 @@
-
 <div class="container d-flex justify-content-center ">
     <div class="cadastro mat-elevation-z8 mb-5">
         <div class="header">
-            <h1 class="fullWidth">Atualização de Pedido</h1>
+            <h1 class="fullWidth">Atualização de Pedido: {{this.pedido.numeroPedido}}</h1>
             <img src="assets/img/pedido.jpg" alt="Help Desk">
         </div>
-
+                
         <form class="form">
             <div class="row">
                 <mat-stepper class="fullWidth" linear #stepper>
@@ -58,10 +57,9 @@
                                 <mat-label>Prioridade</mat-label>
                                 <mat-select [(ngModel)]="pedido.prioridade" name="prioridade"
                                     formControlName="prioridade" required>
-                                    <mat-option value="0">Baixa</mat-option>
-                                    <mat-option value="1">Média</mat-option>
-                                    <mat-option value="2">Alta</mat-option>
-                                    <mat-option value="3">Urgente</mat-option>
+                                    <mat-option *ngFor="let option of priorityOptions" [value]="option.value">
+                                        {{ option.label }}
+                                    </mat-option>
                                 </mat-select>
                             </mat-form-field>
 
@@ -69,10 +67,9 @@
                                 <mat-label>Acompanhar via E-mail </mat-label>
                                 <mat-select [(ngModel)]="pedido.acompanhaStatus" name="acompanhaStatus"
                                     formControlName="acompanhaStatus" required>
-                                    <mat-option value="0">Ninguém</mat-option>
-                                    <mat-option value="1">Destinatário</mat-option>
-                                    <mat-option value="2">Remetente</mat-option>
-                                    <mat-option value="3">Ambos</mat-option>
+                                    <mat-option *ngFor="let option of acompanhaStatusOptions" [value]="option.value">
+                                        {{ option.label }}
+                                    </mat-option>
                                 </mat-select>
                             </mat-form-field>
                         </form>
@@ -95,21 +92,22 @@
 
                                 <mat-form-field class="fullWidth col-12 col-md-4 mt-3" appearance="outline">
                                     <mat-label>Produto</mat-label>
-                                    <mat-select placeholder="Produto" [(ngModel)]="produto" name="produto">
+                                    <mat-select placeholder="Produto" [(ngModel)]="produto" name="produto" >
                                         <mat-option *ngFor="let produtoOption of produtoList" [value]="produtoOption">
                                             {{produtoOption.codigo}} - {{produtoOption.nome}}
                                         </mat-option>
                                     </mat-select>
                                 </mat-form-field>
 
-                                <mat-form-field class="fullWidth col-12 col-md-4 mt-3" appearance="outline">
-                                    <mat-label>Descrição Pedido</mat-label>
-                                    <input matInput placeholder="Descrição" [(ngModel)]="descricao" name="descricao">
-                                </mat-form-field>
                                 <mat-form-field class="fullWidth col-12 col-md-2 mt-3" appearance="outline">
                                     <mat-label>Quantidade</mat-label>
                                     <input matInput placeholder="Quantidade" [(ngModel)]="quantidade" name="quantidade">
                                 </mat-form-field>
+
+                                <mat-form-field class="fullWidth col-12 col-md-4 mt-3" appearance="outline">
+                                    <mat-label>Descrição Pedido</mat-label>
+                                    <input matInput placeholder="Descrição" [(ngModel)]="descricao" name="descricao">
+                                </mat-form-field>                   
 
                                 <div class="col-md-2">
                                     <button class="p-4 add-item" mat-raised-button color="primary"
@@ -121,20 +119,20 @@
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>Nome</th>
-                                        <th>Descrição</th>
-                                        <th>Quantidade</th>
-                                        <th>Excluir</th>
+                                        <th style="padding-left: 4px;">Nome</th>
+                                        <th style="padding-left: 4px;">Descrição</th>
+                                        <th style="text-align: center;">Quantidade</th>
+                                        <th style="text-align: center;">Excluir</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let item of itens; let i = index">
-                                        <td>{{ item.produto.nome }}</td>
-                                        <td>{{ item.descricao }}</td>
-                                        <td>{{ item.quantidade }}</td>
-                                        <td>
+                                        <td style="padding-left: 4px;">{{ item.produto.nome }}</td>
+                                        <td style="padding-left: 4px;">{{ item.descricao }}</td>
+                                        <td style="text-align: center;">{{ item.quantidade }}</td>
+                                        <td style="text-align: center;">
                                             <button mat-icon-button color="warn" (click)="removerItem(item)">
-                                                <mat-icon>close</mat-icon>
+                                                <mat-icon>clear</mat-icon>
                                             </button>
                                         </td>
                                     </tr>
@@ -157,29 +155,31 @@
                     <mat-step>
                         <ng-template matStepLabel>Finalizar</ng-template>
                         <div class="container">
-                            <div class="custom-file-upload">
-                                <label for="arquivos">Adicionar arquivos<i> <mat-icon>add_a_photo</mat-icon></i> </label>
-                                <input class="fullWidth" type="file" id="arquivos" multiple name="arquivos"
+                            <div class="custom-file-upload" (dragover)="onDragOver($event)" (drop)="onDrop($event)">
+                                <label for="arquivos">
+                                    <i class="material-icons">add_a_photo</i> Arraste e solte ou cole para enviar suas imagens
+                                </label>
+                                <input class="fullWidth" type="file" id="arquivos" multiple name="arquivos" accept="image/*"
                                     (change)="onFileChange($event)">
                             </div>
                             <div class="preview-container">
                                 <div *ngFor="let file of arquivos" class="preview">
                                     <img [src]="file.url" [alt]="file.file.name">
-                                    <span>{{ file.file.name }}</span>
-                                    <button mat-button mat-flat-button class="icon-delete" (click)="removerArquivo(file)">remover <mat-icon>clear</mat-icon></button>
-                                </div>                                  
+                                    <label> {{ (file.file.size / 1024 / 1024).toFixed(2) }} MB</label>
+                                    <span class="icon-delete mat-elevation-z8"
+                                        (click)="removerArquivo(file)"><mat-icon>clear</mat-icon></span>
+                                </div>
                             </div>
                         </div>
                         <div>
                             <div class="footer">
+                                <button matStepperPrevious class="mat-elevation-z4" mat-stroked-button color="warn">
+                                    Voltar
+                                </button>
                                 <button (click)="finalizarPedido()" class="mat-elevation-z4" mat-flat-button
                                     color="primary">
                                     Finalizar Pedido
                                 </button>
-                            </div>
-                            <div class="footer">
-                                <button matStepperPrevious class="mat-elevation-z4" mat-stroked-button
-                                    color="warn">Voltar</button>
                             </div>
                         </div>
                     </mat-step>

@@ -8,13 +8,12 @@ import com.intraviologistica.intravio.model.enums.StatusPedido;
 import com.intraviologistica.intravio.repository.PedidoRepository;
 import com.intraviologistica.intravio.service.exceptions.ResourceNotFoundException;
 import com.intraviologistica.intravio.service.exceptions.RuleOfBusinessException;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.io.Resource;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -26,7 +25,7 @@ public class PedidoService {
     private final FilialService filialService;
     private final FuncionarioService funcionarioService;
     private final ItemService itemService;
-    private FileService fileService;
+    private final FileService fileService;
     private final ProdutoService produtoService;
 
     private static String getUuid() {
@@ -139,7 +138,7 @@ public class PedidoService {
         Pedido pedido = findById(id);
         String path = "src/main/resources/static/pedidos/enviadas/";
 
-        excluiFotoDoPedido(files, pedido, path);
+        fileService.excluiFotoDoPedido(files, pedido.getImagens(), path);
         salvaFotoNoPedido(files, pedido, path);
         salvaPedidoRetornandoEntidade(pedido);
     }
@@ -155,34 +154,8 @@ public class PedidoService {
     }
 
     //Exibe imagem do pedido
-    public Resource exibeImagensPedido(String id) {
-        Pedido pedido = findById(id);
-        Resource resource = new FileSystemResource("");
-
-        if (pedido.getImagens().isEmpty()) {
-            return resource;
-        }
-
-        String path = "src/main/resources/static/pedidos/enviadas/";
-        String caminhoImagem = path + pedido.getImagens().get(0);
-        resource = new FileSystemResource(caminhoImagem);
-
-        return resource;
-    }
-
-    // Procura e remove os fotos do pedido
-    private static void excluiFotoDoPedido(MultipartFile[] files, Pedido pedido, String path) {
-        if (pedido != null && pedido.getImagens() != null && !pedido.getImagens().isEmpty()) {
-            File folder = new File(path);
-            File[] filesExclude = folder.listFiles();
-            if (files != null) {
-                for (File file : filesExclude) {
-                    if (pedido.getImagens().contains(file.getName())) {
-                        file.delete();
-                    }
-                }
-            }
-        }
+    public void getImagens(String nomeArquivo, HttpServletResponse response) throws IOException {
+        fileService.baixarArquivo(nomeArquivo, "src/main/resources/static/pedidos/enviadas/", response);
     }
 
     // Altera Status do Pedido para Cancelado.
@@ -228,6 +201,7 @@ public class PedidoService {
         pedido.setItens(dto.getItens());
         pedido.setImagens(dto.getFotos());
         pedido.setPrioridade(dto.getPrioridade());
+        pedido.setAcompanhaStatus(dto.getAcompanhaStatus());
     }
 
     private String geraCodigoRastreio(Pedido pedido) {

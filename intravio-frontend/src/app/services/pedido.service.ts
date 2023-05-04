@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { API_CONFIG } from '../config/api.config';
 import { Pedido, PedidoInput } from '../models/pedido';
@@ -8,17 +8,17 @@ import { Pedido, PedidoInput } from '../models/pedido';
 @Injectable({
   providedIn: 'root'
 })
-export class PedidoService  {
+export class PedidoService {
 
   jwtService: JwtHelperService = new JwtHelperService();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
-  findAll(): Observable<Pedido[]>{
+  findAll(): Observable<Pedido[]> {
     return this.http.get<Pedido[]>(`${API_CONFIG.baseUrl}/pedidos`)
   }
 
-  findById(id: any): Observable<PedidoInput>{
+  findById(id: any): Observable<PedidoInput> {
     return this.http.get<PedidoInput>(`${API_CONFIG.baseUrl}/pedidos/${id}`)
   }
 
@@ -30,16 +30,21 @@ export class PedidoService  {
     return this.http.put<PedidoInput>(`${API_CONFIG.baseUrl}/pedidos/${pedido.id}`, pedido)
   }
 
-  delete(id: any): Observable<PedidoInput>{
+  delete(id: any): Observable<PedidoInput> {
     return this.http.delete<PedidoInput>(`${API_CONFIG.baseUrl}/pedidos/${id}`)
   }
 
-  uploadFiles(id: any, arquivos: File[]){
+  uploadFiles(id: any, arquivos: File[]) {
     const formData = new FormData();
-    for (var i =0; i < arquivos.length ; i++){
+    for (var i = 0; i < arquivos.length; i++) {
       formData.append('files', arquivos[i]);
 
-    } 
+    }
     return this.http.post(`${API_CONFIG.baseUrl}/pedidos/${id}/imagem/adicionar`, formData);
+  };
+
+  exibirImagem(filename: string) {
+    return this.http.get(`${API_CONFIG.baseUrl}/pedidos/${filename}/imagens`, { responseType: 'blob' })
   }
+
 }

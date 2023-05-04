@@ -5,6 +5,8 @@ import com.intraviologistica.intravio.dto.input.PedidoInputDTO;
 import com.intraviologistica.intravio.dto.PedidoDTO;
 import com.intraviologistica.intravio.model.Pedido;
 import com.intraviologistica.intravio.service.PedidoService;
+import com.intraviologistica.intravio.service.exceptions.FileNotFoundException;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -15,7 +17,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URI;
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -72,17 +77,14 @@ public class PedidoController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/{id}/imagem/exibe")
-    public ResponseEntity<Resource> exibeImagemPedido(@PathVariable String id) throws Exception {
-       Resource imagem = pedidoService.exibeImagensPedido(id);
-
-        if (imagem.exists()) {
-            HttpHeaders headers = new HttpHeaders();
-            headers.add(HttpHeaders.CONTENT_TYPE, MediaType.IMAGE_JPEG_VALUE);
-            return new ResponseEntity<>(imagem, headers, HttpStatus.OK);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    @GetMapping("/{filename}/imagens")
+    public ResponseEntity<Void> exibeImagensPedido(@PathVariable String filename, HttpServletResponse response) throws IOException {
+      try {
+          pedidoService.getImagens(filename, response);
+          return ResponseEntity.noContent().build();
+      }catch (FileNotFoundException ex){
+          return ResponseEntity.internalServerError().build();
+      }
     }
 
     @DeleteMapping("/{id}")
