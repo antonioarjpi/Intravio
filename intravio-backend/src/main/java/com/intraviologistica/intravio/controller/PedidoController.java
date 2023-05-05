@@ -1,6 +1,7 @@
 package com.intraviologistica.intravio.controller;
 
 import com.intraviologistica.intravio.dto.HistoricoPedidoDTO;
+import com.intraviologistica.intravio.dto.MotivoCancelamentoDTO;
 import com.intraviologistica.intravio.dto.input.PedidoInputDTO;
 import com.intraviologistica.intravio.dto.PedidoDTO;
 import com.intraviologistica.intravio.model.Pedido;
@@ -87,8 +88,18 @@ public class PedidoController {
       }
     }
 
+    @GetMapping("/{id}/download/imagens")
+    public ResponseEntity<Void> baixarImagens(@PathVariable String id, HttpServletResponse response) throws IOException {
+        try {
+            pedidoService.baixarImagensPedido(id, response);
+            return ResponseEntity.noContent().build();
+        }catch (FileNotFoundException ex){
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> excluirPedido(@PathVariable String id, @RequestBody String motivo) {
+    public ResponseEntity<Void> deletarPedido(@PathVariable String id, @RequestBody MotivoCancelamentoDTO motivo) {
         pedidoService.cancelaPedido(id, motivo);
         return ResponseEntity.noContent().build();
     }

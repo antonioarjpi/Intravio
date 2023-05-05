@@ -1,4 +1,4 @@
-import { Item } from "./item";
+import { Item, ItemGet } from "./item";
 
 export interface PedidoInput {
     id: String;
@@ -15,8 +15,9 @@ export interface PedidoInput {
 
 export interface Pedido {
     id:String;
+    itens: ItemGet[];
     numeroPedido: Number;
-    statusPedido: String;
+    statusPedido: any;
     remetenteNome: String;
     remetenteEmail: String;
     destinatarioNome: String;

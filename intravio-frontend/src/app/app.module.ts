@@ -24,7 +24,8 @@ import { MatTableModule } from "@angular/material/table";
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatChipsModule } from '@angular/material/chips';
-import {MatStepperModule} from '@angular/material/stepper';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatStepperModule } from '@angular/material/stepper';
 import { CurrencyPipe } from '@angular/common';
 import { ToastrModule } from "ngx-toastr";
 import { NgxMaskModule } from 'ngx-mask';
@@ -58,6 +59,7 @@ import { PedidoListarComponent } from './pages/pedidos/pedido-listar/pedido-list
 import { PedidoCriarComponent } from './pages/pedidos/pedido-criar/pedido-criar.component';
 import { PedidoAtualizarComponent } from './pages/pedidos/pedido-atualizar/pedido-atualizar.component';
 import { PedidoDeletarComponent } from './pages/pedidos/pedido-deletar/pedido-deletar.component';
+import { PedidoModal } from './pages/pedidos/pedido-listar/pedido-modal';
 
 @NgModule({
   declarations: [
@@ -89,7 +91,8 @@ import { PedidoDeletarComponent } from './pages/pedidos/pedido-deletar/pedido-de
     PedidoListarComponent,
     PedidoCriarComponent,
     PedidoAtualizarComponent,
-    PedidoDeletarComponent
+    PedidoDeletarComponent,
+    PedidoModal
   ],
   imports: [
     BrowserModule,
@@ -119,6 +122,7 @@ import { PedidoDeletarComponent } from './pages/pedidos/pedido-deletar/pedido-de
     MatDialogModule,
     MatChipsModule,
     MatStepperModule,
+    MatMenuModule,
 
     ToastrModule.forRoot({
       timeOut: 4000,

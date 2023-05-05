@@ -5,3 +5,11 @@ export interface Item {
     descricao: string;
     quantidade: number;
 }
+
+export interface ItemGet{
+    produtoNome: String;
+    descricao: String;
+    quantidade: Number;
+    subtotalPreco: Number;
+    peso: Number;
+}

@@ -16,6 +16,8 @@ import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 @Service
 public class FileService {
@@ -53,6 +55,27 @@ public class FileService {
                 }
             }
         }
+    }
+
+    @Transactional
+    public void baixarArquivos(List<String> filenames, String path, HttpServletResponse response) throws IOException {
+        ZipOutputStream zipOut = new ZipOutputStream(response.getOutputStream());
+
+        for (String filename : filenames) {
+            Path arquivo = Paths.get(path + filename);
+            if (Files.exists(arquivo)) {
+                ZipEntry zipEntry = new ZipEntry(filename);
+                zipOut.putNextEntry(zipEntry);
+                Files.copy(arquivo, zipOut);
+                zipOut.closeEntry();
+            } else {
+                throw new FileNotFoundException("Arquivo " + filename + " não encontrado.");
+            }
+        }
+
+        response.setContentType("application/zip");
+        response.setHeader("Content-Disposition", "attachment; filename=\"contratos.zip\"");
+        zipOut.finish();
     }
 
     @Transactional

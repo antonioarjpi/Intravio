@@ -1,6 +1,7 @@
 package com.intraviologistica.intravio.service;
 
 import com.intraviologistica.intravio.dto.HistoricoPedidoDTO;
+import com.intraviologistica.intravio.dto.MotivoCancelamentoDTO;
 import com.intraviologistica.intravio.dto.PedidoDTO;
 import com.intraviologistica.intravio.dto.input.PedidoInputDTO;
 import com.intraviologistica.intravio.model.*;
@@ -158,16 +159,22 @@ public class PedidoService {
         fileService.baixarArquivo(nomeArquivo, "src/main/resources/static/pedidos/enviadas/", response);
     }
 
+    //Exibe imagem do pedido
+    public void baixarImagensPedido(String id, HttpServletResponse response) throws IOException {
+        List<String> imagens = findById(id).getImagens();
+        fileService.baixarArquivos(imagens, "src/main/resources/static/pedidos/enviadas/", response);
+    }
+
     // Altera Status do Pedido para Cancelado.
     @Transactional
-    public void cancelaPedido(String id, String motivo) {
+    public void cancelaPedido(String id, MotivoCancelamentoDTO motivo) {
         Pedido pedido = findById(id);
         if (pedido.getStatus().ordinal() == 1) {
             throw new RuleOfBusinessException("Erro: Pedido já foi cancelado e não pode ser cancelado novamente");
         } else if (pedido.getStatus().ordinal() != 0) {
             throw new RuleOfBusinessException("Erro: Somente pedidos com status 'PENDENTE' pode ser cancelado. Por favor, corrija e tente novamente");
         } else {
-            pedido.atualizarStatus(StatusPedido.CANCELADO, motivo);
+            pedido.atualizarStatus(StatusPedido.CANCELADO, motivo.getMotivo());
         }
     }
 
@@ -202,6 +209,7 @@ public class PedidoService {
         pedido.setImagens(dto.getFotos());
         pedido.setPrioridade(dto.getPrioridade());
         pedido.setAcompanhaStatus(dto.getAcompanhaStatus());
+        pedido.setDataAtualizacao(LocalDateTime.now());
     }
 
     private String geraCodigoRastreio(Pedido pedido) {

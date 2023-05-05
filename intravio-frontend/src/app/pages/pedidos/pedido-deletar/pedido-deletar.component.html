@@ -1,1 +1,24 @@
-<p>pedido-deletar works!</p>
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>Cancelamento Pedido {{data.dataPedido | date:
+            'dd/MM/yyyy'}}-{{data.numeroPedido}}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <div class="content">
+            <label><strong>Atenção:</strong> Este pedido será cancelado e não poderá ser refeito. Tem certeza de que
+                deseja continuar?
+            </label>
+        </div>
+        <div class="col-md-12 row d-flex justify-content-center align-items-center">
+            <mat-form-field class="fullWidth col-12 col-md-10 mt-3 mb-4" appearance="outline">
+                <mat-label>Motivo de Cancelamento</mat-label>
+                <input class="form-input" matInput placeholder="Digite o motivo do cancelamento" [(ngModel)]="motivo" name="motivo">
+            </mat-form-field>
+        </div>
+    </mat-card-content>
+    <mat-card-actions>
+        <button class="mat-elevation-z8 mb-2" (click)="cancelarPedido(data.id)" mat-raised-button color="warn"
+            mat-dialog-close>Confirmo o cancelamento</button>
+        <button class="mat-elevation-z8 mb-2" mat-raised-button color="basic" mat-dialog-close>Cancelar</button>
+    </mat-card-actions>
+</mat-card>

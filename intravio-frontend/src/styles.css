@@ -1,6 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
 @import url("../node_modules/ngx-toastr/toastr.css");
 
+:root{
+    --color-primary: #FF8264;
+    --color-secondary: #e49480;
+}
 .cadastro{
     margin-top: 80px;
 }

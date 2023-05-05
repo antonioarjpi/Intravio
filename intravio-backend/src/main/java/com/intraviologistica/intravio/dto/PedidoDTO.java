@@ -13,7 +13,7 @@ public class PedidoDTO {
 
     private String id;
     private Integer numeroPedido;
-    private StatusPedido statusPedido;
+    private Integer statusPedido;
     private String remetenteNome;
     private String remetenteEmail;
     private String destinatarioNome;
@@ -39,7 +39,7 @@ public class PedidoDTO {
         this.id = pedido.getId();
         this.itens = pedido.getItens().stream().map(x -> new ItemDTO(x)).collect(Collectors.toList());
         this.imagens = pedido.getImagens();
-        this.statusPedido = pedido.getStatusPedido();
+        this.statusPedido = pedido.getStatusPedido().ordinal();
         this.remetenteNome = pedido.getRemetente().getNome();
         this.remetenteEmail = pedido.getRemetente().getEmail();
         this.destinatarioNome = pedido.getDestinatario().getNome();
@@ -72,11 +72,11 @@ public class PedidoDTO {
         this.itens = itens;
     }
 
-    public StatusPedido getStatusPedido() {
+    public Integer getStatusPedido() {
         return statusPedido;
     }
 
-    public void setStatusPedido(StatusPedido statusPedido) {
+    public void setStatusPedido(Integer statusPedido) {
         this.statusPedido = statusPedido;
     }
 

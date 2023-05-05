@@ -1,8 +1,8 @@
 <div class="container">
     <div class="card">
         <div class="button">
-            <button routerLink="/pedidos/cadastrar" class="mat-elevation-z8 mb-2" mat-raised-button
-                color="primary">Novo Pedido</button>
+            <button routerLink="/pedidos/cadastrar" class="mat-elevation-z8 mb-2" mat-raised-button color="primary">Novo
+                Pedido</button>
         </div>
 
         <mat-form-field appearance="outline">
@@ -13,51 +13,57 @@
 
     <div class="table-responsive mat-elevation-z8">
         <table mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)">
-
-            <ng-container matColumnDef="numeroPedido" >
+            <ng-container style="display: flex; vertical-align: middle; " matColumnDef="numeroPedido">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="numeroPedido"> Pedido </th>
-                <td mat-cell *matCellDef="let element"> {{element.numeroPedido}} </td>
+                <td style="cursor: pointer;" (click)="openModalView(element)" mat-cell *matCellDef="let element"> <mat-icon
+                        style="vertical-align: bottom; color: #42A5F5; background-color: #E3F2FD; border-radius: 50%;">assignment</mat-icon>
+                    {{ element.dataAtualizacao | date: 'yyyy/MM/dd' }}-{{element.numeroPedido}} </td>
             </ng-container>
 
-            <ng-container matColumnDef="prioridade" >
-                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="prioridade"> Prioridade </th>
+            <ng-container matColumnDef="prioridade">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="prioridade"> Prioridade
+                </th>
                 <td mat-cell *matCellDef="let element"> {{retornaPrioridade(element.prioridade)}} </td>
             </ng-container>
 
-            <ng-container matColumnDef="remetenteNome" >
-                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="remetenteNome"> Remetente </th>
-                <td mat-cell *matCellDef="let element"> {{element.remetenteNome.split(' ').slice(0, 2).join(' ')}} </td>
+            <ng-container matColumnDef="remetenteNome">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="remetenteNome"> Remetente
+                    --> Destinatário </th>
+                <td mat-cell *matCellDef="let element"> {{element.remetenteNome.split(' ').slice(0, 1).join(' ')}} <mat-icon style="vertical-align: bottom; ">arrow_right_alt</mat-icon>
+                    {{element.destinatarioNome.split(' ').slice(0, 2).join(' ')}} </td>
             </ng-container>
 
-            <ng-container matColumnDef="destinatarioNome" >
-                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="destinatarioNome"> Destinatário </th>
-                <td mat-cell *matCellDef="let element"> {{element.destinatarioNome.split(' ').slice(0, 2).join(' ')}} </td>
+            <ng-container matColumnDef="destino">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="destino"> F. Origem --> F.
+                    Destino </th>
+                <td mat-cell *matCellDef="let element"> {{element.origem}} <mat-icon style="vertical-align: bottom; ">arrow_right_alt</mat-icon> {{element.destino}} </td>
             </ng-container>
 
-            <ng-container matColumnDef="origem" >
-                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="origem"> F. Origem </th>
-                <td mat-cell *matCellDef="let element"> {{element.origem}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="destino" >
-                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="destino"> F. Destino </th>
-                <td mat-cell *matCellDef="let element"> {{element.destino}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="status" >
-                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="statusPedido"> NOME </th>
-                <td mat-cell *matCellDef="let element"> {{element.statusPedido}} </td>
+            <ng-container matColumnDef="statusPedido">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="statusPedido"> Status </th>
+                <td mat-cell *matCellDef="let element"> {{retornaStatus(element.statusPedido)}} </td>
             </ng-container>
 
             <ng-container matColumnDef="acoes">
                 <th class="text-right mr-1" mat-header-cell *matHeaderCellDef> AÇÕES </th>
                 <td class="text-right mr-1" mat-cell *matCellDef="let element"> {{element.symbol}}
-                    <a routerLink="/pedidos/atualizar/{{element.id}}">
-                        <i class="material-icons edit">edit</i>
-                    </a>
-                    <a routerLink="/pedidos/deletar/{{element.id}}">
-                        <i class="material-icons delete">delete</i>
-                    </a>
+                    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                        <mat-icon>more_vert</mat-icon>
+                    </button>
+                    <mat-menu #menu="matMenu">
+                        <button mat-menu-item routerLink="/pedidos/atualizar/{{element.id}}" [disabled]="element.statusPedido != 0">
+                            <mat-icon>edit</mat-icon>
+                            <span>Editar Pedido</span>
+                        </button>
+                        <button mat-menu-item  [disabled]="element.imagens.length === 0" (click)="baixarImagens(element.id)">
+                            <mat-icon>download</mat-icon>
+                            <span>Baixar Imagens</span>
+                        </button>
+                        <button mat-menu-item (click)="openModalDelete(element)" [disabled]="element.statusPedido != 0">
+                            <mat-icon>cancel</mat-icon>
+                            <span>Cancelar Pedido</span>
+                        </button>
+                    </mat-menu>
                 </td>
             </ng-container>
 
@@ -65,7 +71,7 @@
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
 
-        <mat-paginator [pageSizeOptions]="[5, 10, 20, 50]" showFirstLastButtons
+        <mat-paginator [pageSizeOptions]="[20, 50, 100, 200]" showFirstLastButtons
             aria-label="Select page of periodic elements">
         </mat-paginator>
     </div>

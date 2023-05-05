@@ -30,8 +30,14 @@ export class PedidoService {
     return this.http.put<PedidoInput>(`${API_CONFIG.baseUrl}/pedidos/${pedido.id}`, pedido)
   }
 
-  delete(id: any): Observable<PedidoInput> {
-    return this.http.delete<PedidoInput>(`${API_CONFIG.baseUrl}/pedidos/${id}`)
+  delete(id: any, motivo: string): Observable<void> {
+    const options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      }),
+      body: { motivo: motivo }
+    };
+    return this.http.delete<void>(`${API_CONFIG.baseUrl}/pedidos/${id}`, options)
   }
 
   uploadFiles(id: any, arquivos: File[]) {
@@ -45,6 +51,10 @@ export class PedidoService {
 
   exibirImagem(filename: string) {
     return this.http.get(`${API_CONFIG.baseUrl}/pedidos/${filename}/imagens`, { responseType: 'blob' })
+  }
+
+  baixarImagens(filename: string) {
+    return this.http.get(`${API_CONFIG.baseUrl}/pedidos/${filename}/download/imagens`, { responseType: 'blob' })
   }
 
 }
