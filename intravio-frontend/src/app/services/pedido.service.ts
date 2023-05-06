@@ -18,6 +18,11 @@ export class PedidoService {
     return this.http.get<Pedido[]>(`${API_CONFIG.baseUrl}/pedidos`)
   }
 
+  findAllByStatus(status: any): Observable<Pedido[]> {
+    return this.http.get<Pedido[]>(`${API_CONFIG.baseUrl}/pedidos/status?status=${status}`)
+  }
+
+
   findById(id: any): Observable<PedidoInput> {
     return this.http.get<PedidoInput>(`${API_CONFIG.baseUrl}/pedidos/${id}`)
   }

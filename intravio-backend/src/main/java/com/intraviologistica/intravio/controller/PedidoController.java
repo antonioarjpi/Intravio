@@ -40,6 +40,12 @@ public class PedidoController {
         return ResponseEntity.ok(pedidosDTO);
     }
 
+    @GetMapping("/status")
+    public ResponseEntity<List<PedidoDTO>> listarPedidosPorStatus(@RequestParam(defaultValue = "PENDENTE") Integer status) {
+        List<PedidoDTO> pedidosDTO = pedidoService.listaPedidosPorStatus(status);
+        return ResponseEntity.ok(pedidosDTO);
+    }
+
     @GetMapping("/busca/completa/{id}")
     public ResponseEntity<PedidoDTO> buscarPedidoPorId(@PathVariable String id) {
         PedidoDTO pedidoDTO = pedidoService.buscarPedidosPorId(id);
@@ -80,12 +86,12 @@ public class PedidoController {
 
     @GetMapping("/{filename}/imagens")
     public ResponseEntity<Void> exibeImagensPedido(@PathVariable String filename, HttpServletResponse response) throws IOException {
-      try {
-          pedidoService.getImagens(filename, response);
-          return ResponseEntity.noContent().build();
-      }catch (FileNotFoundException ex){
-          return ResponseEntity.internalServerError().build();
-      }
+        try {
+            pedidoService.getImagens(filename, response);
+            return ResponseEntity.noContent().build();
+        } catch (FileNotFoundException ex) {
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
     @GetMapping("/{id}/download/imagens")
@@ -93,7 +99,7 @@ public class PedidoController {
         try {
             pedidoService.baixarImagensPedido(id, response);
             return ResponseEntity.noContent().build();
-        }catch (FileNotFoundException ex){
+        } catch (FileNotFoundException ex) {
             return ResponseEntity.internalServerError().build();
         }
     }

@@ -23,6 +23,7 @@ public class RomaneioDTO {
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     private LocalDateTime dataAtualizacao;
     private String observacao;
+    private Integer quantidadePedidos;
     private Double pesoCarga;
     private Double valorCarga;
     private List<PedidoDTO> pedidos = new ArrayList<>();
@@ -46,6 +47,7 @@ public class RomaneioDTO {
         this.valorCarga = romaneio.getValorTotal();
         this.pesoCarga = romaneio.getPesoTotal();
         this.numeroRomaneio = romaneio.getNumeroRomaneio();
+        this.quantidadePedidos = romaneio.quantidadePedidos();
     }
 
     public String getId() {
@@ -158,5 +160,13 @@ public class RomaneioDTO {
 
     public void setNumeroRomaneio(Integer numeroRomaneio) {
         this.numeroRomaneio = numeroRomaneio;
+    }
+
+    public Integer getQuantidadePedidos() {
+        return quantidadePedidos;
+    }
+
+    public void setQuantidadePedidos(Integer quantidadePedidos) {
+        this.quantidadePedidos = quantidadePedidos;
     }
 }

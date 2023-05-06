@@ -28,6 +28,9 @@ import { PedidoListarComponent } from './pages/pedidos/pedido-listar/pedido-list
 import { PedidoCriarComponent } from './pages/pedidos/pedido-criar/pedido-criar.component';
 import { PedidoAtualizarComponent } from './pages/pedidos/pedido-atualizar/pedido-atualizar.component';
 import { PedidoDeletarComponent } from './pages/pedidos/pedido-deletar/pedido-deletar.component';
+import { RomaneioListarComponent } from './pages/romaneios/listar-romaneios/romaneio-listar/romaneio-listar.component';
+import { RomaneioCriarComponent } from './pages/romaneios/listar-romaneios/romaneio-criar/romaneio-criar.component';
+import { RomaneioAtualizarComponent } from './pages/romaneios/listar-romaneios/romaneio-atualizar/romaneio-atualizar.component';
 
 const routes: Routes = [
   {
@@ -108,36 +111,48 @@ const routes: Routes = [
         component: ProdutoDeletarComponent
       },
       {
-        path:"usuarios",
+        path: "usuarios",
         component: FuncionarioListarComponent
       },
       {
-        path:"usuarios/cadastrar",
+        path: "usuarios/cadastrar",
         component: FuncionarioCadastrarComponent
       },
       {
-        path:"usuarios/atualizar/:id",
+        path: "usuarios/atualizar/:id",
         component: FuncionarioAtualizarComponent
       },
       {
-        path:"usuarios/deletar/:id",
+        path: "usuarios/deletar/:id",
         component: FuncionarioDeletarComponent
       },
       {
-        path:"pedidos",
-        component:PedidoListarComponent
+        path: "pedidos",
+        component: PedidoListarComponent
       },
       {
-        path:"pedidos/cadastrar",
-        component:PedidoCriarComponent
+        path: "pedidos/cadastrar",
+        component: PedidoCriarComponent
       },
       {
-        path:"pedidos/atualizar/:id",
-        component:PedidoAtualizarComponent
+        path: "pedidos/atualizar/:id",
+        component: PedidoAtualizarComponent
       },
       {
-        path:"pedidos/deletar/:id",
+        path: "pedidos/deletar/:id",
         component: PedidoDeletarComponent
+      },
+      {
+        path: "romaneios",
+        component: RomaneioListarComponent
+      },
+      {
+        path: "romaneios/cadastrar",
+        component: RomaneioCriarComponent
+      },
+      {
+        path: "romaneios/atualizar/:id",
+        component: RomaneioAtualizarComponent
       },
     ]
   },

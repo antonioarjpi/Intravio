@@ -51,6 +51,10 @@ public class Romaneio {
         return soma;
     }
 
+    public Integer quantidadePedidos(){
+        return pedidos.size();
+    }
+
     public Romaneio(String id, List<Pedido> pedidos, Transportador transportador, StatusRomaneio status, Double taxaFrete, LocalDateTime dataCriacao, LocalDateTime dataAtualizacao, String observacao) {
         this.id = id;
         this.pedidos = pedidos;

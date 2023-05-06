@@ -25,4 +25,7 @@ public interface PedidoRepository extends JpaRepository<Pedido, String> {
     @Modifying
     @Query("DELETE FROM Item obj WHERE obj.id.pedido.id = :pedidoId")
     void deleteItemPedidoByPedidoId(String pedidoId);
+
+    @Query(value = "SELECT * FROM Pedido p WHERE p.status_pedido = :status ORDER BY p.numero_pedido asc", nativeQuery = true)
+    List<Pedido> findAllByStatus(Integer status);
 }

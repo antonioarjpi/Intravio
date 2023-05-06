@@ -14,10 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -47,6 +44,7 @@ public class RomaneioService {
     public List<RomaneioDTO> listar() {
         return romaneioRepository.findAll()
                 .stream()
+                .sorted(Comparator.comparing(Romaneio::getNumeroRomaneio).reversed())
                 .map(x -> new RomaneioDTO(x))
                 .collect(Collectors.toList());
     }

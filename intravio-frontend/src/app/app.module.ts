@@ -25,6 +25,7 @@ import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatChipsModule } from '@angular/material/chips';
 import { MatMenuModule } from '@angular/material/menu';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { MatStepperModule } from '@angular/material/stepper';
 import { CurrencyPipe } from '@angular/common';
 import { ToastrModule } from "ngx-toastr";
@@ -60,6 +61,9 @@ import { PedidoCriarComponent } from './pages/pedidos/pedido-criar/pedido-criar.
 import { PedidoAtualizarComponent } from './pages/pedidos/pedido-atualizar/pedido-atualizar.component';
 import { PedidoDeletarComponent } from './pages/pedidos/pedido-deletar/pedido-deletar.component';
 import { PedidoModal } from './pages/pedidos/pedido-listar/pedido-modal';
+import { RomaneioListarComponent } from './pages/romaneios/listar-romaneios/romaneio-listar/romaneio-listar.component';
+import { RomaneioCriarComponent } from './pages/romaneios/listar-romaneios/romaneio-criar/romaneio-criar.component';
+import { RomaneioAtualizarComponent } from './pages/romaneios/listar-romaneios/romaneio-atualizar/romaneio-atualizar.component';
 
 @NgModule({
   declarations: [
@@ -92,7 +96,10 @@ import { PedidoModal } from './pages/pedidos/pedido-listar/pedido-modal';
     PedidoCriarComponent,
     PedidoAtualizarComponent,
     PedidoDeletarComponent,
-    PedidoModal
+    PedidoModal,
+    RomaneioListarComponent,
+    RomaneioCriarComponent,
+    RomaneioAtualizarComponent
   ],
   imports: [
     BrowserModule,
@@ -123,6 +130,7 @@ import { PedidoModal } from './pages/pedidos/pedido-listar/pedido-modal';
     MatChipsModule,
     MatStepperModule,
     MatMenuModule,
+    MatSlideToggleModule,
 
     ToastrModule.forRoot({
       timeOut: 4000,

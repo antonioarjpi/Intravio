@@ -1,12 +1,17 @@
 /* You can add global styles to this file, and also import other style files */
 @import url("../node_modules/ngx-toastr/toastr.css");
 
-:root{
+:root {
     --color-primary: #FF8264;
     --color-secondary: #e49480;
 }
-.cadastro{
-    margin-top: 80px;
+
+* {
+    outline: none !important;
+}
+
+.cadastro {
+    margin-top: 70px;
 }
 
 .card {
@@ -17,13 +22,21 @@
     background-color: #ffff;
 }
 
-.table-responsive{
+.table-responsive {
     margin-bottom: 25px;
 }
 
-.mr-1{
+.mr-1 {
     margin-right: 10px;
-}  
+}
 
-html, body { height: 100%; }
-body { margin: 0; zoom: 1; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    zoom: 1;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}

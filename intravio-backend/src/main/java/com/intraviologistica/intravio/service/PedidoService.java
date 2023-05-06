@@ -70,6 +70,14 @@ public class PedidoService {
     }
 
     @Transactional
+    public List<PedidoDTO> listaPedidosPorStatus(Integer status) {
+        List<Pedido> pedidos = pedidoRepository.findAllByStatus(status);
+        return pedidos.stream()
+                .map(x -> new PedidoDTO(x))
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
     public List<HistoricoPedidoDTO> listaHistoricoDoPedido(String codigo) {
         List<HistoricoPedido> historicoPedidos = pedidoRepository.findByCodigoRastreio(codigo);
 
