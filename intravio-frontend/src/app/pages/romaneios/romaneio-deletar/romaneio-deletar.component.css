@@ -1,0 +1,73 @@
+body{
+    padding: 0;
+}
+.cadastro {
+    border-radius: .6rem;
+    background-color: #ffff;
+}
+
+.header {
+    text-align: center;
+}
+
+span {
+    color: rgba(49, 48, 48, 0.774);
+    margin-right: 15px;
+}
+
+.footer {
+    display: flex;
+    justify-content: center;
+}
+
+h1 {
+    color: #00000080;
+    margin-bottom: 10px;
+    margin-top: 15px;
+}
+
+.fullWidth {
+    width: 100%;
+}
+
+img {
+    margin: auto;
+    margin-bottom: 12px;
+    width: 9rem;
+    height: 8rem;
+}
+
+.footer button {
+    width: 35%;
+    margin: 4px;
+}
+
+.table {
+    border: 1px solid #0000;
+    max-height: 130px;
+    position: relative;
+    width: 100%; 
+}
+
+@media (max-width: 600px) {
+    .table {
+        max-width: 21.0rem;
+    }
+}
+
+@media (min-width: 601px) and (max-width: 1200px) {
+    .table {
+        max-width: 1000px;
+    }
+}
+
+th,
+td {
+    text-align: left;
+    white-space: nowrap;
+    color: #C3C3C3;
+}
+
+th {
+    border: 0;
+}

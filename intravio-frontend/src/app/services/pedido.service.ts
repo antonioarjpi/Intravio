@@ -22,6 +22,9 @@ export class PedidoService {
     return this.http.get<Pedido[]>(`${API_CONFIG.baseUrl}/pedidos/status?status=${status}`)
   }
 
+  findAllByRomaneio(id: String): Observable<Pedido[]> {
+    return this.http.get<Pedido[]>(`${API_CONFIG.baseUrl}/pedidos/romaneio/${id}`)
+  }
 
   findById(id: any): Observable<PedidoInput> {
     return this.http.get<PedidoInput>(`${API_CONFIG.baseUrl}/pedidos/${id}`)

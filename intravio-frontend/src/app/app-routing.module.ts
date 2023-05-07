@@ -28,9 +28,10 @@ import { PedidoListarComponent } from './pages/pedidos/pedido-listar/pedido-list
 import { PedidoCriarComponent } from './pages/pedidos/pedido-criar/pedido-criar.component';
 import { PedidoAtualizarComponent } from './pages/pedidos/pedido-atualizar/pedido-atualizar.component';
 import { PedidoDeletarComponent } from './pages/pedidos/pedido-deletar/pedido-deletar.component';
-import { RomaneioListarComponent } from './pages/romaneios/listar-romaneios/romaneio-listar/romaneio-listar.component';
-import { RomaneioCriarComponent } from './pages/romaneios/listar-romaneios/romaneio-criar/romaneio-criar.component';
-import { RomaneioAtualizarComponent } from './pages/romaneios/listar-romaneios/romaneio-atualizar/romaneio-atualizar.component';
+import { RomaneioListarComponent } from './pages/romaneios/romaneio-listar/romaneio-listar.component';
+import { RomaneioCriarComponent } from './pages/romaneios/romaneio-criar/romaneio-criar.component';
+import { RomaneioAtualizarComponent } from './pages/romaneios/romaneio-atualizar/romaneio-atualizar.component';
+import { RomaneioDeletarComponent } from './pages/romaneios/romaneio-deletar/romaneio-deletar.component';
 
 const routes: Routes = [
   {
@@ -153,6 +154,10 @@ const routes: Routes = [
       {
         path: "romaneios/atualizar/:id",
         component: RomaneioAtualizarComponent
+      },
+      {
+        path: "romaneios/deletar/:id",
+        component: RomaneioDeletarComponent
       },
     ]
   },

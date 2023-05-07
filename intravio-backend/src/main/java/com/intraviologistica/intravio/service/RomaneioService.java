@@ -35,9 +35,9 @@ public class RomaneioService {
         return UUID.randomUUID().toString().replace("-", "");
     }
 
-    public RomaneioDTO buscarPorId(String id) {
+    public RomaneioInputDTO buscarPorId(String id) {
         Romaneio romaneio = findById(id);
-        return new RomaneioDTO(romaneio);
+        return toDTO(romaneio);
     }
 
     @Transactional
@@ -84,6 +84,8 @@ public class RomaneioService {
 
         if (romaneio.getStatus().ordinal() == 3) {
             throw new RuleOfBusinessException("Romaneio fechado, não pode ser alterado");
+        }else if (romaneio.getStatus().ordinal() == 2){
+            throw new RuleOfBusinessException("Romaneio em trânsito, não pode ser alterado");
         }
 
         if (dto.isProcessa()) {
@@ -262,6 +264,7 @@ public class RomaneioService {
         dto.setDataCriacao(romaneio.getDataCriacao());
         dto.setDataAtualizacao(romaneio.getDataAtualizacao());
         dto.setObservacao(romaneio.getObservacao());
+        dto.setNumeroRomaneio(romaneio.getNumeroRomaneio());
 
         return dto;
     }

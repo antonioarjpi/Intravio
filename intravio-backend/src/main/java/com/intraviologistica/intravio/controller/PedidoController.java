@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/pedidos")
@@ -39,6 +40,14 @@ public class PedidoController {
         List<PedidoDTO> pedidosDTO = pedidoService.listaPedidos();
         return ResponseEntity.ok(pedidosDTO);
     }
+
+    @GetMapping("/romaneio/{id}")
+    public ResponseEntity<List<PedidoDTO>> listarPedidosByRomaneio(@PathVariable String id) {
+        List<Pedido> pedidos = pedidoService.listaPedidosPorRomaneioId(id);
+        List<PedidoDTO> pedidoDTOS = pedidos.stream().map(x -> new PedidoDTO(x)).collect(Collectors.toList());
+        return ResponseEntity.ok(pedidoDTOS);
+    }
+
 
     @GetMapping("/status")
     public ResponseEntity<List<PedidoDTO>> listarPedidosPorStatus(@RequestParam(defaultValue = "PENDENTE") Integer status) {

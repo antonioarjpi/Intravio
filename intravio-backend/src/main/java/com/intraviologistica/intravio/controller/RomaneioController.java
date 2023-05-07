@@ -28,7 +28,7 @@ public class RomaneioController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<RomaneioDTO> buscaRomaneioPorId(@PathVariable String id) {
+    public ResponseEntity<RomaneioInputDTO> buscaRomaneioPorId(@PathVariable String id) {
         return ResponseEntity.ok(romaneioService.buscarPorId(id));
     }
 

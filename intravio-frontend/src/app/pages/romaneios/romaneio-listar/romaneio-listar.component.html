@@ -19,17 +19,16 @@
                     Romaneio
                 </th>
                 <td style="cursor: pointer;" (click)="openModalView(element)" mat-cell *matCellDef="let element">
-                    <mat-icon
-                        style="vertical-align: bottom; color: #42A5F5; background-color: #E3F2FD; border-radius: 50%;">assignment</mat-icon>
                     {{ element.dataAtualizacao | date: 'yyyy/MM/dd' }}-{{element.numeroRomaneio}}
                 </td>
             </ng-container>
 
             <ng-container matColumnDef="quantidadePedidos">
-                <th style="text-align: center;" mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="quantidadePedidos">
+                <th style="text-align: center;" mat-header-cell *matHeaderCellDef mat-sort-header
+                    sortActionDescription="quantidadePedidos">
                     Qnt. Pedidos
                 </th>
-                <td style="text-align: center;"  mat-cell *matCellDef="let element"> {{element.quantidadePedidos}} </td>
+                <td style="text-align: center;" mat-cell *matCellDef="let element"> {{element.quantidadePedidos}} </td>
             </ng-container>
 
             <ng-container matColumnDef="valorCarga">
@@ -74,13 +73,12 @@
                         <mat-icon>more_vert</mat-icon>
                     </button>
                     <mat-menu #menu="matMenu">
-                        <button mat-menu-item routerLink="/romaneios/atualizar/{{element.id}}"
-                            [disabled]="element.statusromaneio != 0">
+                        <button [disabled]="element.statusRomaneio !== 0" mat-menu-item routerLink="/romaneios/atualizar/{{element.id}}">
                             <mat-icon>edit</mat-icon>
                             <span>Editar romaneio</span>
                         </button>
-                        <button mat-menu-item (click)="openModalDelete(element)"
-                            [disabled]="element.statusromaneio != 0">
+                        <button mat-menu-item (click)="openModalDelete(element)" routerLink="/romaneios/deletar/{{element.id}}"
+                            [disabled]="element.statusRomaneio != 0" >
                             <mat-icon>cancel</mat-icon>
                             <span>Excluir romaneio</span>
                         </button>

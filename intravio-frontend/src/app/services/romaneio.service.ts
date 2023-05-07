@@ -30,14 +30,8 @@ export class RomaneioService {
     return this.http.put<RomaneioInput>(`${API_CONFIG.baseUrl}/romaneios/${romaneio.id}`, romaneio)
   }
 
-  delete(id: any, motivo: string): Observable<void> {
-    const options = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      }),
-      body: { motivo: motivo }
-    };
-    return this.http.delete<void>(`${API_CONFIG.baseUrl}/romaneios/${id}`, options)
+  delete(romaneio: any): Observable<void> {
+    return this.http.delete<void>(`${API_CONFIG.baseUrl}/romaneios/${romaneio.id}`)
   }
 
 }

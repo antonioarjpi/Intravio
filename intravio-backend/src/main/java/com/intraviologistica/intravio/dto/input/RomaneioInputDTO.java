@@ -13,6 +13,7 @@ public class RomaneioInputDTO {
     @NotNull(message = "A lista de pedidos não pode ser nula")
     @NotEmpty(message = "Não é possível criar romaneio sem pedido")
     private List<Integer> pedidos;
+    private Integer numeroRomaneio;
     private String transportadorCodigo;
     private Double taxaFrete;
     private LocalDateTime dataCriacao;
@@ -94,5 +95,13 @@ public class RomaneioInputDTO {
 
     public void setCnpj(Integer cnpj) {
         this.cnpj = cnpj;
+    }
+
+    public Integer getNumeroRomaneio() {
+        return numeroRomaneio;
+    }
+
+    public void setNumeroRomaneio(Integer numeroRomaneio) {
+        this.numeroRomaneio = numeroRomaneio;
     }
 }

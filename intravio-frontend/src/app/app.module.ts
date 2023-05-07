@@ -61,9 +61,10 @@ import { PedidoCriarComponent } from './pages/pedidos/pedido-criar/pedido-criar.
 import { PedidoAtualizarComponent } from './pages/pedidos/pedido-atualizar/pedido-atualizar.component';
 import { PedidoDeletarComponent } from './pages/pedidos/pedido-deletar/pedido-deletar.component';
 import { PedidoModal } from './pages/pedidos/pedido-listar/pedido-modal';
-import { RomaneioListarComponent } from './pages/romaneios/listar-romaneios/romaneio-listar/romaneio-listar.component';
-import { RomaneioCriarComponent } from './pages/romaneios/listar-romaneios/romaneio-criar/romaneio-criar.component';
-import { RomaneioAtualizarComponent } from './pages/romaneios/listar-romaneios/romaneio-atualizar/romaneio-atualizar.component';
+import { RomaneioListarComponent } from './pages/romaneios/romaneio-listar/romaneio-listar.component';
+import { RomaneioCriarComponent } from './pages/romaneios/romaneio-criar/romaneio-criar.component';
+import { RomaneioAtualizarComponent } from './pages/romaneios/romaneio-atualizar/romaneio-atualizar.component';
+import { RomaneioDeletarComponent } from './pages/romaneios/romaneio-deletar/romaneio-deletar.component';
 
 @NgModule({
   declarations: [
@@ -99,7 +100,8 @@ import { RomaneioAtualizarComponent } from './pages/romaneios/listar-romaneios/r
     PedidoModal,
     RomaneioListarComponent,
     RomaneioCriarComponent,
-    RomaneioAtualizarComponent
+    RomaneioAtualizarComponent,
+    RomaneioDeletarComponent
   ],
   imports: [
     BrowserModule,

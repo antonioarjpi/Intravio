@@ -3,13 +3,14 @@ import { Pedido } from "./pedido";
 export interface RomaneioInput {
     id: string;
     pedidos: Number[];
+    numeroRomaneio: number;
     transportadorCodigo: string;
     taxaFrete: number;
     dataCriacao: Date;
     dataAtualizacao: Date;
     observacao: string;
     cnpj: number;
-    isProcessa: boolean;
+    processa: boolean;
 }
 
 export interface RomaneioGet {
