@@ -73,12 +73,20 @@
                         <mat-icon>more_vert</mat-icon>
                     </button>
                     <mat-menu #menu="matMenu">
+                        <button mat-menu-item (click)="openModalView(element)">
+                            <mat-icon>visibility</mat-icon>
+                            <span>Ver Romaneio</span>
+                        </button>
                         <button [disabled]="element.statusRomaneio !== 0" mat-menu-item routerLink="/romaneios/atualizar/{{element.id}}">
                             <mat-icon>edit</mat-icon>
                             <span>Editar romaneio</span>
                         </button>
-                        <button mat-menu-item (click)="openModalDelete(element)" routerLink="/romaneios/deletar/{{element.id}}"
-                            [disabled]="element.statusRomaneio != 0" >
+                        <button mat-menu-item routerLink="/romaneios/fechamento/{{element.id}}">
+                            <mat-icon>done</mat-icon>
+                            <span>Fechamento de Romaneio</span>
+                        </button>
+                        <button mat-menu-item routerLink="/romaneios/deletar/{{element.id}}"
+                            [disabled]="element.statusRomaneio !== 0 && element.statusRomaneio !== 2" >
                             <mat-icon>cancel</mat-icon>
                             <span>Excluir romaneio</span>
                         </button>

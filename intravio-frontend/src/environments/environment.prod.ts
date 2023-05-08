@@ -1,4 +1,5 @@
 export const environment = {
   production: true,
-  API: 'https://d965a9fac3f3e7.lhr.life'
+  API: 'http://192.168.0.109:8081/api/v1',
+  env: 'prod'
 };

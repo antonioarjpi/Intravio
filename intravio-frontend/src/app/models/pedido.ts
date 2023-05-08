@@ -16,7 +16,7 @@ export interface PedidoInput {
 export interface Pedido {
     id:String;
     itens: ItemGet[];
-    numeroPedido: Number;
+    numeroPedido: number;
     statusPedido: any;
     remetenteNome: String;
     remetenteEmail: String;

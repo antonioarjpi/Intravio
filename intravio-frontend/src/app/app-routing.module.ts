@@ -32,6 +32,8 @@ import { RomaneioListarComponent } from './pages/romaneios/romaneio-listar/roman
 import { RomaneioCriarComponent } from './pages/romaneios/romaneio-criar/romaneio-criar.component';
 import { RomaneioAtualizarComponent } from './pages/romaneios/romaneio-atualizar/romaneio-atualizar.component';
 import { RomaneioDeletarComponent } from './pages/romaneios/romaneio-deletar/romaneio-deletar.component';
+import { RastreioComponent } from './pages/rastreio/rastreio.component';
+import { RomaneioFechamentoComponent } from './pages/romaneios/romaneio-fechamento/romaneio-fechamento.component';
 
 const routes: Routes = [
   {
@@ -159,11 +161,19 @@ const routes: Routes = [
         path: "romaneios/deletar/:id",
         component: RomaneioDeletarComponent
       },
+      {
+        path: "romaneios/fechamento/:id",
+        component: RomaneioFechamentoComponent
+      },
     ]
   },
   {
     path: "login",
     component: LoginComponent,
+  },
+  {
+    path: "rastreamento",
+    component: RastreioComponent,
   },
 ];
 

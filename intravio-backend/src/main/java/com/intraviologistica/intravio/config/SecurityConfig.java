@@ -32,7 +32,8 @@ public class SecurityConfig {
     }
 
     private final static String[] PUBLIC_MATCHERS = {
-            "/api/v1/usuarios/autenticar"
+            "/api/v1/usuarios/autenticar",
+            "/api/v1/pedidos/rastreio/**",
     };
 
     private final static String[] ADMIN_MATCHERS = {

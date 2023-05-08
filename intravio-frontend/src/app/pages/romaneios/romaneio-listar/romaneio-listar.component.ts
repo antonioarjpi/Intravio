@@ -6,6 +6,7 @@ import { MatSort, Sort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { RomaneioGet } from 'src/app/models/romaneio';
 import { RomaneioService } from 'src/app/services/romaneio.service';
+import { RomaneioModal } from './romaneio-modal';
 
 @Component({
   selector: 'app-romaneio-listar',
@@ -54,12 +55,10 @@ export class RomaneioListarComponent {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   };
 
-  openModalView(pedido) {
-
-  };
-
-  openModalDelete(pedido) {
-
+  openModalView(romaneio) {
+    this.dialog.open(RomaneioModal, { data: romaneio });
+    const card = document.querySelector('.content');
+    card.scrollTop = 0;
   };
 
   retornaStatus(status: Number): String {

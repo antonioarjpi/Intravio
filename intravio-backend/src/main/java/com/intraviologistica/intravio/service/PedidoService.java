@@ -87,6 +87,7 @@ public class PedidoService {
 
         return historicoPedidos
                 .stream()
+                .sorted(Comparator.comparing(HistoricoPedido::getDataAtualizacao).reversed())
                 .map(x -> new HistoricoPedidoDTO(x))
                 .collect(Collectors.toList());
     }

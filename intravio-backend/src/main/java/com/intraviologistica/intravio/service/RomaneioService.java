@@ -113,7 +113,7 @@ public class RomaneioService {
         Romaneio romaneio = findById(id);
 
         // Se Status do Romaneio for igual a fechado, retorna um Erro
-        if (romaneio.getStatus().ordinal() == 2) {
+        if (romaneio.getStatus().ordinal() == 3) {
             throw new RuleOfBusinessException("Romaneio com status de fechado não pode ser excluído.");
         }
 
@@ -122,7 +122,7 @@ public class RomaneioService {
         if (!pedidos.isEmpty()) {
             for (Pedido pedido : pedidos) {
                 pedido.setRomaneio(null);
-                pedido.atualizarStatus(StatusPedido.PENDENTE, "Pedido retorno para setor de suprimentos");
+                pedido.atualizarStatus(StatusPedido.PENDENTE, "Pedido retornou para filial de origem");
 
                 pedidoService.salvaPedidoRetornandoEntidade(pedido);
             }

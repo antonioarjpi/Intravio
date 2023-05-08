@@ -1,0 +1,30 @@
+<div class="rastreio">
+    <div class="col-12 col-md-5">
+        <form>
+            <div class="card mat-elevation-z8">
+                <div class="logo">
+                    <app-logo></app-logo>
+                </div>
+                <mat-form-field>
+                    <mat-label>Digite o código de rastreio</mat-label>
+                    <input type="text" matInput placeholder="Ex: YPI72444356YQK" [(ngModel)]="codigoRastreio" name="codigoRastreio"
+                        required appearance="outline">
+                    <button type="submit" class="search" mat-button matSuffix (click)="buscarRastreamento()">
+                        <mat-icon>search</mat-icon>
+                    </button>
+                </mat-form-field>
+            </div>
+        </form>
+        <div class="card" *ngIf="historicoPedidos.length > 0">
+            <div class="content">
+                <div *ngFor="let obj of historicoPedidos; let i = index">
+                    <div class="info">
+                        <div class="title">{{obj.statusAtual}}</div>
+                        <div class="subtitle">{{obj.comentario}}</div>
+                        <div class="date">{{obj.dataAtualizacao}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

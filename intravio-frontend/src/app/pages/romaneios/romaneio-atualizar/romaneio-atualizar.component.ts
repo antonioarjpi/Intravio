@@ -1,4 +1,3 @@
-import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { Component } from '@angular/core';
 import { UntypedFormControl, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
@@ -47,8 +46,7 @@ export class RomaneioAtualizarComponent {
     private pedidoService: PedidoService,
     private toast: ToastrService,
     private router: Router,
-    private route: ActivatedRoute,
-    private _liveAnnouncer: LiveAnnouncer,
+    private route: ActivatedRoute
   ) { };
 
   ngOnInit(): void {
@@ -85,6 +83,9 @@ export class RomaneioAtualizarComponent {
       this.toast.warning("Não é possível criar romaneio sem pedido", "Alerta")
       return;
     }
+
+    this.romaneio.taxaFrete = parseFloat(this.romaneio.taxaFrete.toString().replace(".", "").replace(",", "."));
+
     this.service.update(this.romaneio).subscribe(
       (response) => {
         this.toast.success("Romaneio atualizado com sucesso", "Atualização");
@@ -109,21 +110,14 @@ export class RomaneioAtualizarComponent {
     ]).subscribe((response) => {
       const [pedidosDoRomaneio, todosPedidos] = response;
       const todosPedidosExcetoDoRomaneio = todosPedidos.filter(pedido => !pedidosDoRomaneio.includes(pedido));
-      const pedidosCombinados = [...pedidosDoRomaneio, ...todosPedidosExcetoDoRomaneio];
+      const pedidosCombinados = [...pedidosDoRomaneio, ...todosPedidosExcetoDoRomaneio.sort((a, b) => a.numeroPedido - b.numeroPedido)];
       this.atualizarTabela(pedidosCombinados);
     });
   };
-
-
-  listarTodosPedidos() {
-    this.pedidoService.findAllByStatus(0).subscribe((response) => {
-      this.atualizarTabela(response);
-    });
-  };
-
-  atualizarTabela(response: Pedido[]) {
-    this.ELEMENT_DATA = response;
-    this.dataSource = new MatTableDataSource<Pedido>(response);
+  
+  atualizarTabela(pedidos: Pedido[]) {
+    this.ELEMENT_DATA = pedidos;
+    this.dataSource = new MatTableDataSource<Pedido>(pedidos);
   }
 
   marcarTodos() {

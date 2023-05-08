@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { API_CONFIG } from '../config/api.config';
 import { Pedido, PedidoInput } from '../models/pedido';
+import { HistoricoPedido } from '../models/HistoricoPedido';
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +29,10 @@ export class PedidoService {
 
   findById(id: any): Observable<PedidoInput> {
     return this.http.get<PedidoInput>(`${API_CONFIG.baseUrl}/pedidos/${id}`)
+  }
+
+  exibirHistoricoPedidos(id: any): Observable<HistoricoPedido[]> {
+    return this.http.get<HistoricoPedido[]>(`${API_CONFIG.baseUrl}/pedidos/rastreio/${id}`)
   }
 
   create(pedido: PedidoInput): Observable<PedidoInput> {

@@ -1,0 +1,86 @@
+.cadastro {
+    border-radius: .6rem;
+    background-color: #ffff;
+}
+
+.header {
+    text-align: center;
+}
+
+span {
+    color: rgba(49, 48, 48, 0.774);
+    margin-right: 15px;
+}
+
+.footer {
+    display: flex;
+    justify-content: center;
+}
+
+h1 {
+    color: #00000080;
+    margin-bottom: 10px;
+    margin-top: 15px;
+}
+
+.fullWidth {
+    width: 100%;
+}
+
+img {
+    margin: auto;
+    margin-bottom: 12px;
+    width: 9rem;
+    height: 8rem;
+}
+
+.footer button {
+    width: 35%;
+    margin: 5px;
+}
+
+.table {
+    border: 1px solid #0000;
+    color: black;
+    max-height: 350px;
+    position: relative;
+    width: 100%; 
+}
+
+@media (max-width: 600px) {
+    .table {
+        max-width: 21.0rem;
+    }
+}
+
+@media (min-width: 601px) and (max-width: 1200px) {
+    .table {
+        max-width: 1000px;
+    }
+}
+
+th,
+td {
+    text-align: left;
+    white-space: nowrap;
+}
+
+th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    border: 0;
+}
+
+.checkbox {
+    vertical-align: bottom;
+    align-items: flex-end;
+    width: 30px;
+    height: 35px;
+ }
+
+.is-processa {
+    color: black;
+    margin-bottom: 10px;
+    padding-left: 20px;
+}

@@ -1,9 +1,9 @@
-import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { UntypedFormControl, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { forkJoin } from 'rxjs';
 import { Pedido } from 'src/app/models/pedido';
 import { RomaneioInput } from 'src/app/models/romaneio';
 import { Transportador } from 'src/app/models/transportador';
@@ -12,25 +12,21 @@ import { RomaneioService } from 'src/app/services/romaneio.service';
 import { TransportadorService } from 'src/app/services/transportador.service';
 
 @Component({
-  selector: 'app-romaneio-criar',
-  templateUrl: './romaneio-criar.component.html',
-  styleUrls: ['./romaneio-criar.component.css']
+  selector: 'app-romaneio-fechamento',
+  templateUrl: './romaneio-fechamento.component.html',
+  styleUrls: ['./romaneio-fechamento.component.css']
 })
-export class RomaneioCriarComponent {
-
+export class RomaneioFechamentoComponent {
   ELEMENT_DATA: Pedido[] = [];
-
-  displayedColumns: string[] = ["acoes", "numeroPedido", "remetenteNome", "destinatarioNome", "origem", "destino"];
-  dataSource = new MatTableDataSource<Pedido>(this.ELEMENT_DATA);
-
-  checked = false;
+  pedidos: Pedido[] = [];
   transportador: UntypedFormControl = new UntypedFormControl(null, Validators.required);
   transportadores: Transportador[];
+  checked = false;
 
   romaneio: RomaneioInput = {
     id: null,
-    pedidos: [],
     numeroRomaneio: null,
+    pedidos: [],
     transportadorCodigo: "",
     taxaFrete: null,
     dataCriacao: null,
@@ -40,22 +36,37 @@ export class RomaneioCriarComponent {
     processa: null,
   };
 
+  displayedColumns: string[] = ["entregue","devolvido", "numeroPedido", "remetenteNome", "destinatarioNome", "origem", "destino"];
+  dataSource = new MatTableDataSource<Pedido>(this.ELEMENT_DATA);
+
   constructor(
     private service: RomaneioService,
     private transportadorService: TransportadorService,
     private pedidoService: PedidoService,
     private toast: ToastrService,
     private router: Router,
+    private route: ActivatedRoute
   ) { };
 
   ngOnInit(): void {
+    this.romaneio.id = this.route.snapshot.paramMap.get("id")
+
     this.transportadorService.findAll().subscribe(response => {
       this.transportadores = response;
     });
 
-    this.listarTodosPedidos();
+    this.buscarPedidoPorId();
   };
 
+  buscarPedidoPorId(): void {
+    this.service.findById(this.romaneio.id).subscribe(response => {
+      this.romaneio = response;
+      this.listarPedidosDoRomaneio();
+      for (let i = 0; i < response.pedidos.length; i++) {
+        this.addPedido(response[i].numeroPedido);
+      }
+    })
+  }
 
   addPedido(obj: Number) {
     if (this.romaneio.pedidos.includes(obj)) {
@@ -66,17 +77,17 @@ export class RomaneioCriarComponent {
     }
   }
 
-  criarRomaneio(): void {
+  atualizarRomaneio(): void {
     if (this.romaneio.pedidos.length < 1) {
       this.toast.warning("Não é possível criar romaneio sem pedido", "Alerta")
       return;
     }
-    
+
     this.romaneio.taxaFrete = parseFloat(this.romaneio.taxaFrete.toString().replace(".", "").replace(",", "."));
 
-    this.service.create(this.romaneio).subscribe(
+    this.service.update(this.romaneio).subscribe(
       (response) => {
-        this.toast.success("Romaneio realizado com sucesso", "Cadastro");
+        this.toast.success("Romaneio atualizado com sucesso", "Atualização");
         this.router.navigate(["romaneios"]);
       },
       (ex) => {
@@ -91,12 +102,16 @@ export class RomaneioCriarComponent {
     )
   };
 
-  listarTodosPedidos() {
-    this.pedidoService.findAllByStatus(0).subscribe((response) => {
-      this.ELEMENT_DATA = response;
-      this.dataSource = new MatTableDataSource<Pedido>(response);
-    });
+  listarPedidosDoRomaneio() {
+    this.pedidoService.findAllByRomaneio(this.romaneio.id).subscribe(response => {
+      this.atualizarTabela(response.sort((a, b) => a.numeroPedido - b.numeroPedido));
+    })
   };
+
+  atualizarTabela(pedidos: Pedido[]) {
+    this.ELEMENT_DATA = pedidos;
+    this.dataSource = new MatTableDataSource<Pedido>(pedidos);
+  }
 
   marcarTodos() {
     if (!this.checked) {

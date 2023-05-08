@@ -1,0 +1,93 @@
+.rastreio {
+    height: 100%;
+    display: flex;
+    align-items: top;
+    background: linear-gradient(135deg, #e49480, #FFAA64 100%);
+    justify-content: center;
+    padding-top: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.card {
+    border-radius: 10px;
+    margin: 1rem auto;
+    background-color: #ffff;
+}
+
+.logo{
+    padding-left: 65px;
+    padding-right: 65px;
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
+input{
+    width: 80%;
+}
+
+.info{
+    margin-bottom: 12px;
+    padding-left: 10px;
+    border-left: 3px solid var(--color-primary);
+}
+
+.content{
+    max-height: 250px;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+    transition-delay: 0.5s;
+    transition: transform 0.3s ease-in-out, heigth 0.3s ease-in-out;
+}
+
+@media only screen and (max-width: 600px) {
+   .content{
+    max-height: 344px;
+   } 
+}
+
+.title{
+    font-weight: 600;
+    color: var(--color-primary);
+}
+
+.subtitle{
+    font-size: 15px;
+    font-weight: 400;
+}
+
+.date{
+    font-size: 13px;
+}
+
+.form {
+    display: grid;
+    width: 100%;
+}
+
+.form .card-image {
+    padding-left: 45px;
+    padding-right: 45px;
+    margin-top: 20px;
+    margin-bottom: 70px;
+}
+
+.card button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1;
+    height: 100%;
+}
+
+.info{
+    color: black;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active{
+    -webkit-box-shadow: 0 0 0 12px #F2F2F2 inset !important;
+
+}

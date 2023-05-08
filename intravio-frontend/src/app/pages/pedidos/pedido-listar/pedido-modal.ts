@@ -76,13 +76,13 @@ import { Pedido } from 'src/app/models/pedido';
               <div class="info-group">
                 <mat-icon>priority_high</mat-icon>
                 <span class="info-group-label">Prioridade:  </span>
-                <span>{{ data.prioridade }}</span>
+                <span>{{ retornaPrioridade(data.prioridade)}}</span>
               </div>
 
               <div class="info-group">
                 <mat-icon>new_releases</mat-icon>
                 <span class="info-group-label">Acompanha status:  </span>
-                <span>{{ data.acompanhaStatus }}</span>
+                <span>{{ retornaAcompanhaViaEmail(data.acompanhaStatus) }}</span>
               </div>
 
               <div class="info-group">
@@ -135,112 +135,158 @@ import { Pedido } from 'src/app/models/pedido';
         </mat-card>
 `,
   styles: [`
-      mat-card {
-        display: flex;
-        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-        overflow-y: hidden !important;
-      }
-      
-      mat-card-header {
-        background-color: var(--color-primary);
-        color: #ffffff;
-      }
-      
-      mat-card-title {
-        font-size: 20px;
-        font-weight: bold;
-        margin-right: 8px;
-      }
-      
-      mat-card-subtitle {
-        font-size: 14px;
-        font-weight: bold;
-      }
-      
-      mat-card-content {
-        padding-top: 15px;
-        padding-left: 20px;
-        padding-right: 20px;
-      }
-      
-      .content {
-        max-height: 75vh;
-        overflow-y: scroll;
-        scroll-behavior: smooth;
-        white-space: nowrap;
-      }
-      
-      ::-webkit-scrollbar {
-        width: 4px;
-      }
-      
-      ::-webkit-scrollbar-thumb {
-        background-color: var(---color-primary);
-      }
-      
-      
-      * {
-        scrollbar-width: thin;
-        scrollbar-color: var(--color-primary) #fff;
-      }
-      
-      ::-webkit-scrollbar-track {
-        background-color: #fff;
-      }
-      
-      *::-webkit-scrollbar-thumb {
-        background-color: var(--color-primary);
-      }
-      
-      .info-group {
-        display: flex;
-        align-items: center;
-        margin-bottom: 16px;
-        margin-right: 15px;
-      }
-      
-      .info-group mat-icon {
-        margin-right: 12px;
-        font-size: 20px;
-        color: var(--color-secondary);
-      }
-      
-      .info-group span {
-        font-size: 16px;
-        font-weight: 400;
-      }
-      
-      mat-card-actions {
-        display: flex;
-        justify-content: flex-end;
-      }
-      
-      mat-card-actions button {
-        text-transform: uppercase;
-        font-weight: bold;
-      }
-      
-      mat-card-actions button:hover {
-        cursor: pointer;
-      }
-      
-      mat-card-actions button:focus {
-        outline: none;
-      }
-      
-      .info-group-label {
-        font-weight: 600 !important;
-        margin-right: 2px;
-      }
-      
-      .table-responsive{
-        padding-left: 35px;
-      }
-  `],
+          mat-card {
+            display: flex;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            overflow-y: hidden !important;
+            min-width: 300px;
+          }
+
+          mat-card-header {
+            background-color: var(--color-primary);
+            color: #ffffff;
+          }
+
+          mat-card-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-right: 8px;
+          }
+
+          mat-card-subtitle {
+            font-size: 14px;
+            font-weight: bold;
+          }
+
+          mat-card-content {
+            padding-top: 15px;
+
+          }
+
+          .content {
+            max-height: 75vh;
+            overflow-y: scroll;
+            scroll-behavior: smooth;
+            white-space: nowrap;
+            padding-left: 10px;
+            padding-right: 30px;
+          }
+
+          ::-webkit-scrollbar {
+            width: 4px;
+          }
+
+          ::-webkit-scrollbar-thumb {
+            background-color: var(---color-primary);
+          }
+
+
+          * {
+            scrollbar-width: thin;
+            scrollbar-color: var(--color-primary) #fff;
+          }
+
+          ::-webkit-scrollbar-track {
+            background-color: #fff;
+          }
+
+          *::-webkit-scrollbar-thumb {
+            background-color: var(--color-primary);
+          }
+
+          .info-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+            margin-right: 15px;
+          }
+
+          @media only screen and (max-width: 600px) {
+            .info-group {
+            flex-wrap: wrap;
+            flex-direction: column;
+            margin-bottom:18px
+          }
+
+          .content{
+            padding-right: 10px;
+            padding-left: 10px;
+          }
+
+          .info-group mat-icon {
+            margin: 0 !important;
+            padding: 0 !important;
+            font-size: 30px;
+            color: var(--color-secondary);
+          }
+          }
+
+          .info-group mat-icon {
+            margin-right: 12px;
+            font-size: 22px;
+            color: var(--color-secondary);
+          }
+
+          .info-group span {
+            font-size: 16px;
+            font-weight: 400;
+          }
+
+          mat-card-actions {
+            display: flex;
+            justify-content: flex-end;
+          }
+
+          mat-card-actions button {
+            text-transform: uppercase;
+            font-weight: bold;
+          }
+
+          mat-card-actions button:hover {
+            cursor: pointer;
+          }
+
+          mat-card-actions button:focus {
+            outline: none;
+          }
+
+          .info-group-label {
+            font-weight: 600 !important;
+            margin-right: 2px;
+          }
+
+          .table-responsive{
+            padding-left: 35px;
+          }
+    `],
 })
 export class PedidoModal {
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: Pedido) { }
+
+  retornaAcompanhaViaEmail(status: any): string {
+    if (status == "0") {
+      return "Ninguém";
+    } else if (status == "1") {
+      return "Remetente";
+    } else if (status == "2") {
+      return "Destinatário";
+    } else {
+      return "Remetente e Destinatário"
+    }
+  };
+
+  retornaPrioridade(status: any): string {
+    if (status == "0") {
+      return "BAIXA";
+    } else if (status == "1") {
+      return "MÉDIA";
+    } else if (status == "2") {
+      return "ALTA";
+    } else {
+      return "URGENTE"
+    }
+  };
 
   retornaStatus(status: Number): String {
     if (status === 0) {
