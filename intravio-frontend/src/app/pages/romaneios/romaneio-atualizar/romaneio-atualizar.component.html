@@ -79,6 +79,10 @@
           <label>{{romaneio.processa ? 'Sim' : 'Não'}}</label>
         </section>
       </div>
+      <mat-form-field class="fullWidth col-12 col-md-12" appearance="outline">
+        <mat-label>Observação</mat-label>
+        <input type="text" [(ngModel)]="romaneio.observacao" name="nome" matInput>
+      </mat-form-field>
       <div class="footer">
         <button (click)="atualizarRomaneio()" class="mat-elevation-z4" mat-flat-button color="primary">
           Confirmar

@@ -71,8 +71,10 @@ export class RomaneioCriarComponent {
       this.toast.warning("Não é possível criar romaneio sem pedido", "Alerta")
       return;
     }
-    
-    this.romaneio.taxaFrete = parseFloat(this.romaneio.taxaFrete.toString().replace(".", "").replace(",", "."));
+
+    if (this.romaneio.taxaFrete !== null) {
+      this.romaneio.taxaFrete = parseFloat(this.romaneio.taxaFrete.toString().replace(".", "").replace(",", "."));
+    }
 
     this.service.create(this.romaneio).subscribe(
       (response) => {

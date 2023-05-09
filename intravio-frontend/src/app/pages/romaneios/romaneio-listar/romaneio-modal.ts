@@ -1,7 +1,8 @@
 import { Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { RomaneioGet } from 'src/app/models/romaneio';
 import { Pedido } from 'src/app/models/pedido';
+import { PedidoModal } from '../../pedidos/pedido-listar/pedido-modal';
 
 @Component({
   selector: 'app-romaneio-modal',
@@ -87,17 +88,19 @@ import { Pedido } from 'src/app/models/pedido';
                     <thead>
                         <tr>
                             <th>N° Pedido</th>
-                            <th>QNT Itens</th>
+                            <th>Qnt Itens</th>
                             <th>Preço</th>
                             <th>Peso</th>
+                            <th>Visualizar</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let item of retornaPedidosOrdenado(); let i = index">
-                            <td>{{ item.numeroPedido }}</td>
-                            <td>{{ item.itens.length }}</td>
-                            <td>R$ {{ item.valorPedido }}</td>
-                            <td>{{ item.pesoPedido }} kg</td>
+                        <tr *ngFor="let pedido of retornaPedidosOrdenado(); let i = index">
+                            <td>{{ pedido.numeroPedido }}</td>
+                            <td>{{ pedido.itens.length }}</td>
+                            <td>R$ {{ pedido.valorPedido }}</td>
+                            <td>{{ pedido.pesoPedido }} kg</td>
+                            <td style="textAlign: center; cursor:pointer" (click)="visualizarModalPedido(pedido)"><mat-icon>visibility</mat-icon></td>
                         </tr>
                     </tbody>
                 </table>
@@ -105,7 +108,7 @@ import { Pedido } from 'src/app/models/pedido';
 
               <div class="info-group">
                 <div><mat-icon class="d-flex justify-content-center">new_releases</mat-icon></div>
-                <span class="info-group-label">Observações </span>
+                <span class="info-group-label">Observações: </span>
                 <span>{{ data.observacao }}</span>
               </div>
           </div>
@@ -237,17 +240,24 @@ import { Pedido } from 'src/app/models/pedido';
       }
       
       .table-responsive{
-        padding-left: 35px;
+        padding-left: 15px;
       }
   `],
 })
 export class RomaneioModal {
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: RomaneioGet) { }
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: RomaneioGet,
+    private dialog: MatDialog
+  ) { }
 
-  retornaPedidosOrdenado(): Pedido[]{
-  let novoArray = this.data.pedidos.sort((a, b) => a.numeroPedido - b.numeroPedido);
-  return novoArray;
+  retornaPedidosOrdenado(): Pedido[] {
+    let novoArray = this.data.pedidos.sort((a, b) => a.numeroPedido - b.numeroPedido);
+    return novoArray;
+  }
+
+  visualizarModalPedido(pedido: Pedido) {
+    this.dialog.open(PedidoModal, { data: pedido });
   }
 
   retornaStatus(status: Number): String {

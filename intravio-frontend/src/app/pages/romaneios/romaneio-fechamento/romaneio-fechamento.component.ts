@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { forkJoin } from 'rxjs';
 import { Pedido } from 'src/app/models/pedido';
-import { RomaneioInput } from 'src/app/models/romaneio';
+import { RomaneioFechamento, RomaneioInput } from 'src/app/models/romaneio';
 import { Transportador } from 'src/app/models/transportador';
 import { PedidoService } from 'src/app/services/pedido.service';
 import { RomaneioService } from 'src/app/services/romaneio.service';
@@ -17,11 +17,18 @@ import { TransportadorService } from 'src/app/services/transportador.service';
   styleUrls: ['./romaneio-fechamento.component.css']
 })
 export class RomaneioFechamentoComponent {
+
   ELEMENT_DATA: Pedido[] = [];
   pedidos: Pedido[] = [];
   transportador: UntypedFormControl = new UntypedFormControl(null, Validators.required);
   transportadores: Transportador[];
   checked = false;
+
+  romaneioFechamento: RomaneioFechamento = {
+    romaneioId: "",
+    pedidosConcluido: [],
+    pedidosRetorno: [],
+  };
 
   romaneio: RomaneioInput = {
     id: null,
@@ -36,7 +43,7 @@ export class RomaneioFechamentoComponent {
     processa: null,
   };
 
-  displayedColumns: string[] = ["entregue","devolvido", "numeroPedido", "remetenteNome", "destinatarioNome", "origem", "destino"];
+  displayedColumns: string[] = ["entregue", "devolvido", "numeroPedido", "remetenteNome", "destinatarioNome", "origem", "destino"];
   dataSource = new MatTableDataSource<Pedido>(this.ELEMENT_DATA);
 
   constructor(
@@ -49,7 +56,7 @@ export class RomaneioFechamentoComponent {
   ) { };
 
   ngOnInit(): void {
-    this.romaneio.id = this.route.snapshot.paramMap.get("id")
+    this.romaneioFechamento.romaneioId = this.route.snapshot.paramMap.get("id")
 
     this.transportadorService.findAll().subscribe(response => {
       this.transportadores = response;
@@ -59,35 +66,47 @@ export class RomaneioFechamentoComponent {
   };
 
   buscarPedidoPorId(): void {
-    this.service.findById(this.romaneio.id).subscribe(response => {
+    this.service.findById(this.romaneioFechamento.romaneioId).subscribe(response => {
       this.romaneio = response;
       this.listarPedidosDoRomaneio();
-      for (let i = 0; i < response.pedidos.length; i++) {
-        this.addPedido(response[i].numeroPedido);
-      }
+      this.romaneioFechamento.pedidosConcluido = response.pedidos
     })
   }
 
-  addPedido(obj: Number) {
-    if (this.romaneio.pedidos.includes(obj)) {
-      const index = this.romaneio.pedidos.indexOf(obj);
-      this.romaneio.pedidos.splice(index, 1);
+  addPedidoConcluido(obj: Number) {
+    if (this.romaneioFechamento.pedidosConcluido.includes(obj)) {
+      const index = this.romaneioFechamento.pedidosConcluido.indexOf(obj);
+      this.romaneioFechamento.pedidosConcluido.splice(index, 1);
+
+      this.romaneioFechamento.pedidosRetorno.push(obj);
+
     } else {
-      this.romaneio.pedidos.push(obj);
+      const index = this.romaneioFechamento.pedidosRetorno.indexOf(obj);
+      this.romaneioFechamento.pedidosRetorno.splice(index, 1);
+
+      this.romaneioFechamento.pedidosConcluido.push(obj);
+    }
+  }
+
+  addPedidoRetorno(obj: Number) {
+    if (this.romaneioFechamento.pedidosRetorno.includes(obj)) {
+      const index = this.romaneioFechamento.pedidosRetorno.indexOf(obj);
+      this.romaneioFechamento.pedidosRetorno.splice(index, 1);
+
+      this.romaneioFechamento.pedidosConcluido.push(obj);
+
+    } else {
+      const index = this.romaneioFechamento.pedidosConcluido.indexOf(obj);
+      this.romaneioFechamento.pedidosConcluido.splice(index, 1);
+
+      this.romaneioFechamento.pedidosRetorno.push(obj);
     }
   }
 
   atualizarRomaneio(): void {
-    if (this.romaneio.pedidos.length < 1) {
-      this.toast.warning("Não é possível criar romaneio sem pedido", "Alerta")
-      return;
-    }
-
-    this.romaneio.taxaFrete = parseFloat(this.romaneio.taxaFrete.toString().replace(".", "").replace(",", "."));
-
-    this.service.update(this.romaneio).subscribe(
+    this.service.fecharRomaneio(this.romaneioFechamento).subscribe(
       (response) => {
-        this.toast.success("Romaneio atualizado com sucesso", "Atualização");
+        this.toast.success("Romaneio fechado com sucesso", "Fechamento");
         this.router.navigate(["romaneios"]);
       },
       (ex) => {
@@ -103,7 +122,7 @@ export class RomaneioFechamentoComponent {
   };
 
   listarPedidosDoRomaneio() {
-    this.pedidoService.findAllByRomaneio(this.romaneio.id).subscribe(response => {
+    this.pedidoService.findAllByRomaneio(this.romaneioFechamento.romaneioId).subscribe(response => {
       this.atualizarTabela(response.sort((a, b) => a.numeroPedido - b.numeroPedido));
     })
   };

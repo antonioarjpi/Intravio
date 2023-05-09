@@ -7,6 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { RomaneioGet } from 'src/app/models/romaneio';
 import { RomaneioService } from 'src/app/services/romaneio.service';
 import { RomaneioModal } from './romaneio-modal';
+import { RomaneioProcessarModal } from './romaneio-processar-modal';
 
 @Component({
   selector: 'app-romaneio-listar',
@@ -60,6 +61,15 @@ export class RomaneioListarComponent {
     const card = document.querySelector('.content');
     card.scrollTop = 0;
   };
+
+  openModalProcessar(romaneio) {
+    const dialogRef = this.dialog.open(RomaneioProcessarModal, { data: romaneio });
+    const card = document.querySelector('.content');
+    card.scrollTop = 0;
+    dialogRef.componentInstance.romaneio.subscribe(() => {
+      this.listarTodosRomaneios();
+    });
+  }
 
   retornaStatus(status: Number): String {
     if (status === 0) {

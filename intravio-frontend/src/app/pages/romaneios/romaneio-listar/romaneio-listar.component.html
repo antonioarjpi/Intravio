@@ -77,13 +77,17 @@
                             <mat-icon>visibility</mat-icon>
                             <span>Ver Romaneio</span>
                         </button>
-                        <button [disabled]="element.statusRomaneio !== 0" mat-menu-item routerLink="/romaneios/atualizar/{{element.id}}">
+                        <button [disabled]="element.statusRomaneio !== 0 && element.statusRomaneio !== 2" mat-menu-item routerLink="/romaneios/atualizar/{{element.id}}">
                             <mat-icon>edit</mat-icon>
                             <span>Editar romaneio</span>
                         </button>
-                        <button mat-menu-item routerLink="/romaneios/fechamento/{{element.id}}">
+                        <button *ngIf="element.statusRomaneio === 0" mat-menu-item (click)="openModalProcessar(element)">
+                            <mat-icon>hourglass_full</mat-icon>
+                            <span>Processar Romaneio</span>
+                        </button>
+                        <button *ngIf="element.statusRomaneio === 2"  mat-menu-item routerLink="/romaneios/fechamento/{{element.id}}">
                             <mat-icon>done</mat-icon>
-                            <span>Fechamento de Romaneio</span>
+                            <span>Fechar Romaneio</span>
                         </button>
                         <button mat-menu-item routerLink="/romaneios/deletar/{{element.id}}"
                             [disabled]="element.statusRomaneio !== 0 && element.statusRomaneio !== 2" >

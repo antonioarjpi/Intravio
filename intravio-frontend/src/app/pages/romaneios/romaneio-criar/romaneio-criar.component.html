@@ -69,15 +69,20 @@
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
-
-        <div class="is-processa">
-          <p>Gostaria de processar esse romaneio e marcá-lo como enviado?</p>
-          <section style="text-align: left;">
-            <mat-slide-toggle [(ngModel)]="romaneio.processa" name="isProcessa" required />
-            <label>{{romaneio.processa ? 'Sim' : 'Não'}}</label>
-          </section>
-        </div>
       </div>
+
+      <div class="is-processa">
+        <p>Gostaria de processar esse romaneio e marcá-lo como enviado?</p>
+        <section style="text-align: left;">
+          <mat-slide-toggle [(ngModel)]="romaneio.processa" name="isProcessa" required />
+          <label>{{romaneio.processa ? 'Sim' : 'Não'}}</label>
+        </section>
+      </div>
+
+      <mat-form-field class="fullWidth col-12 col-md-12" appearance="outline">
+        <mat-label>Observação</mat-label>
+        <input type="text" [(ngModel)]="romaneio.observacao" name="nome" matInput>
+      </mat-form-field>
 
       <div *ngIf="ELEMENT_DATA.length < 1">
         <label class="info"> Não existe pedidos pendente para adicionar</label>

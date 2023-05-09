@@ -84,7 +84,9 @@ export class RomaneioAtualizarComponent {
       return;
     }
 
-    this.romaneio.taxaFrete = parseFloat(this.romaneio.taxaFrete.toString().replace(".", "").replace(",", "."));
+    if (this.romaneio.taxaFrete !== null) {
+      this.romaneio.taxaFrete = parseFloat(this.romaneio.taxaFrete.toString().replace(".", "").replace(",", "."));
+    }
 
     this.service.update(this.romaneio).subscribe(
       (response) => {
@@ -114,7 +116,7 @@ export class RomaneioAtualizarComponent {
       this.atualizarTabela(pedidosCombinados);
     });
   };
-  
+
   atualizarTabela(pedidos: Pedido[]) {
     this.ELEMENT_DATA = pedidos;
     this.dataSource = new MatTableDataSource<Pedido>(pedidos);

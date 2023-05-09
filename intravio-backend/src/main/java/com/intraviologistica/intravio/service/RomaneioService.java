@@ -1,12 +1,14 @@
 package com.intraviologistica.intravio.service;
 
 import com.intraviologistica.intravio.dto.RomaneioDTO;
+import com.intraviologistica.intravio.dto.input.RomaneioFechamentoDTO;
 import com.intraviologistica.intravio.dto.input.RomaneioInputDTO;
 import com.intraviologistica.intravio.model.Pedido;
 import com.intraviologistica.intravio.model.Romaneio;
 import com.intraviologistica.intravio.model.Transportador;
 import com.intraviologistica.intravio.model.enums.StatusPedido;
 import com.intraviologistica.intravio.model.enums.StatusRomaneio;
+import com.intraviologistica.intravio.repository.PedidoRepository;
 import com.intraviologistica.intravio.repository.RomaneioRepository;
 import com.intraviologistica.intravio.service.exceptions.ResourceNotFoundException;
 import com.intraviologistica.intravio.service.exceptions.RuleOfBusinessException;
@@ -24,11 +26,14 @@ public class RomaneioService {
     private final RomaneioRepository romaneioRepository;
     private final PedidoService pedidoService;
     private final TransportadorService transportadorService;
+    private final PedidoRepository pedidoRepository;
 
-    public RomaneioService(RomaneioRepository romaneioRepository, PedidoService pedidoService, TransportadorService transportadorService) {
+    public RomaneioService(RomaneioRepository romaneioRepository, PedidoService pedidoService, TransportadorService transportadorService,
+                           PedidoRepository pedidoRepository) {
         this.romaneioRepository = romaneioRepository;
         this.pedidoService = pedidoService;
         this.transportadorService = transportadorService;
+        this.pedidoRepository = pedidoRepository;
     }
 
     private static String getUuid() {
@@ -84,7 +89,7 @@ public class RomaneioService {
 
         if (romaneio.getStatus().ordinal() == 3) {
             throw new RuleOfBusinessException("Romaneio fechado, não pode ser alterado");
-        }else if (romaneio.getStatus().ordinal() == 2){
+        } else if (romaneio.getStatus().ordinal() == 2 && !dto.isProcessa()) {
             throw new RuleOfBusinessException("Romaneio em trânsito, não pode ser alterado");
         }
 
@@ -132,6 +137,30 @@ public class RomaneioService {
     }
 
     @Transactional
+    public void fecharRomaneio(RomaneioFechamentoDTO dto) {
+        Romaneio romaneio = findById(dto.getRomaneioId());
+        romaneio.setStatus(StatusRomaneio.FECHADO);
+        romaneio = romaneioRepository.save(romaneio);
+
+        List<Integer> pedidosRomaneio = new ArrayList<>();
+        for (Pedido pedido : romaneio.getPedidos()) {
+            pedidosRomaneio.add(pedido.getNumeroPedido());
+        }
+
+        atualizaStatusPedidos(dto.getPedidosConcluido(), pedidosRomaneio, 7);
+        atualizaStatusPedidos(dto.getPedidosRetorno(), pedidosRomaneio, 8);
+    }
+
+    private void atualizaStatusPedidos(List<Integer> dto, List<Integer> pedidosRomaneio, int status) {
+        for (Integer numeroPedido : dto) {
+            if (pedidosRomaneio.contains(numeroPedido)) {
+                Pedido pedido = pedidoService.buscaPorNumeroPedido(numeroPedido);
+                atualizarStatusDoPedido(pedido, status);
+            }
+        }
+    }
+
+    @Transactional
     public void alterarStatusDeTodosPedidosParaEmTransito(String id, Integer status) {
         Romaneio romaneio = findById(id);
         List<Pedido> pedidos = pedidoService.listaPedidosPorRomaneioId(id);
@@ -151,19 +180,23 @@ public class RomaneioService {
         switch (status) {
             case 0 -> {
                 novoStatus = StatusPedido.SEPARADO;
-                mensagem = "Pedido separado na unidade " + pedido.getOrigem().getNome().toUpperCase(Locale.ROOT);
+                mensagem = "Objeto separado na unidade " + pedido.getOrigem().getNome().toUpperCase(Locale.ROOT);
             }
             case 1 -> {
                 novoStatus = StatusPedido.ENTREGUE_AO_TRANSPORTADOR;
-                mensagem = "Pedido entregue ao transportador";
+                mensagem = "Objeto entregue ao transportador";
             }
             case 2 -> {
                 novoStatus = StatusPedido.EM_TRANSITO;
-                mensagem = "Pedido encaminhado para filial " + pedido.getDestino().getNome().toUpperCase(Locale.ROOT);
+                mensagem = "Objeto encaminhado para filial " + pedido.getDestino().getNome().toUpperCase(Locale.ROOT);
             }
-            case 4 -> {
+            case 7 -> {
                 novoStatus = StatusPedido.ENTREGUE;
-                mensagem = "Pedido recebido pelo destinatário";
+                mensagem = "Objeto recebido pelo destinatário";
+            }
+            case 8 -> {
+                novoStatus = StatusPedido.RETORNO;
+                mensagem = "Objeto retornou";
             }
             default -> throw new RuleOfBusinessException("Não foi possível encontrar status: " + status);
         }
@@ -176,7 +209,7 @@ public class RomaneioService {
             case 0 -> romaneio.setStatus(StatusRomaneio.ABERTO);
             case 1 -> romaneio.setStatus(StatusRomaneio.PROCESSADO);
             case 2 -> romaneio.setStatus(StatusRomaneio.EM_TRANSITO);
-            case 4 -> romaneio.setStatus(StatusRomaneio.FECHADO);
+            case 3 -> romaneio.setStatus(StatusRomaneio.FECHADO);
             default -> throw new RuleOfBusinessException("Não foi possível encontrar status: " + status);
         }
     }
@@ -279,5 +312,16 @@ public class RomaneioService {
         romaneio.setObservacao(dto.getObservacao());
 
         return romaneio;
+    }
+
+    @Transactional
+    public void processarRomaneio(String id) {
+        Romaneio romaneio = findById(id);
+        atualizarStatusDoRomaneio(romaneio, 2);
+        romaneioRepository.save(romaneio);
+        for (Pedido pedido : romaneio.getPedidos()) {
+            atualizarStatusDoPedido(pedido, 2);
+            pedidoService.salvaPedidoRetornandoEntidade(pedido);
+        }
     }
 }

@@ -12,8 +12,7 @@ import { PedidoService } from 'src/app/services/pedido.service';
 export class RastreioComponent implements OnInit {
 
   historicoPedidos: HistoricoPedido[] = [];
-  codigoRastreio: string;
-  captcha: string;
+  codigoRastreio: String = "";
 
   constructor(
     private pedidoService: PedidoService,
@@ -21,16 +20,18 @@ export class RastreioComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.codigoRastreio = 'YYO85755748YOR'
   }
 
   buscarRastreamento() {
+    if (this.codigoRastreio === null || this.codigoRastreio.length < 3) {
+      this.toast.error("Insira o código de rastreio válido");
+      return;
+    }
+
     this.pedidoService.exibirHistoricoPedidos(this.codigoRastreio).subscribe(response => {
       this.historicoPedidos = response;
     }, (ex) => {
       this.toast.error(ex.error.message);
     })
-
   }
-
 }

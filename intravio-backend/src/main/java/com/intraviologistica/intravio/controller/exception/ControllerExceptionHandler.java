@@ -1,14 +1,15 @@
 package com.intraviologistica.intravio.controller.exception;
 
+
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 import com.intraviologistica.intravio.service.exceptions.AuthenticateErrorException;
 import com.intraviologistica.intravio.service.exceptions.FileNotFoundException;
 import com.intraviologistica.intravio.service.exceptions.ResourceNotFoundException;
 import com.intraviologistica.intravio.service.exceptions.RuleOfBusinessException;
-import jakarta.persistence.NonUniqueResultException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.hibernate.NonUniqueResultException;
 import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.id.IdentifierGenerationException;
 import org.postgresql.util.PSQLException;

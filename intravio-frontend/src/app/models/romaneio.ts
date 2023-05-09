@@ -31,4 +31,9 @@ export interface RomaneioGet {
     pedidos: Pedido[];
 }
 
+export interface RomaneioFechamento{
+    romaneioId: string;
+    pedidosConcluido: Number[];
+    pedidosRetorno: Number[];
+}
 

@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { API_CONFIG } from '../config/api.config';
-import {RomaneioGet, RomaneioInput } from '../models/romaneio';
+import {RomaneioFechamento, RomaneioGet, RomaneioInput } from '../models/romaneio';
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +28,14 @@ export class RomaneioService {
 
   update(romaneio: RomaneioInput): Observable<RomaneioInput> {
     return this.http.put<RomaneioInput>(`${API_CONFIG.baseUrl}/romaneios/${romaneio.id}`, romaneio)
+  }
+
+  fecharRomaneio(romaneio: RomaneioFechamento): Observable<RomaneioFechamento> {
+    return this.http.put<RomaneioFechamento>(`${API_CONFIG.baseUrl}/romaneios/${romaneio.romaneioId}/fechamento`, romaneio)
+  }
+
+  processarRomaneio(id: any){
+    return this.http.put(`${API_CONFIG.baseUrl}/romaneios/${id}/processar`, null)
   }
 
   delete(romaneio: any): Observable<void> {

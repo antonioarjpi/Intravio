@@ -68,6 +68,7 @@ import { RomaneioAtualizarComponent } from './pages/romaneios/romaneio-atualizar
 import { RomaneioDeletarComponent } from './pages/romaneios/romaneio-deletar/romaneio-deletar.component';
 import { RastreioComponent } from './pages/rastreio/rastreio.component';
 import { RomaneioFechamentoComponent } from './pages/romaneios/romaneio-fechamento/romaneio-fechamento.component';
+import { RomaneioProcessarModal } from './pages/romaneios/romaneio-listar/romaneio-processar-modal';
 
 @NgModule({
   declarations: [
@@ -102,6 +103,7 @@ import { RomaneioFechamentoComponent } from './pages/romaneios/romaneio-fechamen
     PedidoDeletarComponent,
     PedidoModal,
     RomaneioModal,
+    RomaneioProcessarModal,
     RomaneioListarComponent,
     RomaneioCriarComponent,
     RomaneioAtualizarComponent,
