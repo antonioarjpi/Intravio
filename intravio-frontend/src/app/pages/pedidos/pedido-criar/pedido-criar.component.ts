@@ -38,7 +38,9 @@ export class PedidoCriarComponent implements OnInit {
   quantidade: number;
   itens: Item[] = [];
   arquivos: { file: File, url: string }[] = [];
-
+  filialList: Filial[] = [];
+  funcionarioList: Funcionario[] = [];
+  produtoList: Produto[] = [];
 
   pedido: PedidoInput = {
     id: "",
@@ -53,10 +55,6 @@ export class PedidoCriarComponent implements OnInit {
     acompanhaStatus: null
 
   };
-
-  filialList: Filial[] = [];
-  funcionarioList: Funcionario[] = [];
-  produtoList: Produto[] = [];
 
   constructor(
     private service: PedidoService,
@@ -83,13 +81,18 @@ export class PedidoCriarComponent implements OnInit {
     });
   };
 
+  handleValueSelected(value: string, formControlName: string) {
+    this.pedido[formControlName] = value;
+    this.firstFormGroup.get(formControlName).setValue(value);
+  }
+
   finalizarPedido(): void {
     this.pedido.itens = this.itens;
     this.service.create(this.pedido).subscribe(
       (response) => {
-        if(this.arquivos.length < 1){
+        if (this.arquivos.length < 1) {
           this.toast.success("Pedido realizado com sucesso", "Cadastro");
-          this.router.navigate(["pedidos"]); 
+          this.router.navigate(["pedidos"]);
           return;
         }
         this.pedido.id = response.id;

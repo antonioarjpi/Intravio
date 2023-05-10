@@ -69,6 +69,8 @@ import { RomaneioDeletarComponent } from './pages/romaneios/romaneio-deletar/rom
 import { RastreioComponent } from './pages/rastreio/rastreio.component';
 import { RomaneioFechamentoComponent } from './pages/romaneios/romaneio-fechamento/romaneio-fechamento.component';
 import { RomaneioProcessarModal } from './pages/romaneios/romaneio-listar/romaneio-processar-modal';
+import { SelectComponent } from './components/select/select.component';
+import { SelectOptionComponent } from './components/select-option/select-option.component';
 
 @NgModule({
   declarations: [
@@ -109,7 +111,9 @@ import { RomaneioProcessarModal } from './pages/romaneios/romaneio-listar/romane
     RomaneioAtualizarComponent,
     RomaneioDeletarComponent,
     RastreioComponent,
-    RomaneioFechamentoComponent
+    RomaneioFechamentoComponent,
+    SelectComponent,
+    SelectOptionComponent
   ],
   imports: [
     BrowserModule,

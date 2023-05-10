@@ -10,48 +10,24 @@
                 <mat-stepper class="fullWidth" linear #stepper>
                     <mat-step [stepControl]="firstFormGroup" [editable]="true">
                         <ng-template matStepLabel>Dados</ng-template>
+
                         <form [formGroup]="firstFormGroup">
 
-                            <mat-form-field class="fullWidth col-12 col-md-12 mt-3" appearance="outline">
-                                <mat-label>Remetente</mat-label>
-                                <mat-select [(ngModel)]="pedido.remetente" name="remetente" formControlName="remetente"
-                                    required>
-                                    <mat-option *ngFor="let funcionarioOption of funcionarioList"
-                                        [value]="funcionarioOption.id">{{
-                                        funcionarioOption.nome.split(' ').slice(0, 2).join(' ') }}
-                                        - {{ funcionarioOption.email }}</mat-option>
-                                </mat-select>
-                            </mat-form-field>
+                            <app-select className="col-12 col-md-12" [list]="funcionarioList" [filter]="funcionarioList"
+                                label="Remetente" option1="nome" option2="email" [valueOption]="'id'" findBy="nome"
+                                [isRequired]="true" (valueSelected)="handleValueSelected($event, 'remetente')" />
 
-                            <mat-form-field class="fullWidth col-12 col-md-12" appearance="outline">
-                                <mat-label>Destinatário</mat-label>
-                                <mat-select [(ngModel)]="pedido.destinatario" name="destinatario"
-                                    formControlName="destinatario" required>
-                                    <mat-option *ngFor="let funcionarioOption of funcionarioList"
-                                        [value]="funcionarioOption.id">{{
-                                        funcionarioOption.nome.split(' ').slice(0, 2).join(' ') }}
-                                        - {{ funcionarioOption.email }}</mat-option>
-                                </mat-select>
-                            </mat-form-field>
+                            <app-select className="col-12 col-md-12" [list]="funcionarioList" [filter]="funcionarioList"
+                                label="Destinatário" option1="nome" option2="email" [valueOption]="'id'" findBy="nome"
+                                [isRequired]="true" (valueSelected)="handleValueSelected($event, 'destinatario')" />
 
-                            <mat-form-field class="fullWidth col-12 col-md-6" appearance="outline">
-                                <mat-label>Filial Origem</mat-label>
-                                <mat-select [(ngModel)]="pedido.origem" name="filial" formControlName="origem" required>
-                                    <mat-option *ngFor="let filialOption of filialList" [value]="filialOption.id">{{
-                                        filialOption.id }}
-                                        - {{ filialOption.nome }}</mat-option>
-                                </mat-select>
-                            </mat-form-field>
+                            <app-select className="col-12 col-md-6" [list]="filialList" [filter]="filialList"
+                                label="Filial de Origem" option1="nome" [valueOption]="'id'" [isRequired]="true"
+                                findBy="nome" (valueSelected)="handleValueSelected($event, 'origem')" />
 
-                            <mat-form-field class="fullWidth col-12 col-md-6" appearance="outline">
-                                <mat-label>Filial Destino</mat-label>
-                                <mat-select [(ngModel)]="pedido.destino" name="filial" formControlName="destino"
-                                    required>
-                                    <mat-option *ngFor="let filialOption of filialList" [value]="filialOption.id">{{
-                                        filialOption.id }}
-                                        - {{ filialOption.nome }}</mat-option>
-                                </mat-select>
-                            </mat-form-field>
+                            <app-select className="col-12 col-md-6" [list]="filialList" [filter]="filialList"
+                                label="Filial Destino" option1="nome" [valueOption]="'id'" [isRequired]="true"
+                                findBy="nome" (valueSelected)="handleValueSelected($event, 'destino')" />
 
                             <mat-form-field class="fullWidth col-12 col-md-6" appearance="outline">
                                 <mat-label>Prioridade</mat-label>
@@ -74,6 +50,7 @@
                                     <mat-option value="3">Ambos</mat-option>
                                 </mat-select>
                             </mat-form-field>
+
                         </form>
                         <div>
                             <div class="footer">
@@ -92,14 +69,10 @@
                             <ng-template matStepLabel>Itens</ng-template>
                             <div class="col-md-12 row d-flex align-items-center">
 
-                                <mat-form-field class="fullWidth col-12 col-md-4 mt-3" appearance="outline">
-                                    <mat-label>Produto</mat-label>
-                                    <mat-select placeholder="Produto" [(ngModel)]="produto" name="produto">
-                                        <mat-option *ngFor="let produtoOption of produtoList" [value]="produtoOption">
-                                            {{produtoOption.codigo}} - {{produtoOption.nome}}
-                                        </mat-option>
-                                    </mat-select>
-                                </mat-form-field>
+                                <app-select className="fullWidth col-12 col-md-12 mt-3" [list]="produtoList"
+                                    [filter]="produtoList" label="Produto" option1="codigo" option2="nome"
+                                    [valueOption]="'id'" [isRequired]="true" findBy="nome"
+                                    (valueSelected)="handleValueSelected($event, 'produto')" />
 
                                 <mat-form-field class="fullWidth col-12 col-md-2 mt-3" appearance="outline">
                                     <mat-label>Quantidade</mat-label>
@@ -162,8 +135,8 @@
                                     <i class="material-icons">add_a_photo</i> Arraste e solte ou cole para enviar suas
                                     imagens
                                 </label>
-                                <input class="fullWidth" type="file" id="arquivos" multiple name="arquivos" accept="image/*"
-                                    (change)="onFileChange($event)">
+                                <input class="fullWidth" type="file" id="arquivos" multiple name="arquivos"
+                                    accept="image/*" (change)="onFileChange($event)">
                             </div>
                             <div class="preview-container">
                                 <div *ngFor="let file of arquivos" class="preview">
@@ -179,7 +152,8 @@
                                 <button matStepperPrevious class="mat-elevation-z4" mat-stroked-button color="warn">
                                     Voltar
                                 </button>
-                                <button (click)="finalizarPedido()" class="mat-elevation-z4" mat-flat-button color="primary">
+                                <button (click)="finalizarPedido()" class="mat-elevation-z4" mat-flat-button
+                                    color="primary">
                                     Finalizar Pedido
                                 </button>
                             </div>

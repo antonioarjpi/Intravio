@@ -1,0 +1,17 @@
+<div>
+    <div class="fullWidth select-search">
+        <div class="input-search" appearance="fill">
+            <input type="text" matInput placeholder="Filtre pelo nome" (keyup)="applyFilter($event)"
+                appearance="outline">
+            <button type="submit" class="search" mat-button matSuffix>
+                <mat-icon>search</mat-icon>
+            </button>
+        </div>
+    </div>
+
+    <mat-option *ngFor="let valueOption of filter" [value]="valueOption.id">
+        {{ valueOption[option1]}}
+        <label *ngIf="option2.length > 0"> - </label>
+        {{ valueOption[option2] }}
+    </mat-option>
+</div>
