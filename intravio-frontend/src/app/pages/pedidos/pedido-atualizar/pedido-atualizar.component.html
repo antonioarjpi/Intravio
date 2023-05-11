@@ -4,54 +4,33 @@
             <h1 class="fullWidth">Atualização de Pedido: {{this.pedido.numeroPedido}}</h1>
             <img src="assets/img/pedido.jpg" alt="Help Desk">
         </div>
-                
+
         <form class="form">
             <div class="row">
                 <mat-stepper class="fullWidth" linear #stepper>
-                    <mat-step [stepControl]="firstFormGroup" [editable]="true">
+                    <mat-step [editable]="true">
                         <ng-template matStepLabel>Dados</ng-template>
                         <form [formGroup]="firstFormGroup">
 
-                            <mat-form-field class="fullWidth col-12 col-md-12 mt-3" appearance="outline">
-                                <mat-label>Remetente</mat-label>
-                                <mat-select [(ngModel)]="pedido.remetente" name="remetente" formControlName="remetente"
-                                    required>
-                                    <mat-option *ngFor="let funcionarioOption of funcionarioList"
-                                        [value]="funcionarioOption.id">{{
-                                        funcionarioOption.nome.split(' ').slice(0, 2).join(' ') }}
-                                        - {{ funcionarioOption.email }}</mat-option>
-                                </mat-select>
-                            </mat-form-field>
+                            <app-select className="col-12 col-md-12 mt-2" [list]="funcionarioList"
+                                [filter]="funcionarioList" label="Remetente" option1="nome" option2="email"
+                                [valueOption]="'id'" findBy="nome" [valorInicial]="pedido.remetente" [isRequired]="true"
+                                (valueSelected)="handleValueSelected($event, 'remetente')" ngName="remente" />
 
-                            <mat-form-field class="fullWidth col-12 col-md-12" appearance="outline">
-                                <mat-label>Destinatário</mat-label>
-                                <mat-select [(ngModel)]="pedido.destinatario" name="destinatario"
-                                    formControlName="destinatario" required>
-                                    <mat-option *ngFor="let funcionarioOption of funcionarioList"
-                                        [value]="funcionarioOption.id">{{
-                                        funcionarioOption.nome.split(' ').slice(0, 2).join(' ') }}
-                                        - {{ funcionarioOption.email }}</mat-option>
-                                </mat-select>
-                            </mat-form-field>
+                            <app-select className="col-12 col-md-12" [list]="funcionarioList" [filter]="funcionarioList"
+                                label="Destinatário" option1="nome" option2="email" [valueOption]="'id'" findBy="nome"
+                                [valorInicial]="pedido.destinatario" [isRequired]="true"
+                                (valueSelected)="handleValueSelected($event, 'destinatario')" />
 
-                            <mat-form-field class="fullWidth col-12 col-md-6" appearance="outline">
-                                <mat-label>Filial Origem</mat-label>
-                                <mat-select [(ngModel)]="pedido.origem" name="filial" formControlName="origem" required>
-                                    <mat-option *ngFor="let filialOption of filialList" [value]="filialOption.id">{{
-                                        filialOption.id }}
-                                        - {{ filialOption.nome }}</mat-option>
-                                </mat-select>
-                            </mat-form-field>
+                            <app-select className="col-12 col-md-6" [list]="filialList" [filter]="filialList"
+                                label="Filial de Origem" option1="nome" [valueOption]="'id'" [isRequired]="true"
+                                [valorInicial]="pedido.origem" findBy="nome"
+                                (valueSelected)="handleValueSelected($event, 'origem')" />
 
-                            <mat-form-field class="fullWidth col-12 col-md-6" appearance="outline">
-                                <mat-label>Filial Destino</mat-label>
-                                <mat-select [(ngModel)]="pedido.destino" name="filial" formControlName="destino"
-                                    required>
-                                    <mat-option *ngFor="let filialOption of filialList" [value]="filialOption.id">{{
-                                        filialOption.id }}
-                                        - {{ filialOption.nome }}</mat-option>
-                                </mat-select>
-                            </mat-form-field>
+                            <app-select className="col-12 col-md-6" [list]="filialList" [filter]="filialList"
+                                label="Filial Destino" option1="nome" [valueOption]="'id'" [isRequired]="true"
+                                [valorInicial]="pedido.destino" findBy="nome"
+                                (valueSelected)="handleValueSelected($event, 'destino')" />
 
                             <mat-form-field class="fullWidth col-12 col-md-6" appearance="outline">
                                 <mat-label>Prioridade</mat-label>
@@ -85,51 +64,48 @@
                         </div>
                     </mat-step>
 
-                    <mat-step [stepControl]="secondFormGroup" [editable]="true">
+                    <mat-step [editable]="true">
                         <form>
                             <ng-template matStepLabel>Itens</ng-template>
-                            <div class="col-md-12 row d-flex align-items-center">
+                            <div class="col-md-12">
 
-                                <mat-form-field class="fullWidth col-12 col-md-4 mt-3" appearance="outline">
-                                    <mat-label>Produto</mat-label>
-                                    <mat-select placeholder="Produto" [(ngModel)]="produto" name="produto" >
-                                        <mat-option *ngFor="let produtoOption of produtoList" [value]="produtoOption">
-                                            {{produtoOption.codigo}} - {{produtoOption.nome}}
-                                        </mat-option>
-                                    </mat-select>
-                                </mat-form-field>
+                                <app-select className="fullWidth col-12 col-md-5 mt-2" [list]="produtoList"
+                                    [filter]="produtoList" label="Produto" option1="codigo" option2="nome"
+                                    [isRequired]="true" findBy="nome"
+                                    (valueSelected)="handleValueProduto($event, 'produto')" />
 
-                                <mat-form-field class="fullWidth col-12 col-md-2 mt-3" appearance="outline">
-                                    <mat-label>Quantidade</mat-label>
+                                <mat-form-field class="fullWidth col-12 col-md-2 mt-2" appearance="outline">
+                                    <mat-label>Qnt.</mat-label>
                                     <input matInput placeholder="Quantidade" [(ngModel)]="quantidade" name="quantidade">
                                 </mat-form-field>
 
-                                <mat-form-field class="fullWidth col-12 col-md-4 mt-3" appearance="outline">
+                                <mat-form-field class="fullWidth col-12 col-md-5 mt-2" appearance="outline">
                                     <mat-label>Descrição Pedido</mat-label>
                                     <input matInput placeholder="Descrição" [(ngModel)]="descricao" name="descricao">
-                                </mat-form-field>                   
+                                </mat-form-field>
 
-                                <div class="col-md-2">
-                                    <button class="p-4 add-item" mat-raised-button color="primary"
+                                <div class="col-md-4">
+                                    <button type="submit" class="add-item" mat-raised-button color="primary"
                                         (click)="adicionarItem()" [disabled]="validarItens()">Adicionar Item</button>
                                 </div>
                             </div>
                         </form>
-                        <div class="container">
+
+                        <div class="container table">
                             <table>
                                 <thead>
                                     <tr>
                                         <th style="padding-left: 4px;">Nome</th>
-                                        <th style="padding-left: 4px;">Descrição</th>
                                         <th style="text-align: center;">Quantidade</th>
+                                        <th style="padding-left: 4px;">Descrição</th>
                                         <th style="text-align: center;">Excluir</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let item of itens; let i = index">
                                         <td style="padding-left: 4px;">{{ item.produto.nome }}</td>
-                                        <td style="padding-left: 4px;">{{ item.descricao }}</td>
                                         <td style="text-align: center;">{{ item.quantidade }}</td>
+                                        <td style="padding-left: 4px;">{{ item.descricao }}</td>
                                         <td style="text-align: center;">
                                             <button mat-icon-button color="warn" (click)="removerItem(item)">
                                                 <mat-icon>clear</mat-icon>
@@ -157,10 +133,11 @@
                         <div class="container">
                             <div class="custom-file-upload" (dragover)="onDragOver($event)" (drop)="onDrop($event)">
                                 <label for="arquivos">
-                                    <i class="material-icons">add_a_photo</i> Arraste e solte ou cole para enviar suas imagens
+                                    <i class="material-icons">add_a_photo</i> Arraste e solte ou cole para enviar suas
+                                    imagens
                                 </label>
-                                <input class="fullWidth" type="file" id="arquivos" multiple name="arquivos" accept="image/*"
-                                    (change)="onFileChange($event)">
+                                <input class="fullWidth" type="file" id="arquivos" multiple name="arquivos"
+                                    accept="image/*" (change)="onFileChange($event)">
                             </div>
                             <div class="preview-container">
                                 <div *ngFor="let file of arquivos" class="preview">

@@ -86,6 +86,11 @@ export class PedidoCriarComponent implements OnInit {
     this.firstFormGroup.get(formControlName).setValue(value);
   }
 
+  handleValueProduto(value: string, formControlName: string) {
+    this[formControlName] = value;
+    this.secondFormGroup.get(formControlName).setValue(value);
+  }
+
   finalizarPedido(): void {
     this.pedido.itens = this.itens;
     this.service.create(this.pedido).subscribe(

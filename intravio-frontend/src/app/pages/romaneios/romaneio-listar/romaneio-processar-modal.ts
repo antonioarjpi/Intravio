@@ -1,9 +1,8 @@
 import { Component, EventEmitter, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { RomaneioGet } from 'src/app/models/romaneio';
-import { Pedido } from 'src/app/models/pedido';
 import { RomaneioService } from 'src/app/services/romaneio.service';
-import { Toast, ToastrService } from 'ngx-toastr';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-romaneio-modal',

@@ -2,7 +2,6 @@ import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Pedido } from 'src/app/models/pedido';
 
-
 @Component({
   selector: 'app-pedido-modal',
   template: `
@@ -110,19 +109,19 @@ import { Pedido } from 'src/app/models/pedido';
                     <thead>
                         <tr>
                             <th style="padding-left: 4px;">Nome</th>
-                            <th style="padding-left: 4px;">Descrição</th>
                             <th style="text-align: center;">Quantidade</th>
                             <th style="text-align: center;">Preço</th>
                             <th style="text-align: center;">Peso</th>
+                            <th style="padding-left: 4px;">Descrição</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr *ngFor="let item of data.itens; let i = index">
                             <td style="padding-left: 4px;">{{ item.produtoNome }}</td>
-                            <td style="padding-left: 4px;">{{ item.descricao }}</td>
                             <td style="text-align: center;">{{ item.quantidade }}</td>
                             <td style="text-align: center;">R$ {{ item.subtotalPreco }}</td>
                             <td style="text-align: center;">{{ item.peso }} kg</td>
+                            <td style="padding-left: 4px;">{{ item.descricao }}</td>
                         </tr>
                     </tbody>
                 </table>

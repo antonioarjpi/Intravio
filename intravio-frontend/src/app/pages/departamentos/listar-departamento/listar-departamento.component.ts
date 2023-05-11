@@ -16,7 +16,6 @@ export class ListarDepartamentoComponent implements OnInit {
   displayedColumns: string[] = ["nome", "acoes"];
   dataSource = new MatTableDataSource<Departamento>(this.ELEMENT_DATA);
 
-  
   constructor(private service: DepartamentoService) {}
 
   ngOnInit(): void {

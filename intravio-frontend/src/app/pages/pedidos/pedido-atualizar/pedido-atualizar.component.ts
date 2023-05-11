@@ -1,7 +1,8 @@
-import { Component, OnInit, Renderer2 } from '@angular/core';
+import { Component, OnInit, Renderer2, ViewChild, AfterViewInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { SelectComponent } from 'src/app/components/select/select.component';
 import { Filial } from 'src/app/models/filial';
 import { Funcionario } from 'src/app/models/funcionario';
 import { Item } from 'src/app/models/item';
@@ -17,7 +18,12 @@ import { ProdutoService } from 'src/app/services/produto.service';
   templateUrl: './pedido-atualizar.component.html',
   styleUrls: ['./pedido-atualizar.component.css']
 })
-export class PedidoAtualizarComponent implements OnInit {
+export class PedidoAtualizarComponent implements OnInit, AfterViewInit  {
+
+
+  
+  
+
 
   firstFormGroup = this.formBuilder.group({
     origem: ['', Validators.required],
@@ -77,31 +83,33 @@ export class PedidoAtualizarComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private formBuilder: FormBuilder,
-    private renderer: Renderer2
   ) { };
 
   ngOnInit(): void {
-    this.pedido.id = this.route.snapshot.paramMap.get("id")
+    this.pedido.id = this.route.snapshot.paramMap.get("id");
 
     this.produtoService.findAll().subscribe((response) => {
-      this.produtoList = response
+      this.produtoList = response;
     });
 
     this.funcionarioService.findAll().subscribe((response) => {
-      this.funcionarioList = response
+      this.funcionarioList = response;
     });
 
     this.filialService.findAll().subscribe((response) => {
-      this.filialList = response
+      this.filialList = response;
     });
 
     this.buscarPedidoPorId();
-
   };
+
+  ngAfterViewInit(): void {
+  }
 
   buscarPedidoPorId(): void {
     this.service.findById(this.pedido.id).subscribe((response) => {
       this.pedido = response;
+      
       this.pedido.prioridade = this.returnPriority(response.prioridade);
       this.pedido.acompanhaStatus = this.returnAcompanhaStatus(response.acompanhaStatus);
 
@@ -114,7 +122,6 @@ export class PedidoAtualizarComponent implements OnInit {
             const dataUrl = reader.result as string;
             const file = new File([blob], link, { lastModified: new Date().getTime(), type: blob.type });
             this.arquivos.push({ file, url: dataUrl });
-            console.log(this.arquivos)
           };
           reader.readAsDataURL(blob);
         }, error => {
@@ -177,6 +184,15 @@ export class PedidoAtualizarComponent implements OnInit {
       });
   }
 
+  handleValueSelected(value: String, formControlName: string) {
+    this.pedido[formControlName] = value;
+    this.firstFormGroup.get(formControlName).setValue(value);
+  }
+
+  handleValueProduto(value: string, formControlName: string) {
+    this[formControlName] = value;
+  }
+
   onFileChange(event) {
     const files = event.target.files;
     const urls = [];
@@ -224,7 +240,6 @@ export class PedidoAtualizarComponent implements OnInit {
   };
 
   removerArquivo(arquivo) {
-    console.log(arquivo)
     const index = this.arquivos.indexOf(arquivo);
     if (index !== -1) {
       URL.revokeObjectURL(arquivo.url);

@@ -2,7 +2,6 @@
     padding: 15px;
     border-radius: .6rem;
     background-color: #ffff;
-    width: 60rem;
 }
 
 .header {
@@ -47,7 +46,7 @@ img {
 }
 
 .add-item {
-    height: 55.5px;
+    height: 45.5px;
 }
 
 table {
@@ -167,4 +166,4 @@ label{
     padding: 3px;
     margin: 3px 0 0 3px;
     z-index: 100;
-}
+} 

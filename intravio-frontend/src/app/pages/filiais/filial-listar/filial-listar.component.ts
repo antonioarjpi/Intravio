@@ -16,7 +16,6 @@ export class FilialListarComponent implements OnInit {
   displayedColumns: string[] = ["id","nome", "endereco", "complemento", "acoes"];
   dataSource = new MatTableDataSource<Filial>(this.ELEMENT_DATA);
 
-
   constructor(private service: FilialService) { }
 
   ngOnInit(): void {
@@ -37,5 +36,4 @@ export class FilialListarComponent implements OnInit {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
-
 }

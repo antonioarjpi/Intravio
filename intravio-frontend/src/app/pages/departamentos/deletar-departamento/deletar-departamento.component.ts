@@ -1,5 +1,4 @@
 import { Component, OnInit } from "@angular/core";
-import { UntypedFormControl, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Departamento } from 'src/app/models/departamento';
@@ -29,7 +28,6 @@ export class DeletarDepartamentoComponent implements OnInit {
     this.departamento.id = this.route.snapshot.paramMap.get('id');
     this.buscarPorId();
   }
-
 
   buscarPorId(): void {
     this.service.findById(this.departamento.id).subscribe(response => {

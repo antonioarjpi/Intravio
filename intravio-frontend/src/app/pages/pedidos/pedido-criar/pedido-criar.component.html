@@ -7,13 +7,14 @@
 
         <form class="form">
             <div class="row">
+
                 <mat-stepper class="fullWidth" linear #stepper>
                     <mat-step [stepControl]="firstFormGroup" [editable]="true">
                         <ng-template matStepLabel>Dados</ng-template>
 
                         <form [formGroup]="firstFormGroup">
 
-                            <app-select className="col-12 col-md-12" [list]="funcionarioList" [filter]="funcionarioList"
+                            <app-select className="col-12 col-md-12 mt-2" [list]="funcionarioList" [filter]="funcionarioList"
                                 label="Remetente" option1="nome" option2="email" [valueOption]="'id'" findBy="nome"
                                 [isRequired]="true" (valueSelected)="handleValueSelected($event, 'remetente')" />
 
@@ -67,44 +68,45 @@
                     <mat-step [stepControl]="secondFormGroup" [editable]="true">
                         <form>
                             <ng-template matStepLabel>Itens</ng-template>
-                            <div class="col-md-12 row d-flex align-items-center">
+                            <div class="col-md-12">
 
-                                <app-select className="fullWidth col-12 col-md-12 mt-3" [list]="produtoList"
+                                <app-select className="fullWidth col-12 col-md-5 mt-3" [list]="produtoList"
                                     [filter]="produtoList" label="Produto" option1="codigo" option2="nome"
-                                    [valueOption]="'id'" [isRequired]="true" findBy="nome"
-                                    (valueSelected)="handleValueSelected($event, 'produto')" />
+                                    [isRequired]="true" findBy="nome"
+                                    (valueSelected)="handleValueProduto($event, 'produto')" />
 
                                 <mat-form-field class="fullWidth col-12 col-md-2 mt-3" appearance="outline">
-                                    <mat-label>Quantidade</mat-label>
+                                    <mat-label>Qnt.</mat-label>
                                     <input matInput placeholder="Quantidade" [(ngModel)]="quantidade" name="quantidade">
                                 </mat-form-field>
 
-                                <mat-form-field class="fullWidth col-12 col-md-4 mt-3" appearance="outline">
+                                <mat-form-field class="fullWidth col-12 col-md-5 mt-3" appearance="outline">
                                     <mat-label>Descrição Pedido</mat-label>
                                     <input matInput placeholder="Descrição" [(ngModel)]="descricao" name="descricao">
                                 </mat-form-field>
 
-                                <div class="col-md-2">
-                                    <button type="submit" class="p-4 add-item" mat-raised-button color="primary"
+                                <div class="col-md-4">
+                                    <button type="submit" class="add-item" mat-raised-button color="primary"
                                         (click)="adicionarItem()" [disabled]="validarItens()">Adicionar Item</button>
                                 </div>
                             </div>
                         </form>
+                        
                         <div class="container">
                             <table>
                                 <thead>
                                     <tr>
                                         <th style="padding-left: 4px;">Nome</th>
-                                        <th style="padding-left: 4px;">Descrição</th>
                                         <th style="text-align: center;">Quantidade</th>
+                                        <th style="padding-left: 4px;">Descrição</th>
                                         <th style="text-align: center;">Excluir</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let item of itens; let i = index">
                                         <td style="padding-left: 4px;">{{ item.produto.nome }}</td>
-                                        <td style="padding-left: 4px;">{{ item.descricao }}</td>
                                         <td style="text-align: center;">{{ item.quantidade }}</td>
+                                        <td style="padding-left: 4px;">{{ item.descricao }}</td>
                                         <td style="text-align: center;">
                                             <button mat-icon-button color="warn" (click)="removerItem(item)">
                                                 <mat-icon>clear</mat-icon>

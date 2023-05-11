@@ -2,20 +2,25 @@
 
     <mat-label>{{label}}</mat-label>
 
-    <mat-select [(ngModel)]="selectedValue" (selectionChange)="emitValue()" [required]="isRequired">
-        <div class="fullWidth select-search">
+    <mat-select [(ngModel)]="selectedValue" (click)="remove()" (selectionChange)="emitValue()" [required]="isRequired" [name]="ngName">
+        <div class="select-search">
             <div class="input-search" appearance="fill">
-                <input type="text" matInput placeholder="Filtre pelo nome" (keyup)="applyFilter($event)"
+                <input type="text" matInput placeholder="Filtre pelo nome" (ngModelChange)="applyFilter()" [(ngModel)]="value"
                     appearance="outline">
-                <button type="submit" class="search" mat-button matSuffix>
+                <button type="button" mat-button matSuffix>
                     <mat-icon>search</mat-icon>
+                </button>
+            </div>
+            <div>
+                <button (click)="remove()" type="button" mat-button matSuffix>
+                    <mat-icon>clear</mat-icon>
                 </button>
             </div>
         </div>
 
-        <mat-option *ngFor="let option of filter" [value]="option[valueOption]">
+        <mat-option *ngFor="let option of filter" [value]="valueOption !== null ? option[valueOption] : option">
             {{ option[option1]}}
-           <label *ngIf="option2.length > 0"> - </label>
+            <label *ngIf="option2.length > 0"> - </label>
             {{ option[option2] }}
         </mat-option>
     </mat-select>

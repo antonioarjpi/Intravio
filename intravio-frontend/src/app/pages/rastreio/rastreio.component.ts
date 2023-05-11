@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormControl, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { HistoricoPedido } from 'src/app/models/HistoricoPedido';
 import { PedidoService } from 'src/app/services/pedido.service';

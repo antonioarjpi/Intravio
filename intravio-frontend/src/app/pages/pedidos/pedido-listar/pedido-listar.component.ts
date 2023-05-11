@@ -20,7 +20,7 @@ export class PedidoListarComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  displayedColumns: string[] = ["numeroPedido", "prioridade", "remetenteNome", "destino", "statusPedido", "acoes"];
+  displayedColumns: string[] = ["numeroPedido", "prioridade", "destinatarioNome", "destino", "statusPedido", "acoes"];
   dataSource = new MatTableDataSource<Pedido>(this.ELEMENT_DATA);
 
   constructor(
