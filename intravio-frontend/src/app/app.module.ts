@@ -70,6 +70,7 @@ import { RastreioComponent } from './pages/rastreio/rastreio.component';
 import { RomaneioFechamentoComponent } from './pages/romaneios/romaneio-fechamento/romaneio-fechamento.component';
 import { RomaneioProcessarModal } from './pages/romaneios/romaneio-listar/romaneio-processar-modal';
 import { SelectComponent } from './components/select/select.component';
+import { CardInfoComponent } from './components/card-info/card-info.component';
 
 @NgModule({
   declarations: [
@@ -111,7 +112,8 @@ import { SelectComponent } from './components/select/select.component';
     RomaneioDeletarComponent,
     RastreioComponent,
     RomaneioFechamentoComponent,
-    SelectComponent
+    SelectComponent,
+    CardInfoComponent
   ],
   imports: [
     BrowserModule,

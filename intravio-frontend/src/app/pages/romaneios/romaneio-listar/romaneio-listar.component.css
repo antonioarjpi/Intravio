@@ -44,6 +44,8 @@ table {
   
   a {
     margin-right: 3px;
+    display: flex;
+    justify-content: center;
   }
   
   .cdk-overlay-container {

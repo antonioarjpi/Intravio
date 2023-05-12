@@ -17,6 +17,7 @@ export interface Pedido {
     id:String;
     itens: ItemGet[];
     numeroPedido: number;
+    numeroRomaneio: number;
     statusPedido: any;
     remetenteNome: String;
     remetenteEmail: String;

@@ -7,8 +7,61 @@
 
         <mat-form-field appearance="outline">
             <mat-label>Filtro</mat-label>
-            <input matInput (keyup)="applyFilter($event)" placeholder="Busque por qualquer palavra" #input>
+            <input [disabled]="exibeFiltros" matInput (keyup)="applyFilter($event)" placeholder="Busque por qualquer palavra" #input>
         </mat-form-field>
+
+        <div class="d-flex justify-content-center">
+            <a href="javascript:void(0)" class="text-primary text-center" (click)="exibeFiltros = !exibeFiltros">
+                Exibe filtros avançados
+                <mat-icon *ngIf="!exibeFiltros">keyboard_arrow_down</mat-icon>
+                <mat-icon *ngIf="exibeFiltros">keyboard_arrow_up</mat-icon>
+            </a>
+        </div>
+
+        <div *ngIf="exibeFiltros">
+
+            <form>
+                <div class="input-group mt-2 mb-2">
+                    <div class="input-group-prepend">
+                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                            Buscar por {{tipoBusca === 'pedido' ? 'pedido' : 'romaneio'}}
+                        </button>
+                        <div class="dropdown-menu">
+                            <a style="cursor:pointer" class="dropdown-item text-left" (click)="tipoBusca = 'pedido'">Número de Pedido</a>
+                            <a style="cursor:pointer" (click)="tipoBusca = 'romaneio'">Número de Romaneio</a>
+                        </div>
+                    </div>
+                    <input [type]="tipoBusca === 'pedido' ? 'number' : 'text'" class="form-control" [(ngModel)]="buscaValor" name="buscaValor"
+                        [placeholder]="tipoBusca === 'pedido' ? 'Buscar por número de pedido...' : 'Buscar por número de romaneio...'">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="submit" (click)="pesquisaAvancada()">Pesquisar</button>
+                    </div>
+                </div>
+            </form>
+            <app-card-info label="Status">
+                <mat-radio-group class="mat-radio" color="primary">
+                    <mat-radio-button (click)="listarTodos()">TODOS</mat-radio-button>
+                    <mat-radio-button (click)="filtrarPedidos(0, null)" value="0">PENDENTE</mat-radio-button>
+                    <mat-radio-button (click)="filtrarPedidos(1, null)" value="1">CANCELADO</mat-radio-button>
+                    <mat-radio-button (click)="filtrarPedidos(2, null)" value="2">SEPARADO</mat-radio-button>
+                    <mat-radio-button (click)="filtrarPedidos(3, null)" value="3">ENTREGUE AO TRANSP.</mat-radio-button>
+                    <mat-radio-button (click)="filtrarPedidos(5, null)" value="5">EM TRÂNSITO</mat-radio-button>
+                    <mat-radio-button (click)="filtrarPedidos(6, null)" value="6">ENTREGUE</mat-radio-button>
+                    <mat-radio-button (click)="filtrarPedidos(7, null)" value="7">RETORNO</mat-radio-button>
+                </mat-radio-group>
+            </app-card-info>
+
+            <app-card-info label="Prioridade">
+                <mat-radio-group class="mat-radio" color="primary">
+                    <mat-radio-button (click)="listarTodos()">TODOS</mat-radio-button>
+                    <mat-radio-button (click)="filtrarPedidos(null, 0)" value="0">BAIXA</mat-radio-button>
+                    <mat-radio-button (click)="filtrarPedidos(null,1)" value="1">MÉDIA</mat-radio-button>
+                    <mat-radio-button (click)="filtrarPedidos(null,2)" value="2">ALTA</mat-radio-button>
+                    <mat-radio-button (click)="filtrarPedidos(null,3)" value="3">URGENTE</mat-radio-button>
+                </mat-radio-group>
+            </app-card-info>
+        </div>
     </div>
 
     <div class="table-responsive mat-elevation-z8">
@@ -20,6 +73,13 @@
                         style="vertical-align: bottom; color: #42A5F5; background-color: #E3F2FD; border-radius: 50%;">assignment</mat-icon>
                     {{ element.dataAtualizacao | date: 'yyyy/MM/dd' }}-{{element.numeroPedido}}
                 </td>
+            </ng-container>
+
+            <ng-container matColumnDef="numeroRomaneio">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="numeroRomaneio">
+                    Romaneio
+                </th>
+                <td class="text-center" mat-cell *matCellDef="let element">{{element.numeroRomaneio}} </td>
             </ng-container>
 
             <ng-container matColumnDef="prioridade">

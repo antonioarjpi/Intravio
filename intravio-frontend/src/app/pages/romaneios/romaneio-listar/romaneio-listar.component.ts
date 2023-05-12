@@ -16,12 +16,16 @@ import { RomaneioProcessarModal } from './romaneio-processar-modal';
 })
 export class RomaneioListarComponent {
   ELEMENT_DATA: RomaneioGet[] = [];
+  FILTERED_DATA: RomaneioGet[] = [];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
   displayedColumns: string[] = ["numeroRomaneio", "quantidadePedidos", "valorCarga", "pesoCarga", "motorista", "transportadora", "statusRomaneio", "acoes"];
   dataSource = new MatTableDataSource<RomaneioGet>(this.ELEMENT_DATA);
+
+  exibeFiltros: boolean = false;
+  numeroRomaneio: number = null;
 
   constructor(
     private service: RomaneioService,
@@ -69,6 +73,31 @@ export class RomaneioListarComponent {
     dialogRef.componentInstance.romaneio.subscribe(() => {
       this.listarTodosRomaneios();
     });
+  };
+
+  orderByStatus(status: any): void {
+    let list: RomaneioGet[] = [];
+    this.ELEMENT_DATA.forEach(element => {
+      if (element.statusRomaneio == status)
+        list.push(element)
+    });
+
+    this.recarregaLista(list);
+  }
+
+  pesquisaAvancada() {
+    let list: RomaneioGet[] = [];
+    this.ELEMENT_DATA.forEach(element => {
+      if (element.numeroRomaneio == this.numeroRomaneio) {
+        list.push(element);
+      }
+    })
+
+    this.recarregaLista(list);
+  }
+
+  listarTodos() {
+    this.recarregaLista(this.ELEMENT_DATA);
   }
 
   retornaStatus(status: Number): String {
@@ -82,4 +111,11 @@ export class RomaneioListarComponent {
       return "Fechado";
     }
   };
+
+  private recarregaLista(list: any) {
+    this.FILTERED_DATA = list;
+    this.dataSource = new MatTableDataSource<RomaneioGet>(list);
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
 }

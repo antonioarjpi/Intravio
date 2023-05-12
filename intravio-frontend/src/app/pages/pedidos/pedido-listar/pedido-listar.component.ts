@@ -16,12 +16,17 @@ import { PedidoDeletarComponent } from '../pedido-deletar/pedido-deletar.compone
 })
 export class PedidoListarComponent implements OnInit {
   ELEMENT_DATA: Pedido[] = [];
+  FILTERED_DATA: Pedido[] = [];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  displayedColumns: string[] = ["numeroPedido", "prioridade", "destinatarioNome", "destino", "statusPedido", "acoes"];
+  displayedColumns: string[] = ["numeroPedido", "numeroRomaneio", "prioridade", "destinatarioNome", "destino", "statusPedido", "acoes"];
   dataSource = new MatTableDataSource<Pedido>(this.ELEMENT_DATA);
+
+  exibeFiltros: boolean = false;
+  buscaValor: Number;
+  tipoBusca: string = 'pedido';
 
   constructor(
     private service: PedidoService,
@@ -84,6 +89,69 @@ export class PedidoListarComponent implements OnInit {
     });
   };
 
+  orderByStatus(status: any): void {
+    let list: Pedido[] = [];
+    this.ELEMENT_DATA.forEach(element => {
+      if (element.statusPedido == status)
+        list.push(element)
+    });
+
+    this.recarregaLista(list);
+  }
+
+  orderByPrioridade(prioridade: any): void {
+    let list: Pedido[] = [];
+    this.ELEMENT_DATA.forEach(element => {
+      if (element.prioridade == prioridade)
+        list.push(element)
+    });
+
+    this.recarregaLista(list);
+  }
+
+  pesquisaAvancada() {
+    let list: Pedido[] = [];
+    let chave: string;
+
+    if (this.tipoBusca === 'pedido') {
+      chave = 'numeroPedido';
+    } else {
+      chave = 'numeroRomaneio';
+    }
+
+    if (this.buscaValor == 0 || this.buscaValor == null) {
+      this.listarTodos();
+      return;
+    }
+
+    this.ELEMENT_DATA.forEach(element => {
+      if (element[chave] == this.buscaValor) {
+        list.push(element);
+      }
+    });
+
+    this.recarregaLista(list);
+  }
+
+  filtrarPedidos(status: any, prioridade: any): void {
+    let list: Pedido[] = [];
+
+    this.ELEMENT_DATA.forEach(element => {
+      const atendeStatus = status === null || element.statusPedido === status;
+      const atendePrioridade = prioridade === null || element.prioridade === prioridade;
+
+      if (atendeStatus && atendePrioridade) {
+        list.push(element);
+      }
+    });
+
+    this.recarregaLista(list);
+  }
+
+  listarTodos() {
+    this.recarregaLista(this.ELEMENT_DATA)
+  }
+
   retornaPrioridade(status: any): string {
     if (status == "0") {
       return "BAIXA";
@@ -117,4 +185,11 @@ export class PedidoListarComponent implements OnInit {
       return "Recebido na cidade de destino";
     }
   };
+
+  private recarregaLista(list: any) {
+    this.FILTERED_DATA = list;
+    this.dataSource = new MatTableDataSource<Pedido>(list);
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
 }

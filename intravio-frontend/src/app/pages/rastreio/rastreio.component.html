@@ -5,10 +5,10 @@
                 <div class="logo">
                     <app-logo></app-logo>
                 </div>
-                <mat-form-field>
+                <mat-form-field appearance="outline">
                     <mat-label>Digite o código de rastreio</mat-label>
                     <input type="text" matInput placeholder="Ex: YPI72444356YQK" [(ngModel)]="codigoRastreio" name="codigoRastreio"
-                        required appearance="outline">
+                        required>
                     <button type="submit" class="search" mat-button matSuffix (click)="buscarRastreamento()">
                         <mat-icon>search</mat-icon>
                     </button>

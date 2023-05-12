@@ -14,6 +14,7 @@ public class PedidoDTO {
     private String id;
     private Integer numeroPedido;
     private Integer statusPedido;
+    private Integer numeroRomaneio;
     private String remetenteNome;
     private String remetenteEmail;
     private String destinatarioNome;
@@ -39,6 +40,7 @@ public class PedidoDTO {
         this.id = pedido.getId();
         this.itens = pedido.getItens().stream().map(x -> new ItemDTO(x)).collect(Collectors.toList());
         this.imagens = pedido.getImagens();
+        this.numeroRomaneio = pedido.getRomaneio() == null ? null : pedido.getRomaneio().getNumeroRomaneio();
         this.statusPedido = pedido.getStatusPedido().ordinal();
         this.remetenteNome = pedido.getRemetente().getNome();
         this.remetenteEmail = pedido.getRemetente().getEmail();
@@ -198,5 +200,13 @@ public class PedidoDTO {
 
     public void setNumeroPedido(Integer numeroPedido) {
         this.numeroPedido = numeroPedido;
+    }
+
+    public Integer getNumeroRomaneio() {
+        return numeroRomaneio;
+    }
+
+    public void setNumeroRomaneio(Integer numeroRomaneio) {
+        this.numeroRomaneio = numeroRomaneio;
     }
 }

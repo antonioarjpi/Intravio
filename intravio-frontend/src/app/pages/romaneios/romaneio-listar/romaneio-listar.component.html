@@ -2,14 +2,47 @@
     <div class="card">
         <div class="button">
             <button routerLink="/romaneios/cadastrar" class="mat-elevation-z8 mb-2" mat-raised-button
-                color="primary">Novo
-                romaneio</button>
+                color="primary">Novo romaneio</button>
         </div>
 
         <mat-form-field appearance="outline">
             <mat-label>Filtro</mat-label>
             <input matInput (keyup)="applyFilter($event)" placeholder="Busque por qualquer palavra" #input>
         </mat-form-field>
+
+        <div class="d-flex justify-content-center">
+            <a href="javascript:void(0)" class="text-primary text-center" (click)="exibeFiltros = !exibeFiltros">
+                Exibe filtros avançados
+                <mat-icon *ngIf="!exibeFiltros">keyboard_arrow_down</mat-icon>
+                <mat-icon *ngIf="exibeFiltros">keyboard_arrow_up</mat-icon>
+            </a>
+        </div>
+
+        <div *ngIf="exibeFiltros">
+            <form>
+                <div class="mt-3">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Número de romaneio</mat-label>
+                        <input type="number" matInput placeholder="Somente números" [(ngModel)]="numeroRomaneio" name="numeroRomaneio"
+                            required>
+                        <button type="submit" class="search" mat-button matSuffix (click)="pesquisaAvancada()">
+                            <mat-icon>search</mat-icon>
+                        </button>
+                    </mat-form-field>
+                </div>
+            </form>
+
+            <app-card-info label="Status">
+                <mat-radio-group class="mat-radio" color="primary">
+                    <mat-radio-button (click)="listarTodos()">TODOS</mat-radio-button>
+                    <mat-radio-button (click)="orderByStatus(0)" value="0">ABERTO</mat-radio-button>
+                    <mat-radio-button (click)="orderByStatus(1)" value="1">PROCESSADO</mat-radio-button>
+                    <mat-radio-button (click)="orderByStatus(2)" value="2">EM TRÂNSITO</mat-radio-button>
+                    <mat-radio-button (click)="orderByStatus(3)" value="3">FECHADO</mat-radio-button>
+                </mat-radio-group>
+            </app-card-info>
+
+        </div>
     </div>
 
     <div class="table-responsive mat-elevation-z8">
@@ -77,20 +110,23 @@
                             <mat-icon>visibility</mat-icon>
                             <span>Ver Romaneio</span>
                         </button>
-                        <button [disabled]="element.statusRomaneio !== 0 && element.statusRomaneio !== 2" mat-menu-item routerLink="/romaneios/atualizar/{{element.id}}">
+                        <button [disabled]="element.statusRomaneio !== 0 && element.statusRomaneio !== 2" mat-menu-item
+                            routerLink="/romaneios/atualizar/{{element.id}}">
                             <mat-icon>edit</mat-icon>
                             <span>Editar romaneio</span>
                         </button>
-                        <button *ngIf="element.statusRomaneio === 0" mat-menu-item (click)="openModalProcessar(element)">
+                        <button *ngIf="element.statusRomaneio === 0" mat-menu-item
+                            (click)="openModalProcessar(element)">
                             <mat-icon>hourglass_full</mat-icon>
                             <span>Processar Romaneio</span>
                         </button>
-                        <button *ngIf="element.statusRomaneio === 2"  mat-menu-item routerLink="/romaneios/fechamento/{{element.id}}">
+                        <button *ngIf="element.statusRomaneio === 2" mat-menu-item
+                            routerLink="/romaneios/fechamento/{{element.id}}">
                             <mat-icon>done</mat-icon>
                             <span>Fechar Romaneio</span>
                         </button>
                         <button mat-menu-item routerLink="/romaneios/deletar/{{element.id}}"
-                            [disabled]="element.statusRomaneio !== 0 && element.statusRomaneio !== 2" >
+                            [disabled]="element.statusRomaneio !== 0 && element.statusRomaneio !== 2">
                             <mat-icon>cancel</mat-icon>
                             <span>Excluir romaneio</span>
                         </button>

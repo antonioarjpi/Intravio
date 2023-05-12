@@ -1,0 +1,21 @@
+.card-info {
+    color: black;
+    position: relative;
+    padding-top: 10px;
+  }
+  
+  .card-content {
+    padding-top: 25px;
+    border: 1px solid rgb(201, 199, 199);
+  }
+  
+  .card-info label {
+    font-weight: 500;
+    position: absolute;
+    background-color: #ffff;
+    z-index: 1;
+    left: 1%;
+    padding-left: 15px;
+    padding-right: 15px;
+    top: 0;
+  }
