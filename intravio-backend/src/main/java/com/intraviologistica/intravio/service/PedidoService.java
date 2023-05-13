@@ -15,7 +15,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -55,10 +58,14 @@ public class PedidoService {
     }
 
     @Transactional
-    public List<PedidoDTO> listaPedidos() {
-        return pedidoRepository.findAll()
+    public List<PedidoDTO> listaPedidos(String minDate, String maxDate) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+        LocalDateTime hoje = LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault());
+        LocalDateTime min = minDate.equals("") ? hoje.minusDays(1) : LocalDateTime.parse(minDate+"T00:00:00", formatter);
+        LocalDateTime max = maxDate.equals("") ? hoje : LocalDateTime.parse(maxDate+"T23:59:59", formatter);
+
+        return pedidoRepository.findAll(min, max)
                 .stream()
-                .sorted(Comparator.comparing(Pedido::getNumeroPedido).reversed())
                 .map(x -> new PedidoDTO(x))
                 .collect(Collectors.toList());
     }

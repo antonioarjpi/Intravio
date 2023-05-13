@@ -15,8 +15,8 @@ export class PedidoService {
 
   constructor(private http: HttpClient) { }
 
-  findAll(): Observable<Pedido[]> {
-    return this.http.get<Pedido[]>(`${API_CONFIG.baseUrl}/pedidos`)
+  findAll(minDate:any, maxDate:any): Observable<Pedido[]> {
+    return this.http.get<Pedido[]>(`${API_CONFIG.baseUrl}/pedidos?minDate=${minDate}&maxDate=${maxDate}`)
   }
 
   findAllByStatus(status: any): Observable<Pedido[]> {

@@ -7,7 +7,8 @@
 
         <mat-form-field appearance="outline">
             <mat-label>Filtro</mat-label>
-            <input [disabled]="exibeFiltros" matInput (keyup)="applyFilter($event)" placeholder="Busque por qualquer palavra" #input>
+            <input [disabled]="exibeFiltros" matInput (keyup)="applyFilter($event)"
+                placeholder="Busque por qualquer palavra" #input>
         </mat-form-field>
 
         <div class="d-flex justify-content-center">
@@ -19,7 +20,25 @@
         </div>
 
         <div *ngIf="exibeFiltros">
+            <app-card-info label="Intervalo de datas">
+                <mat-form-field class="col-md-3" appearance="fill">
+                    <mat-label>Data Inicial</mat-label>
+                    <input matInput [matDatepicker]="picker1" [value]="minDate" (dateInput)="onDateSelectedMin($event)">
+                    <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
+                    <mat-datepicker #picker1></mat-datepicker>
+                </mat-form-field>
 
+                <mat-form-field class="col-md-3" appearance="fill">
+                    <mat-label>Data Final</mat-label>
+                    <input matInput  [matDatepicker]="picker2" [value]="maxDate" (dateInput)="onDateSelectedMax($event)">
+                    <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
+                    <mat-datepicker #picker2></mat-datepicker>
+                </mat-form-field>
+                  
+                <button class="mat-elevation-z8 mb-2" (click)="listarTodosPedidos()" mat-raised-button color="primary">
+                    Pesquisar
+                </button>
+            </app-card-info>
             <form>
                 <div class="input-group mt-2 mb-2">
                     <div class="input-group-prepend">
@@ -28,14 +47,17 @@
                             Buscar por {{tipoBusca === 'pedido' ? 'pedido' : 'romaneio'}}
                         </button>
                         <div class="dropdown-menu">
-                            <a style="cursor:pointer" class="dropdown-item text-left" (click)="tipoBusca = 'pedido'">Número de Pedido</a>
+                            <a style="cursor:pointer" class="dropdown-item text-left"
+                                (click)="tipoBusca = 'pedido'">Número de Pedido</a>
                             <a style="cursor:pointer" (click)="tipoBusca = 'romaneio'">Número de Romaneio</a>
                         </div>
                     </div>
-                    <input [type]="tipoBusca === 'pedido' ? 'number' : 'text'" class="form-control" [(ngModel)]="buscaValor" name="buscaValor"
+                    <input [type]="tipoBusca === 'pedido' ? 'number' : 'text'" class="form-control"
+                        [(ngModel)]="buscaValor" name="buscaValor"
                         [placeholder]="tipoBusca === 'pedido' ? 'Buscar por número de pedido...' : 'Buscar por número de romaneio...'">
                     <div class="input-group-append">
-                        <button class="btn btn-outline-secondary" type="submit" (click)="pesquisaAvancada()">Pesquisar</button>
+                        <button class="btn btn-outline-secondary" type="submit"
+                            (click)="pesquisaAvancada()">Pesquisar</button>
                     </div>
                 </div>
             </form>
@@ -71,7 +93,7 @@
                 <td style="cursor: pointer;" (click)="openModalView(element)" mat-cell *matCellDef="let element">
                     <mat-icon
                         style="vertical-align: bottom; color: #42A5F5; background-color: #E3F2FD; border-radius: 50%;">assignment</mat-icon>
-                    {{ element.dataAtualizacao | date: 'yyyy/MM/dd' }}-{{element.numeroPedido}}
+                    {{ element.dataPedido | date: 'yyyy/MM/dd' }}-{{element.numeroPedido}}
                 </td>
             </ng-container>
 

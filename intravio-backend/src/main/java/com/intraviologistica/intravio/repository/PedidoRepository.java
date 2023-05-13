@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,4 +29,7 @@ public interface PedidoRepository extends JpaRepository<Pedido, String> {
 
     @Query(value = "SELECT * FROM Pedido p WHERE p.status_pedido = :status ORDER BY p.numero_pedido asc", nativeQuery = true)
     List<Pedido> findAllByStatus(Integer status);
+
+    @Query("SELECT p FROM Pedido p WHERE p.dataPedido BETWEEN :min AND :max ORDER BY p.numeroPedido desc")
+    List<Pedido> findAll(LocalDateTime min, LocalDateTime max);
 }

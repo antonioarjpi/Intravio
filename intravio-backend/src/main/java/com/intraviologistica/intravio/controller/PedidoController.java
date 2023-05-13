@@ -36,8 +36,8 @@ public class PedidoController {
     }
 
     @GetMapping
-    public ResponseEntity<List<PedidoDTO>> listarPedidos() {
-        List<PedidoDTO> pedidosDTO = pedidoService.listaPedidos();
+    public ResponseEntity<List<PedidoDTO>> listarPedidos(@RequestParam(defaultValue = "") String minDate, @RequestParam(defaultValue = "") String maxDate) {
+        List<PedidoDTO> pedidosDTO = pedidoService.listaPedidos(minDate, maxDate);
         return ResponseEntity.ok(pedidosDTO);
     }
 

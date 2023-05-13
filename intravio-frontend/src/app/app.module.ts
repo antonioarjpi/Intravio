@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -25,9 +25,11 @@ import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatChipsModule } from '@angular/material/chips';
 import { MatMenuModule } from '@angular/material/menu';
-import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatStepperModule } from '@angular/material/stepper';
-import { CurrencyPipe } from '@angular/common';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { CurrencyPipe, registerLocaleData } from '@angular/common';
 import { ToastrModule } from "ngx-toastr";
 import { NgxMaskModule } from 'ngx-mask';
 
@@ -71,6 +73,10 @@ import { RomaneioFechamentoComponent } from './pages/romaneios/romaneio-fechamen
 import { RomaneioProcessarModal } from './pages/romaneios/romaneio-listar/romaneio-processar-modal';
 import { SelectComponent } from './components/select/select.component';
 import { CardInfoComponent } from './components/card-info/card-info.component';
+
+import localePt from '@angular/common/locales/pt';
+
+registerLocaleData(localePt);
 
 @NgModule({
   declarations: [
@@ -144,6 +150,8 @@ import { CardInfoComponent } from './components/card-info/card-info.component';
     MatStepperModule,
     MatMenuModule,
     MatSlideToggleModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
 
     ToastrModule.forRoot({
       timeOut: 4000,
@@ -153,7 +161,9 @@ import { CardInfoComponent } from './components/card-info/card-info.component';
 
     NgxMaskModule.forRoot(),
   ],
-  providers: [AuthInterceptorProvider, CurrencyPipe],
+  providers: [AuthInterceptorProvider, CurrencyPipe,
+    { provide: LOCALE_ID, useValue: 'pt' }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

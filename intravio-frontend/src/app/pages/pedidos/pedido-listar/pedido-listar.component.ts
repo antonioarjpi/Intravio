@@ -8,18 +8,22 @@ import { MatSort, Sort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { PedidoModal } from './pedido-modal';
 import { PedidoDeletarComponent } from '../pedido-deletar/pedido-deletar.component';
+import { MatDatepicker, MatDatepickerInputEvent } from '@angular/material/datepicker';
 
 @Component({
   selector: 'app-pedido-listar',
   templateUrl: './pedido-listar.component.html',
   styleUrls: ['./pedido-listar.component.css']
 })
+
 export class PedidoListarComponent implements OnInit {
   ELEMENT_DATA: Pedido[] = [];
   FILTERED_DATA: Pedido[] = [];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
+  @ViewChild('picker1') picker1: MatDatepicker<Date>;
+  @ViewChild('picker2') picker2: MatDatepicker<Date>;
 
   displayedColumns: string[] = ["numeroPedido", "numeroRomaneio", "prioridade", "destinatarioNome", "destino", "statusPedido", "acoes"];
   dataSource = new MatTableDataSource<Pedido>(this.ELEMENT_DATA);
@@ -27,6 +31,17 @@ export class PedidoListarComponent implements OnInit {
   exibeFiltros: boolean = false;
   buscaValor: Number;
   tipoBusca: string = 'pedido';
+  minDate: string = '';
+  maxDate: string = ''
+
+  openPicker1(): void {
+    this.picker1.open();
+  }
+
+  // função para abrir o segundo datepicker com a data final definida
+  openPicker2(): void {
+    this.picker2.open();
+  }
 
   constructor(
     private service: PedidoService,
@@ -34,6 +49,11 @@ export class PedidoListarComponent implements OnInit {
     private dialog: MatDialog) { }
 
   ngOnInit(): void {
+  
+    const dataInicial = new Date();
+    dataInicial.setDate(dataInicial.getDate() - 7);
+    this.minDate = dataInicial.toISOString().substring(0, 10)
+    this.maxDate = new Date().toISOString().substring(0, 10);
     this.listarTodosPedidos();
   }
 
@@ -48,7 +68,7 @@ export class PedidoListarComponent implements OnInit {
   };
 
   listarTodosPedidos() {
-    this.service.findAll().subscribe((response) => {
+    this.service.findAll(this.minDate, this.maxDate).subscribe((response) => {
       this.ELEMENT_DATA = response;
       this.dataSource = new MatTableDataSource<Pedido>(response);
       this.dataSource.paginator = this.paginator;
@@ -150,6 +170,16 @@ export class PedidoListarComponent implements OnInit {
 
   listarTodos() {
     this.recarregaLista(this.ELEMENT_DATA)
+  }
+
+  onDateSelectedMin(event: MatDatepickerInputEvent<Date>) {
+    const selectedDate = event.value.toISOString().substring(0, 10);
+    this.minDate = selectedDate
+  }
+
+  onDateSelectedMax(event: MatDatepickerInputEvent<Date>) {
+    const selectedDate = event.value.toISOString().substring(0, 10);
+    this.maxDate = selectedDate
   }
 
   retornaPrioridade(status: any): string {

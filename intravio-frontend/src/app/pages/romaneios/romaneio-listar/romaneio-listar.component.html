@@ -52,7 +52,7 @@
                     Romaneio
                 </th>
                 <td style="cursor: pointer;" (click)="openModalView(element)" mat-cell *matCellDef="let element">
-                    {{ element.dataAtualizacao | date: 'yyyy/MM/dd' }}-{{element.numeroRomaneio}}
+                    {{ element.dataCriacao | date: 'yyyy/MM/dd' }}-{{element.numeroRomaneio}}
                 </td>
             </ng-container>
 

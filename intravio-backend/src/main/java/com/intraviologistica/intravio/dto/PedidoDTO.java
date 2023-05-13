@@ -1,8 +1,6 @@
 package com.intraviologistica.intravio.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.intraviologistica.intravio.model.Pedido;
-import com.intraviologistica.intravio.model.enums.StatusPedido;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -21,9 +19,7 @@ public class PedidoDTO {
     private String destinatarioEmail;
     private String origem;
     private String destino;
-    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     private LocalDateTime dataPedido;
-    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     private LocalDateTime dataAtualizacao;
     private Integer prioridade;
     private Integer acompanhaStatus;
