@@ -8,7 +8,6 @@ import { MatSort, Sort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { PedidoModal } from './pedido-modal';
 import { PedidoDeletarComponent } from '../pedido-deletar/pedido-deletar.component';
-import { MatDatepicker, MatDatepickerInputEvent } from '@angular/material/datepicker';
 
 @Component({
   selector: 'app-pedido-listar',
@@ -22,8 +21,6 @@ export class PedidoListarComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  @ViewChild('picker1') picker1: MatDatepicker<Date>;
-  @ViewChild('picker2') picker2: MatDatepicker<Date>;
 
   displayedColumns: string[] = ["numeroPedido", "numeroRomaneio", "prioridade", "destinatarioNome", "destino", "statusPedido", "acoes"];
   dataSource = new MatTableDataSource<Pedido>(this.ELEMENT_DATA);
@@ -32,16 +29,9 @@ export class PedidoListarComponent implements OnInit {
   buscaValor: Number;
   tipoBusca: string = 'pedido';
   minDate: string = '';
-  maxDate: string = ''
-
-  openPicker1(): void {
-    this.picker1.open();
-  }
-
-  // função para abrir o segundo datepicker com a data final definida
-  openPicker2(): void {
-    this.picker2.open();
-  }
+  maxDate: string = '';
+  isInputFocused: boolean = false;
+  isInputFocused2: boolean = false;
 
   constructor(
     private service: PedidoService,
@@ -49,15 +39,14 @@ export class PedidoListarComponent implements OnInit {
     private dialog: MatDialog) { }
 
   ngOnInit(): void {
-  
+
     const dataInicial = new Date();
     dataInicial.setDate(dataInicial.getDate() - 7);
-    this.minDate = dataInicial.toISOString().substring(0, 10)
+    this.minDate = dataInicial.toISOString().substring(0, 10);
     this.maxDate = new Date().toISOString().substring(0, 10);
+
     this.listarTodosPedidos();
   }
-
-  ngAfterViewInit() { }
 
   announceSortChange(sortState: Sort) {
     if (sortState.direction) {
@@ -170,16 +159,6 @@ export class PedidoListarComponent implements OnInit {
 
   listarTodos() {
     this.recarregaLista(this.ELEMENT_DATA)
-  }
-
-  onDateSelectedMin(event: MatDatepickerInputEvent<Date>) {
-    const selectedDate = event.value.toISOString().substring(0, 10);
-    this.minDate = selectedDate
-  }
-
-  onDateSelectedMax(event: MatDatepickerInputEvent<Date>) {
-    const selectedDate = event.value.toISOString().substring(0, 10);
-    this.maxDate = selectedDate
   }
 
   retornaPrioridade(status: any): string {
