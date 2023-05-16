@@ -1,54 +1,102 @@
 table {
-    width: 100%;
-  }
-  
-  table td {
-    white-space: nowrap;
-  }
-  
-  .container {
-    width: 90%;
-    margin: auto;
-  }
-  
-  .mat-paginator-container {
-    width: 100%;
-  }
-  
-  mat-form-field {
-    width: 100%;
-  }
-  
-  h1 {
-    width: 100%;
-    text-align: left;
-    margin-bottom: 1rem;
-  }
-  
-  .button {
-    text-align: right;
-  }
-  
-  .edit {
-    color: rgb(0, 153, 255);
-  }
-  
-  .delete {
-    color: red;
-  }
-  
-  .visualizar {
-    cursor: pointer;
-    color: #8c9600;
-  }
-  
-  a {
-    margin-right: 3px;
-    display: flex;
-    justify-content: center;
-  }
-  
-  .cdk-overlay-container {
-    overflow-y: hidden !important;
-  
-  }
+  width: 100%;
+}
+
+table td {
+  white-space: nowrap;
+}
+
+.container {
+  width: 90%;
+  margin: auto;
+}
+
+.mat-paginator-container {
+  width: 100%;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+h1 {
+  width: 100%;
+  text-align: left;
+  margin-bottom: 1rem;
+}
+
+.button {
+  text-align: right;
+}
+
+.edit {
+  color: rgb(0, 153, 255);
+}
+
+.delete {
+  color: red;
+}
+
+.visualizar {
+  cursor: pointer;
+  color: #8c9600;
+}
+
+a {
+  margin-right: 3px;
+  display: flex;
+  justify-content: center;
+}
+
+.cdk-overlay-container {
+  overflow-y: hidden !important;
+}
+
+.custom-date-input {
+  border: none;
+  height: 56px;
+  width: 90%;
+  border-radius: 4px 4px 0 0;
+  padding-left: 8px;
+  padding-right: 8px;
+  padding-bottom: 7px;
+  z-index: 1;
+  border-bottom: 1.3px solid #8d8989;
+  align-items: flex-end;
+  font-size: 15px;
+  background-color: #F5F5F5;
+  transition: border-color 0.2s;
+}
+
+.custom-date-input::-webkit-calendar-picker-indicator {
+  color: #a1a1a3;
+  width: 20px;
+  /* Ajuste o valor conforme necessário */
+  height: 20px;
+  /* Ajuste o valor conforme necessário */
+}
+
+.custom-date-input:hover,
+.custom-date-input:focus {
+  background-color: #ECECEC;
+}
+
+.custom-date-input:focus {
+  padding-bottom: 5.7px;
+  border-bottom: 2px solid #673AB7;
+  border-color: #673AB7;
+}
+
+.custom-label {
+  position: absolute;
+  top: 5px;
+  left: 24px;
+  font-size: 11.5px;
+  color: #848386;
+  transition: all 0.2s;
+  pointer-events: none;
+}
+
+.custom-label.focused {
+  color: #673AB7;
+}

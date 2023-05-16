@@ -119,7 +119,7 @@ registerLocaleData(localePt);
     RastreioComponent,
     RomaneioFechamentoComponent,
     SelectComponent,
-    CardInfoComponent
+    CardInfoComponent,
   ],
   imports: [
     BrowserModule,

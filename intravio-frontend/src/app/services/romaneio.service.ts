@@ -14,8 +14,8 @@ export class RomaneioService {
 
   constructor(private http: HttpClient) { }
 
-  findAll(): Observable<RomaneioGet[]> {
-    return this.http.get<RomaneioGet[]>(`${API_CONFIG.baseUrl}/romaneios`)
+  findAll(minDate:any, maxDate:any): Observable<RomaneioGet[]> {
+    return this.http.get<RomaneioGet[]>(`${API_CONFIG.baseUrl}/romaneios?minDate=${minDate}&maxDate=${maxDate}`)
   }
 
   findById(id: any): Observable<RomaneioInput> {

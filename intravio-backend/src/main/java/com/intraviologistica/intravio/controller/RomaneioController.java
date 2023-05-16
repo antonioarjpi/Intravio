@@ -24,8 +24,8 @@ public class RomaneioController {
     }
 
     @GetMapping
-    public ResponseEntity<List<RomaneioDTO>> listaRomaneios() {
-        return ResponseEntity.ok(romaneioService.listar());
+    public ResponseEntity<List<RomaneioDTO>> listaRomaneios(@RequestParam(defaultValue = "") String minDate, @RequestParam(defaultValue = "") String maxDate) {
+        return ResponseEntity.ok(romaneioService.listar(minDate, maxDate));
     }
 
     @GetMapping("/{id}")
@@ -56,8 +56,8 @@ public class RomaneioController {
     @PutMapping("/{id}/processar")
     public ResponseEntity<Void> processarRomaneio(@PathVariable String id) {
         //try{
-            romaneioService.processarRomaneio(id);
-            return ResponseEntity.noContent().build();
+        romaneioService.processarRomaneio(id);
+        return ResponseEntity.noContent().build();
 //        }catch (Exception e){
 //            return ResponseEntity.internalServerError().build();
 //        }
@@ -65,11 +65,11 @@ public class RomaneioController {
 
     @PutMapping("/{id}/fechamento")
     public ResponseEntity<Void> fecharRomaneio(@PathVariable String id, @RequestBody RomaneioFechamentoDTO dto) {
-        try{
+        try {
             dto.setRomaneioId(id);
             romaneioService.fecharRomaneio(dto);
             return ResponseEntity.noContent().build();
-        }catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
         }
     }

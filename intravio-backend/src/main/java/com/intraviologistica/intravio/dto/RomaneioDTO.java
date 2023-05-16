@@ -1,6 +1,5 @@
 package com.intraviologistica.intravio.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.intraviologistica.intravio.model.Romaneio;
 
 import java.time.LocalDateTime;
@@ -18,9 +17,7 @@ public class RomaneioDTO {
     private String motorista;
     private Integer statusRomaneio;
     private Double taxaFrete;
-    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     private LocalDateTime dataCriacao;
-    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     private LocalDateTime dataAtualizacao;
     private String observacao;
     private Integer quantidadePedidos;

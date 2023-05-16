@@ -26,6 +26,10 @@ export class RomaneioListarComponent {
 
   exibeFiltros: boolean = false;
   numeroRomaneio: number = null;
+  minDate: string = '';
+  maxDate: string = '';
+  isInputFocused: boolean = false;
+  isInputFocused2: boolean = false;
 
   constructor(
     private service: RomaneioService,
@@ -33,6 +37,10 @@ export class RomaneioListarComponent {
     private dialog: MatDialog) { }
 
   ngOnInit(): void {
+    const dataInicial = new Date();
+    dataInicial.setDate(dataInicial.getDate() - 7);
+    this.minDate = dataInicial.toISOString().substring(0, 10);
+    this.maxDate = new Date().toISOString().substring(0, 10);
     this.listarTodosRomaneios();
   }
 
@@ -47,7 +55,7 @@ export class RomaneioListarComponent {
   };
 
   listarTodosRomaneios() {
-    this.service.findAll().subscribe((response) => {
+    this.service.findAll(this.minDate, this.maxDate).subscribe((response) => {
       this.ELEMENT_DATA = response;
       this.dataSource = new MatTableDataSource<RomaneioGet>(response);
       this.dataSource.paginator = this.paginator;

@@ -15,7 +15,10 @@ import com.intraviologistica.intravio.service.exceptions.RuleOfBusinessException
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -46,8 +49,13 @@ public class RomaneioService {
     }
 
     @Transactional
-    public List<RomaneioDTO> listar() {
-        return romaneioRepository.findAll()
+    public List<RomaneioDTO> listar(String minDate, String maxDate) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+        LocalDateTime hoje = LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault());
+        LocalDateTime min = minDate.equals("") ? hoje.minusDays(1) : LocalDateTime.parse(minDate+"T00:00:00", formatter);
+        LocalDateTime max = maxDate.equals("") ? hoje : LocalDateTime.parse(maxDate+"T23:59:59", formatter);
+
+        return romaneioRepository.findAll(min, max)
                 .stream()
                 .sorted(Comparator.comparing(Romaneio::getNumeroRomaneio).reversed())
                 .map(x -> new RomaneioDTO(x))
