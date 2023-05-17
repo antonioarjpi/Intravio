@@ -20,6 +20,9 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,18 +34,20 @@ public class PedidoService {
     private final ItemService itemService;
     private final FileService fileService;
     private final ProdutoService produtoService;
+    private final EmailService emailService;
 
     private static String getUuid() {
         return UUID.randomUUID().toString().replace("-", "");
     }
 
-    public PedidoService(PedidoRepository pedidoRepository, FilialService filialService, FuncionarioService funcionarioService, ItemService itemService, FileService fileService, ProdutoService produtoService) {
+    public PedidoService(PedidoRepository pedidoRepository, FilialService filialService, FuncionarioService funcionarioService, ItemService itemService, FileService fileService, ProdutoService produtoService, EmailService emailService) {
         this.pedidoRepository = pedidoRepository;
         this.filialService = filialService;
         this.funcionarioService = funcionarioService;
         this.itemService = itemService;
         this.fileService = fileService;
         this.produtoService = produtoService;
+        this.emailService = emailService;
     }
 
     @Transactional
@@ -61,8 +66,8 @@ public class PedidoService {
     public List<PedidoDTO> listaPedidos(String minDate, String maxDate) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
         LocalDateTime hoje = LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault());
-        LocalDateTime min = minDate.equals("") ? hoje.minusDays(1) : LocalDateTime.parse(minDate+"T00:00:00", formatter);
-        LocalDateTime max = maxDate.equals("") ? hoje : LocalDateTime.parse(maxDate+"T23:59:59", formatter);
+        LocalDateTime min = minDate.equals("") ? hoje.minusDays(1) : LocalDateTime.parse(minDate + "T00:00:00", formatter);
+        LocalDateTime max = maxDate.equals("") ? hoje : LocalDateTime.parse(maxDate + "T23:59:59", formatter);
 
         return pedidoRepository.findAll(min, max)
                 .stream()
@@ -130,7 +135,28 @@ public class PedidoService {
 
         adicionaItensNoPedido(pedido);
 
+        final Pedido pedidoFinal = pedido;
+
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                envioDeEmail(pedidoFinal);
+            }
+        }, 10000);
+
         return pedido;
+    }
+
+    public void envioDeEmail(Pedido pedido) {
+        if (pedido.getAcompanhaStatus().ordinal() == 1) {
+            envioEmailDestinatarioPedidoPendete(pedido);
+        } else if (pedido.getAcompanhaStatus().ordinal() == 2) {
+            envioEmailRemetentePedidoPendente(pedido);
+        } else if (pedido.getAcompanhaStatus().ordinal() == 3) {
+            envioEmailRemetentePedidoPendente(pedido);
+            envioEmailDestinatarioPedidoPendete(pedido);
+        }
     }
 
     @Transactional
@@ -230,10 +256,10 @@ public class PedidoService {
 
     private String geraCodigoRastreio(Pedido pedido) {
         // Extrai as duas primeiras letras do nome da filial de origem
-        String origem = pedido.getOrigem().getNome().substring(0, 2);
+        String origem = pedido.getOrigem().getEndereco().getCidade().substring(0, 1);
 
         // Extrai as três primeiras letras do nome da filial de destino
-        String destino = pedido.getDestino().getNome().substring(0, 3);
+        String destino = pedido.getDestino().getEndereco().getCidade().substring(0, 1);
 
         // Gera uma sequência de 8 números aleatórios
         String numero = "";
@@ -262,5 +288,73 @@ public class PedidoService {
         pedido.setAcompanhaStatus(dto.getAcompanhaStatus());
 
         return pedido;
+    }
+
+    public void envioEmailRecebimentoPedido(Pedido pedido, String nome) {
+        String assunto = "Pedido Entregue";
+        StringBuilder conteudo = new StringBuilder();
+        conteudo.append("<p>Prezado(a) ").append(nome).append(",</p>");
+        conteudo.append("<p>Gostaríamos de informar que o seu pedido <strong>").append(pedido.getNumeroPedido()).append("</strong> foi entregue com sucesso.</p>");
+        conteudo.append("<p>Agradecemos por utilizar nossos serviços.</p>");
+        conteudo.append("<p>Atenciosamente,</p>");
+        conteudo.append("<p>Intravio</p>");
+
+        emailService.enviarEmail(pedido.getRemetente().getEmail(), assunto, conteudo.toString());
+    }
+
+
+    private void envioEmailRemetentePedidoPendente(Pedido pedido) {
+        String[] nomes = pedido.getDestinatario().getNome().split(" ");
+        String primeiroNome = nomes[0];
+
+        String assunto = "Entrega de Objeto - Código Rastreio";
+
+        StringBuilder conteudo = new StringBuilder();
+        conteudo.append("<p>Prezado(a) ").append(primeiroNome).append(",</p>");
+        conteudo.append("<p>Gostaríamos de informar que o seu objeto foi recebido na unidade ").append(pedido.getOrigem().getNome()).append(" com sucesso e logo será enviado. A seguir, fornecemos o código de rastreio para que você possa acompanhar o status do seu envio:</p>");
+        conteudo.append("<p><strong>Número do Pedido:</strong> ").append(pedido.getNumeroPedido()).append("</p>");
+        conteudo.append("<p><strong>Código de Rastreio:</strong> ").append(pedido.getCodigoRastreio()).append("</p>");
+        tabelaDeItensDoPedidoHtml(pedido, conteudo);
+        conteudo.append("<p>Utilize este código para rastrear a localização e o status do seu objeto através do nosso site.</p>");
+        conteudo.append("<p>Agradecemos a sua confiança em nossos serviços e estamos à disposição para qualquer dúvida ou assistência adicional.</p>");
+        conteudo.append("<p>Atenciosamente,</p>");
+        conteudo.append("<p>Intravio</p>");
+
+        emailService.enviarEmail(pedido.getRemetente().getEmail(), assunto, conteudo.toString());
+    }
+
+    private void envioEmailDestinatarioPedidoPendete(Pedido pedido) {
+        String[] nomes = pedido.getDestinatario().getNome().split(" ");
+        String primeiroNome = nomes[0];
+
+        String assunto = "Entrega de Objeto - Código Rastreio";
+
+        StringBuilder conteudo = new StringBuilder();
+        conteudo.append("<p>Prezado(a) ").append(primeiroNome).append("</p>");
+        conteudo.append("<p>Gostaríamos de informar que um objeto foi postado para ser entregue em seu nome. Seguem os detalhes referentes ao envio:</p>");
+        conteudo.append("<p><strong>Código de Rastreio:</strong> ").append(pedido.getCodigoRastreio()).append("<br/>");
+        conteudo.append("<strong>Número do Pedido:</strong> ").append(pedido.getNumeroPedido()).append("<br/>");
+        conteudo.append("<strong>Remetente: </strong>").append(pedido.getRemetente().getNome()).append("<br/>");
+        conteudo.append("<strong>Data de Envio: </strong>").append(pedido.getDataPedido()).append("</p>");
+        tabelaDeItensDoPedidoHtml(pedido, conteudo);
+        conteudo.append("<p>Pedimos desculpas se esta entrega veio como uma surpresa. Caso tenha alguma dúvida ou se precisar devolver o objeto, entre em contato conosco o mais breve possível para que possamos resolver a situação adequadamente.</p>");
+        conteudo.append("<p>Estamos à disposição para ajudar no que for necessário.</p>");
+        conteudo.append("<p>Atenciosamente,</p>");
+        conteudo.append("<p>Intravio</p>");
+
+        emailService.enviarEmail(pedido.getRemetente().getEmail(), assunto, conteudo.toString());
+    }
+
+    private static void tabelaDeItensDoPedidoHtml(Pedido pedido, StringBuilder conteudo) {
+        conteudo.append("<table border=\"1\">");
+        conteudo.append("<tr><th>Produto</th><th>Quantidade</th><th>Descrição</th></tr>");
+        for (Item item : pedido.getItens()) {
+            conteudo.append("<tr>");
+            conteudo.append("<td>").append(item.getProduto().getNome()).append("</td>");
+            conteudo.append("<td>").append(item.getQuantidade()).append("</td>");
+            conteudo.append("<td>").append(item.getDescricao()).append("</td>");
+            conteudo.append("</tr>");
+        }
+        conteudo.append("</table>");
     }
 }

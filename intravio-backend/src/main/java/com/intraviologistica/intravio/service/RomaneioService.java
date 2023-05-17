@@ -52,8 +52,8 @@ public class RomaneioService {
     public List<RomaneioDTO> listar(String minDate, String maxDate) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
         LocalDateTime hoje = LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault());
-        LocalDateTime min = minDate.equals("") ? hoje.minusDays(1) : LocalDateTime.parse(minDate+"T00:00:00", formatter);
-        LocalDateTime max = maxDate.equals("") ? hoje : LocalDateTime.parse(maxDate+"T23:59:59", formatter);
+        LocalDateTime min = minDate.equals("") ? hoje.minusDays(1) : LocalDateTime.parse(minDate + "T00:00:00", formatter);
+        LocalDateTime max = maxDate.equals("") ? hoje : LocalDateTime.parse(maxDate + "T23:59:59", formatter);
 
         return romaneioRepository.findAll(min, max)
                 .stream()
@@ -157,6 +157,14 @@ public class RomaneioService {
 
         atualizaStatusPedidos(dto.getPedidosConcluido(), pedidosRomaneio, 7);
         atualizaStatusPedidos(dto.getPedidosRetorno(), pedidosRomaneio, 8);
+
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                envioDeEmail(dto.getPedidosConcluido());
+            }
+        }, 10000);
     }
 
     private void atualizaStatusPedidos(List<Integer> dto, List<Integer> pedidosRomaneio, int status) {
@@ -164,6 +172,21 @@ public class RomaneioService {
             if (pedidosRomaneio.contains(numeroPedido)) {
                 Pedido pedido = pedidoService.buscaPorNumeroPedido(numeroPedido);
                 atualizarStatusDoPedido(pedido, status);
+            }
+        }
+    }
+
+    @Transactional
+    private void envioDeEmail(List<Integer> dto) {
+        for (Integer numeroPedido : dto) {
+            Pedido pedido = pedidoService.buscaPorNumeroPedido(numeroPedido);
+            if (pedido.getAcompanhaStatus().ordinal() == 1) {
+                pedidoService.envioEmailRecebimentoPedido(pedido, pedido.getDestinatario().getNome());
+            } else if (pedido.getAcompanhaStatus().ordinal() == 2) {
+                pedidoService.envioEmailRecebimentoPedido(pedido, pedido.getRemetente().getNome());
+            } else if (pedido.getAcompanhaStatus().ordinal() == 3) {
+                pedidoService.envioEmailRecebimentoPedido(pedido, pedido.getDestinatario().getNome());
+                pedidoService.envioEmailRecebimentoPedido(pedido, pedido.getRemetente().getNome());
             }
         }
     }
