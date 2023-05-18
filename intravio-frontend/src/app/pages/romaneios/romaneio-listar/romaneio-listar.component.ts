@@ -23,6 +23,7 @@ export class RomaneioListarComponent {
 
   displayedColumns: string[] = ["numeroRomaneio", "quantidadePedidos", "valorCarga", "pesoCarga", "motorista", "transportadora", "statusRomaneio", "acoes"];
   dataSource = new MatTableDataSource<RomaneioGet>(this.ELEMENT_DATA);
+  abrePesquisa: boolean = false;
 
   exibeFiltros: boolean = false;
   numeroRomaneio: number = null;

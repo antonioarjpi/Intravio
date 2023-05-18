@@ -1,34 +1,40 @@
 <div class="container">
     <div class="card">
-        <div class="button mb-4">
-            <button routerLink="/romaneios/cadastrar" class="mat-elevation-z8 mb-2" mat-raised-button
-                color="primary">Novo romaneio</button>
+        <div class="header">
+            <div class="row">
+                <div class="w-20 pl-2 d-flex align-items-center color-primary">
+                    <i class="material-icons var-color">receipt</i>
+                    <label class="card-name">Romaneios</label>
+                </div>
+
+                <div class="w-40">
+                    <input *ngIf="abrePesquisa" class="custom-date-input" type="date" [value]="minDate"
+                        [(ngModel)]="minDate" (ngModelChange)="listarTodosRomaneios()" (focus)="isInputFocused = true" (blur)="isInputFocused = false" />
+                    <label *ngIf="abrePesquisa" class="ml-2 mr-2">até</label>
+                    <input *ngIf="abrePesquisa" class="custom-date-input" type="date" [value]="maxDate"
+                        [(ngModel)]="maxDate" (ngModelChange)="listarTodosRomaneios()" (focus)="isInputFocused2 = true" (blur)="isInputFocused2 = false" />
+                </div>
+
+                <div class="w-40">
+                    <input *ngIf="abrePesquisa" class="custom-input" (keyup)="applyFilter($event)"
+                        placeholder="Pesquisa romaneio, valor, peso...">
+                </div>
+
+                <div class="w-10">
+                    <button mat-mini-fab (click)="abrePesquisa = !abrePesquisa" color="secondary">
+                        <mat-icon>search</mat-icon>
+                    </button>
+                    <button mat-mini-fab routerLink="/romaneios/cadastrar" class="mat-elevation-z8" color="primary">
+                        <mat-icon>add</mat-icon>
+                    </button>
+                </div>
+
+            </div>
         </div>
 
-        <div class="row">
-            <mat-form-field class="col-md-5" appearance="fill">
-                <mat-label>Filtro</mat-label>
-                <input [disabled]="exibeFiltros" matInput (keyup)="applyFilter($event)"
-                    placeholder="Busque por qualquer palavra" #input>
-            </mat-form-field>
-
-            <div class="col-md-3">
-                <label class="custom-label" [class.focused]="isInputFocused">Data Inicial</label>
-                <input class="custom-date-input" type="date" [value]="minDate" [(ngModel)]="minDate" (focus)="isInputFocused = true" (blur)="isInputFocused = false"/>
-            </div>
-
-            <div class="col-md-3">
-                <label class="custom-label" [class.focused]="isInputFocused2">Data Final</label>
-                <input class="custom-date-input" type="date" [value]="maxDate" [(ngModel)]="maxDate" (focus)="isInputFocused2 = true" (blur)="isInputFocused2 = false"/>
-            </div>
-
-            <button class="mat-elevation-z8 mb-2" (click)="listarTodosRomaneios()" mat-fab color="primary">
-                <mat-icon>search</mat-icon>
-            </button>
-        </div>
-
-        <div class="d-flex justify-content-center">
-            <a href="javascript:void(0)" class="text-primary text-center" (click)="exibeFiltros = !exibeFiltros">
+        <div class="d-flex justify-content-center mt-3">
+            <a *ngIf="abrePesquisa" href="javascript:void(0)" class="text-primary text-center"
+                (click)="exibeFiltros = !exibeFiltros">
                 Exibe filtros avançados
                 <mat-icon *ngIf="!exibeFiltros">keyboard_arrow_down</mat-icon>
                 <mat-icon *ngIf="exibeFiltros">keyboard_arrow_up</mat-icon>

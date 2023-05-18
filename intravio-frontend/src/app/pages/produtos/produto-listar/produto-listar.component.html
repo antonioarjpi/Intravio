@@ -1,14 +1,26 @@
 <div class="container">
     <div class="card">
-        <div class="button">
-            <button routerLink="/produtos/cadastrar" class="mat-elevation-z8 mb-2" mat-raised-button
-                color="primary">Novo Produto</button>
+        <div class="header">
+            <div class="row">
+                <div class="w-20 pl-2 d-flex align-items-center color-primary">
+                    <i class="material-icons var-color">inbox</i>
+                    <label class="card-name" [class.hidden]="abrePesquisa">Produtos</label>
+                </div>
+                <div class="w-80">
+                    <input *ngIf="abrePesquisa" class="custom-input" (keyup)="applyFilter($event)"
+                        placeholder="Pesquise descrição, fabricante, modelo, preço, modelo">
+                </div>
+                <div class="w-10">
+                    <button mat-mini-fab (click)="abrePesquisa = !abrePesquisa"
+                        color="secondary">
+                        <mat-icon>search</mat-icon>
+                    </button>
+                    <button mat-mini-fab routerLink="/produtos/cadastrar" class="mat-elevation-z8" color="primary">
+                        <mat-icon>add</mat-icon>
+                    </button>
+                </div>
+            </div>
         </div>
-
-        <mat-form-field appearance="outline">
-            <mat-label>Filtro</mat-label>
-            <input matInput (keyup)="applyFilter($event)" placeholder="Busque por qualquer palavra" #input>
-        </mat-form-field>
     </div>
 
     <div class="table-responsive mat-elevation-z8">

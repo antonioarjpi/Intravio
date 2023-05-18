@@ -1,34 +1,43 @@
 table {
-    width: 100%;
-}
-
-.container{
-    width: 90%;
-    margin: auto;
-}
-
-.mat-paginator-container{
    width: 100%;
 }
- 
- mat-form-field {
-    width: 100%;
- }
- 
- h1 {
-    width: 100%;
-    text-align: left;
-    margin-bottom: 1rem;
- }
 
- .button{
-    text-align: right;
+.container {
+   width: 90%;
+   margin: auto;
+}
+
+.mat-paginator-container {
+   width: 100%;
+}
+
+mat-form-field {
+   width: 100%;
+}
+
+h1 {
+   width: 100%;
+   text-align: left;
+   margin-bottom: 1rem;
+}
+
+.edit {
+   color: rgb(0, 153, 255);
+}
+
+.delete {
+   color: red;
+} 
+ .custom-label {
+   position: absolute;
+   top: 5px;
+   left: 24px;
+   font-size: 11.5px;
+   color: #848386;
+   transition: all 0.2s;
+   pointer-events: none;
  }
  
- .edit {
-    color: rgb(0, 153, 255);
- }
- 
- .delete {
-    color: red;
+ .custom-label.focused {
+   color: #673AB7;
  }

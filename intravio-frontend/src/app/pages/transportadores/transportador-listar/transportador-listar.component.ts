@@ -15,6 +15,7 @@ export class TransportadorListarComponent implements OnInit {
 
   displayedColumns: string[] = ["nome", "veiculo", "placa", "motorista", "cnpj", "observacao", "acoes"];
   dataSource = new MatTableDataSource<Transportador>(this.ELEMENT_DATA);
+  abrePesquisa: boolean = false;
 
   constructor(private service: TransportadorService) {}
 

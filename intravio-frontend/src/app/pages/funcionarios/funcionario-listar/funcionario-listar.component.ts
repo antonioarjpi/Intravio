@@ -19,6 +19,7 @@ export class FuncionarioListarComponent implements OnInit {
 
   displayedColumns: string[] = ["nome", "email", "departamento", "filial", "acoes"];
   dataSource = new MatTableDataSource<Funcionario>(this.ELEMENT_DATA);
+  abrePesquisa: boolean = false;
 
   constructor(
     private service: FuncionarioService,

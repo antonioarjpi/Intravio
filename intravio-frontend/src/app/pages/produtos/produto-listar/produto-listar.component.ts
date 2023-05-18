@@ -19,6 +19,7 @@ export class ProdutoListarComponent implements OnInit {
 
   displayedColumns: string[] = ["nome", "descricao", "fabricante", "modelo", "preco", "peso", "acoes"];
   dataSource = new MatTableDataSource<Produto>(this.ELEMENT_DATA);
+  abrePesquisa: boolean = false;
 
   constructor(
     private service: ProdutoService,

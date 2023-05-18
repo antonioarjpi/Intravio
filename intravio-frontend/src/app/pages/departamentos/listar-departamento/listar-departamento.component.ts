@@ -15,6 +15,7 @@ export class ListarDepartamentoComponent implements OnInit {
 
   displayedColumns: string[] = ["nome", "acoes"];
   dataSource = new MatTableDataSource<Departamento>(this.ELEMENT_DATA);
+  abrePesquisa: boolean = false;
 
   constructor(private service: DepartamentoService) {}
 

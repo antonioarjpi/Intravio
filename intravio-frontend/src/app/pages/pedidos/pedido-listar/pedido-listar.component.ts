@@ -25,6 +25,7 @@ export class PedidoListarComponent implements OnInit {
   displayedColumns: string[] = ["numeroPedido", "numeroRomaneio", "prioridade", "destinatarioNome", "destino", "statusPedido", "acoes"];
   dataSource = new MatTableDataSource<Pedido>(this.ELEMENT_DATA);
 
+  abrePesquisa: boolean = false;
   exibeFiltros: boolean = false;
   buscaValor: Number;
   tipoBusca: string = 'pedido';

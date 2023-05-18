@@ -15,6 +15,7 @@ export class FilialListarComponent implements OnInit {
 
   displayedColumns: string[] = ["id","nome", "endereco", "complemento", "acoes"];
   dataSource = new MatTableDataSource<Filial>(this.ELEMENT_DATA);
+  abrePesquisa: boolean = false;
 
   constructor(private service: FilialService) { }
 
