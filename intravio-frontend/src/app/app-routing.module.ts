@@ -34,12 +34,19 @@ import { RomaneioAtualizarComponent } from './pages/romaneios/romaneio-atualizar
 import { RomaneioDeletarComponent } from './pages/romaneios/romaneio-deletar/romaneio-deletar.component';
 import { RastreioComponent } from './pages/rastreio/rastreio.component';
 import { RomaneioFechamentoComponent } from './pages/romaneios/romaneio-fechamento/romaneio-fechamento.component';
+import { UsuarioListarComponent } from './pages/usuarios/usuario-listar/usuario-listar.component';
+import { UsuarioDeletarComponent } from './pages/usuarios/usuario-deletar/usuario-deletar.component';
+import { UsuarioAtualizarComponent } from './pages/usuarios/usuario-atualizar/usuario-atualizar.component';
+import { UsuarioCadastrarComponent } from './pages/usuarios/usuario-cadastrar/usuario-cadastrar.component';
 
 const routes: Routes = [
   {
     path: "",
     component: NavComponent,
     canActivate: [AuthGuard],
+    data: {
+      role: ['ADMIN', 'STANDARD']
+    },
     children: [
       {
         path: "",
@@ -164,7 +171,34 @@ const routes: Routes = [
       {
         path: "romaneios/fechamento/:id",
         component: RomaneioFechamentoComponent
+      }
+    ]
+  },
+  //Admin
+  {
+    path: "",
+    component: NavComponent,
+    canActivate: [AuthGuard],
+    data: {
+      role: ['ADMIN']
+    },
+    children: [
+      {
+        path: "sistema/usuarios/cadastrar",
+        component: UsuarioCadastrarComponent
       },
+      {
+        path: "sistema/usuarios/atualizar/:id",
+        component: UsuarioAtualizarComponent
+      },
+      {
+        path: "sistema/usuarios/deletar/:id",
+        component: UsuarioDeletarComponent
+      },
+      {
+        path: "sistema/usuarios",
+        component: UsuarioListarComponent
+      }
     ]
   },
   {

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -30,6 +31,7 @@ public class ProdutoService {
         List<Produto> produtos = produtoRepository.findAll();
         return produtos.stream()
                 .map(this::toDTO)
+                .sorted(Comparator.comparing(ProdutoInputDTO::getCodigo))
                 .collect(Collectors.toList());
     }
 

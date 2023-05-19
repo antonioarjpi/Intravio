@@ -5,6 +5,7 @@ import com.intraviologistica.intravio.model.enums.Perfil;
 
 public class UsuarioDTO {
 
+    private String id;
     private String primeiroNome;
     private String segundoNome;
     private String email;
@@ -14,6 +15,7 @@ public class UsuarioDTO {
     }
 
     public UsuarioDTO(Usuario usuario) {
+        this.id = usuario.getId();
         this.primeiroNome = usuario.getPrimeiroNome();
         this.segundoNome = usuario.getSegundoNome();
         this.email = usuario.getEmail();
@@ -49,6 +51,22 @@ public class UsuarioDTO {
     }
 
     public void setRole(Perfil perfil) {
+        this.perfil = perfil;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public Perfil getPerfil() {
+        return perfil;
+    }
+
+    public void setPerfil(Perfil perfil) {
         this.perfil = perfil;
     }
 }

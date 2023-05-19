@@ -1,6 +1,6 @@
 <mat-drawer-container class="nav" autosize>
     <mat-drawer #drawer class="sidenav" mode="side">
- 
+
         <mat-nav-list class="nav-list">
             <div class="sidenav-logo">
                 <app-logo />
@@ -25,29 +25,48 @@
                 <i class="material-icons">inbox</i>
                 <label> Produtos</label>
             </a>
-            <a routerLink="transportadores">
-                <i class="material-icons">local_shipping</i>
-                <label>Transportadores</label>
+            <a class="dropdown-btn" [class.active]="expandCadastro" (click)="toogleCadastro()">
+                <i class="material-icons">add</i>
+                Mais Opções
+                <i class="material-icons  ml-5">keyboard_arrow_down</i>
             </a>
-            <a routerLink="departamentos">
-                <i class="material-icons">domain</i>
-                <label>Departamentos</label>
+            <div class="dropdown-container" [class.block]="expandCadastro">
+                <a routerLink="transportadores">
+                    <i class="material-icons">local_shipping</i>
+                    <label>Transportadores</label>
+                </a>
+                <a routerLink="filiais">
+                    <i class="material-icons">location_city</i>
+                    <label>Filiais</label>
+                </a>
+                <a routerLink="departamentos">
+                    <i class="material-icons">domain</i>
+                    <label>Departamentos</label>
+                </a>
+            </div>
+            <a class="dropdown-btn" [class.active]="expandConfig" (click)="toogleConfig()">
+                <i class="material-icons">settings</i>
+                Configurações
+                <i class="material-icons ml-3">keyboard_arrow_down</i>
             </a>
-            <a routerLink="filiais">
-                <i class="material-icons">location_city</i>
-                <label>Filiais</label>
-            </a>
-            <a (click)="[logout()]" routerLink="login">
-                <i class="material-icons">exit_to_app</i>
-                <label>Sair</label>
-            </a>
+            <div class="dropdown-container" [class.block]="expandConfig">
+                <a *ngIf="isAdmin" routerLink="sistema/usuarios">
+                    <i class="material-icons">supervisor_account</i>
+                    <label> Usuários Sistema</label>
+                </a>
+                <a (click)="[logout()]" routerLink="login">
+                    <i class="material-icons">exit_to_app</i>
+                    <label>Sair</label>
+                </a>
+            </div>
+         
         </mat-nav-list>
     </mat-drawer>
 
     <div class="sidenav-content">
         <!-- <app-header></app-header> -->
         <div class="container">
-            <button class="menu mat-elevation-z8" (click)="drawer.toggle()" mat-icon-button>
+            <button class="menu mat-elevation-z8" (click)="drawer.toggle() && desabilita()" mat-icon-button>
                 <mat-icon>menu</mat-icon>
             </button>
         </div>

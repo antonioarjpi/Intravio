@@ -3,7 +3,7 @@ import { UntypedFormControl, Validators } from "@angular/forms";
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Credentials } from 'src/app/models/credentials';
-import { UsuariosService } from 'src/app/services/usuarios.service';
+import { UsuarioService } from 'src/app/services/usuarios.service';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +17,7 @@ export class LoginComponent implements OnInit {
   };
   constructor(
     private toast: ToastrService,
-    private service: UsuariosService,
+    private service: UsuarioService,
     private router: Router
   ) {}
 

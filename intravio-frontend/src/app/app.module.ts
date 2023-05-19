@@ -29,6 +29,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { CurrencyPipe, registerLocaleData } from '@angular/common';
 import { ToastrModule } from "ngx-toastr";
 import { NgxMaskModule } from 'ngx-mask';
@@ -75,6 +76,10 @@ import { SelectComponent } from './components/select/select.component';
 import { CardInfoComponent } from './components/card-info/card-info.component';
 
 import localePt from '@angular/common/locales/pt';
+import { UsuarioCadastrarComponent } from './pages/usuarios/usuario-cadastrar/usuario-cadastrar.component';
+import { UsuarioAtualizarComponent } from './pages/usuarios/usuario-atualizar/usuario-atualizar.component';
+import { UsuarioDeletarComponent } from './pages/usuarios/usuario-deletar/usuario-deletar.component';
+import { UsuarioListarComponent } from './pages/usuarios/usuario-listar/usuario-listar.component';
 
 registerLocaleData(localePt);
 
@@ -120,6 +125,10 @@ registerLocaleData(localePt);
     RomaneioFechamentoComponent,
     SelectComponent,
     CardInfoComponent,
+    UsuarioCadastrarComponent,
+    UsuarioAtualizarComponent,
+    UsuarioDeletarComponent,
+    UsuarioListarComponent,
   ],
   imports: [
     BrowserModule,
@@ -152,7 +161,8 @@ registerLocaleData(localePt);
     MatSlideToggleModule,
     MatDatepickerModule,
     MatNativeDateModule,
-
+    MatExpansionModule,
+    
     ToastrModule.forRoot({
       timeOut: 4000,
       closeButton: true,

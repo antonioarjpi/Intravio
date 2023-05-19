@@ -9,7 +9,7 @@
    background-color: #32373d;
 }
 
-.sidenav-logo{
+.sidenav-logo {
    width: 100%;
    padding: 10px 10px 40px 10px;
    margin-top: 20px;
@@ -25,9 +25,9 @@
    text-decoration: none;
    align-items: center;
    vertical-align: middle;
-   height: 55px;
+   height: 50px;
    transition: 0.2s;
-   font-size: 16px;
+   font-size: 15px;
    border-top: 0px none rgba(255, 255, 255, 0.6);
    border-right: 0px none rgba(255, 255, 255, 0.6);
    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
@@ -38,7 +38,26 @@
 .sidenav a:hover {
    cursor: pointer;
    color: rgba(255, 255, 255, 0.877);
-   background-color: #2F89FC;
+   background-color: #42464b;
+}
+
+.sidenav a:hover,
+.dropdown-btn:hover {
+   color: #f1f1f1;
+}
+
+.active {
+   background-color: #42464b;
+   color: white;
+}
+
+.dropdown-container {
+   display: none;
+   background-color: #42464b;
+}
+
+.block {
+   display: block;
 }
 
 .sidenav label {
@@ -64,4 +83,17 @@
    color: white;
    background: linear-gradient(135deg, #fc8f74, #FF8264 100%);
    outline: none;
+}
+
+* {
+   scrollbar-width: thin;
+   scrollbar-color: var(--color-primary) #fff;
+}
+
+::-webkit-scrollbar-track {
+   background-color: #fff;
+}
+
+*::-webkit-scrollbar-thumb {
+   background-color: var(--color-primary);
 }

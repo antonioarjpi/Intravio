@@ -9,10 +9,12 @@
 
                 <div class="w-40">
                     <input *ngIf="abrePesquisa" class="custom-date-input" type="date" [value]="minDate"
-                        [(ngModel)]="minDate" (ngModelChange)="listarTodosRomaneios()" (focus)="isInputFocused = true" (blur)="isInputFocused = false" />
+                        [(ngModel)]="minDate" (ngModelChange)="listarTodosRomaneios()" (focus)="isInputFocused = true"
+                        (blur)="isInputFocused = false" />
                     <label *ngIf="abrePesquisa" class="ml-2 mr-2">até</label>
                     <input *ngIf="abrePesquisa" class="custom-date-input" type="date" [value]="maxDate"
-                        [(ngModel)]="maxDate" (ngModelChange)="listarTodosRomaneios()" (focus)="isInputFocused2 = true" (blur)="isInputFocused2 = false" />
+                        [(ngModel)]="maxDate" (ngModelChange)="listarTodosRomaneios()" (focus)="isInputFocused2 = true"
+                        (blur)="isInputFocused2 = false" />
                 </div>
 
                 <div class="w-40">
@@ -32,9 +34,8 @@
             </div>
         </div>
 
-        <div class="d-flex justify-content-center mt-3">
-            <a *ngIf="abrePesquisa" href="javascript:void(0)" class="text-primary text-center"
-                (click)="exibeFiltros = !exibeFiltros">
+        <div *ngIf="abrePesquisa" class="d-flex justify-content-center mt-3">
+            <a href="javascript:void(0)" class="text-primary text-center" (click)="exibeFiltros = !exibeFiltros">
                 Exibe filtros avançados
                 <mat-icon *ngIf="!exibeFiltros">keyboard_arrow_down</mat-icon>
                 <mat-icon *ngIf="exibeFiltros">keyboard_arrow_up</mat-icon>

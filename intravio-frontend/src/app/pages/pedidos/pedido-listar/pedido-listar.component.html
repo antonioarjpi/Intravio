@@ -17,14 +17,14 @@
 
                 <div class="w-40">
                     <input *ngIf="abrePesquisa" class="custom-input" (keyup)="applyFilter($event)"
-                        placeholder="Pesquisa pedido, destinaário, destino...">
+                        placeholder="Pesquisa pedido, destinatário, destino...">
                 </div>
 
                 <div class="w-10">
                     <button mat-mini-fab (click)="abrePesquisa = !abrePesquisa" color="secondary">
                         <mat-icon>search</mat-icon>
                     </button>
-                    <button mat-mini-fab routerLink="/romaneios/cadastrar" class="mat-elevation-z8" color="primary">
+                    <button mat-mini-fab routerLink="/pedidos/cadastrar" class="mat-elevation-z8" color="primary">
                         <mat-icon>add</mat-icon>
                     </button>
                 </div>
@@ -46,7 +46,7 @@
                     <div class="input-group-prepend">
                         <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">
-                            Buscar por {{tipoBusca === 'pedido' ? 'pedido' : 'romaneio'}}
+                             Buscar
                         </button>
                         <div class="dropdown-menu">
                             <a style="cursor:pointer" class="dropdown-item text-left"
@@ -59,7 +59,9 @@
                         [placeholder]="tipoBusca === 'pedido' ? 'Buscar por número de pedido...' : 'Buscar por número de romaneio...'">
                     <div class="input-group-append">
                         <button class="btn btn-outline-secondary" type="submit"
-                            (click)="pesquisaAvancada()">Pesquisar</button>
+                            (click)="pesquisaAvancada()">
+                        <i class="material-icons">search</i>
+                        </button>
                     </div>
                 </div>
             </form>

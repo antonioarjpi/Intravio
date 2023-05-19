@@ -7,6 +7,7 @@ import com.intraviologistica.intravio.service.exceptions.ResourceNotFoundExcepti
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -28,6 +29,7 @@ public class DepartamentoService {
     public List<DepartamentoDTO> listarDepartamentos() {
         return departamentoRepository.findAll()
                 .stream()
+                .sorted(Comparator.comparing(Departamento::getNome))
                 .map(this::toDTO)
                 .collect(Collectors.toList());
     }

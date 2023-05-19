@@ -8,13 +8,16 @@ import {
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
   jwtService: JwtHelperService = new JwtHelperService();
 
-  constructor() { }
+  constructor(
+    private toast: ToastrService
+  ) { }
 
   pathnames = [] = ["/rastreamento", "/login"];
 
@@ -26,6 +29,7 @@ export class AuthInterceptor implements HttpInterceptor {
         if (this.pathnames.includes(window.location.pathname)) {
           return next.handle(request);
         }
+        this.toast.error("Sessão expirada! Por favor, faça login novamente.")
         localStorage.clear();
       }
       const cloneReq =

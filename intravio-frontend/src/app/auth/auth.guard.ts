@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
-import { UsuariosService } from '../services/usuarios.service';
+import { UsuarioService } from '../services/usuarios.service';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Injectable({
@@ -8,15 +9,26 @@ import { UsuariosService } from '../services/usuarios.service';
 })
 export class AuthGuard implements CanActivate {
 
-  constructor(private authService: UsuariosService, private router: Router){}
+  constructor(
+    private toast: ToastrService,
+    private authService: UsuarioService,
+    private router: Router
+  ) { }
 
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): boolean {
     let authenticated = this.authService.isAutenticado();
-    if (authenticated){
+    const requiredRole = route.data['role'] as string[];
+    if (authenticated && this.authService.hasAnyRole(requiredRole)) {
       return true;
-    }else{
+    }
+    else if (authenticated) {
+      this.toast.warning("Acesso negado", "Aviso")
+      this.router.navigate(['home']);
+
+      return true;
+    } else {
       this.router.navigate(['login']);
       return false;
     }

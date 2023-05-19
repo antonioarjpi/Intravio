@@ -8,10 +8,9 @@ import com.intraviologistica.intravio.service.UsuarioService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/usuarios")
@@ -34,5 +33,15 @@ public class UsuarioController {
         response.addHeader("Authorization", "Bearer " + tokenDTO.getToken());
         response.addHeader("access-control-expose-headers", "Authorization");
         return ResponseEntity.ok(tokenDTO);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<UsuarioDTO>> listarTodosUsuarios(){
+        return ResponseEntity.ok(usuarioService.listarUsuários());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UsuarioDTO> encontraUsuarioPorId(@PathVariable String id){
+        return ResponseEntity.ok(usuarioService.encontraUsuarioPorId(id));
     }
 }

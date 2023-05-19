@@ -14,7 +14,10 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class UsuarioService {
@@ -60,6 +63,22 @@ public class UsuarioService {
         String jwtToken = jwtService.generateToken(usuario); // Gera o Token
 
         return new TokenDTO(jwtToken);
+    }
+
+
+    // Lista todos usuários retornando DTO
+    public List<UsuarioDTO> listarUsuários(){
+        return usuarioRepository.findAll()
+                .stream()
+                .sorted(Comparator.comparing(Usuario::getPrimeiroNome))
+                .map(UsuarioDTO::new)
+                .collect(Collectors.toList());
+    }
+
+    public UsuarioDTO encontraUsuarioPorId(String id){
+        Usuario usuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
+        return new UsuarioDTO(usuario);
     }
 
     // Método para verificar se um e-mail já existe. Caso exista, será lançada uma exceção
