@@ -24,7 +24,7 @@ export class AuthGuard implements CanActivate {
       return true;
     }
     else if (authenticated) {
-      this.toast.warning("Acesso negado", "Aviso")
+      this.toast.warning("Você não possui permissão para acessar esta página", "Acesso Negado")
       this.router.navigate(['home']);
 
       return true;

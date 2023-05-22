@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 
 public class UsuarioInputDTO {
 
+    private String id;
     @NotBlank(message = "Preenchimento de nome é obrigatório")
     private String primeiroNome;
     private String segundoNome;
@@ -57,5 +58,13 @@ public class UsuarioInputDTO {
 
     public void setPerfil(Perfil perfil) {
         this.perfil = perfil;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

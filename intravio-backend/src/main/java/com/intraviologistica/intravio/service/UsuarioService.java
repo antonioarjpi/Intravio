@@ -13,6 +13,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Comparator;
 import java.util.List;
@@ -38,6 +39,7 @@ public class UsuarioService {
         return UUID.randomUUID().toString().replace("-", "");
     }
 
+    @Transactional
     public UsuarioDTO cadastrarUsuario(UsuarioInputDTO dto) {
         Usuario usuario = toEntity(dto);
 
@@ -49,6 +51,7 @@ public class UsuarioService {
     }
 
     // Método para autenticar no sistema
+    @Transactional
     public TokenDTO fazerLogin(CredenciaisDTO dto) {
         Usuario usuario = usuarioRepository.findByEmail(dto.getEmail())
                 .orElseThrow(() -> new ResourceNotFoundException("E-mail não encontrado: " + dto.getEmail())); // Busca de usuário por e-mail. Caso não seja encontrado, será lançada uma exceção
@@ -65,8 +68,8 @@ public class UsuarioService {
         return new TokenDTO(jwtToken);
     }
 
-
     // Lista todos usuários retornando DTO
+    @Transactional
     public List<UsuarioDTO> listarUsuários(){
         return usuarioRepository.findAll()
                 .stream()
@@ -75,10 +78,22 @@ public class UsuarioService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public UsuarioDTO encontraUsuarioPorId(String id){
         Usuario usuario = usuarioRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
         return new UsuarioDTO(usuario);
+    }
+
+    @Transactional
+    public Usuario atualizaUsuario(String id, UsuarioInputDTO dto) {
+        Usuario usuario = usuarioRepository.findById(id).get();
+        usuario.setId(id);
+        usuario.setPrimeiroNome(dto.getPrimeiroNome());
+        usuario.setSegundoNome(dto.getSegundoNome());
+        usuario.setEmail(dto.getEmail());
+        usuario.setPerfil(dto.getPerfil());
+        return usuarioRepository.save(usuario);
     }
 
     // Método para verificar se um e-mail já existe. Caso exista, será lançada uma exceção

@@ -4,6 +4,7 @@ import com.intraviologistica.intravio.dto.CredenciaisDTO;
 import com.intraviologistica.intravio.dto.TokenDTO;
 import com.intraviologistica.intravio.dto.UsuarioDTO;
 import com.intraviologistica.intravio.dto.input.UsuarioInputDTO;
+import com.intraviologistica.intravio.model.Usuario;
 import com.intraviologistica.intravio.service.UsuarioService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpHeaders;
@@ -43,5 +44,10 @@ public class UsuarioController {
     @GetMapping("/{id}")
     public ResponseEntity<UsuarioDTO> encontraUsuarioPorId(@PathVariable String id){
         return ResponseEntity.ok(usuarioService.encontraUsuarioPorId(id));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Usuario> atualizarUsuario(@PathVariable String id, @RequestBody UsuarioInputDTO dto){
+        return ResponseEntity.ok(usuarioService.atualizaUsuario(id, dto));
     }
 }
