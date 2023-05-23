@@ -43,6 +43,9 @@ export class UsuarioService {
     return this.http.put<Usuario>(`${API_CONFIG.baseUrl}/usuarios/${usuario.id}`, usuario)
   }
 
+  delete(usuario: Usuario): Observable<void> {
+    return this.http.delete<void>(`${API_CONFIG.baseUrl}/usuarios/${usuario.id}`)
+  }
 
   isAutenticado() {
     let token = localStorage.getItem("@token");

@@ -9,6 +9,8 @@ import com.intraviologistica.intravio.service.UsuarioService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -49,5 +51,11 @@ public class UsuarioController {
     @PutMapping("/{id}")
     public ResponseEntity<Usuario> atualizarUsuario(@PathVariable String id, @RequestBody UsuarioInputDTO dto){
         return ResponseEntity.ok(usuarioService.atualizaUsuario(id, dto));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Usuario> deletarUsuario(@PathVariable String id){
+        usuarioService.deletaUsuario(id);
+        return ResponseEntity.noContent().build();
     }
 }

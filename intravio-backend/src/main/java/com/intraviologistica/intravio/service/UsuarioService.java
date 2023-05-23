@@ -11,6 +11,7 @@ import com.intraviologistica.intravio.service.exceptions.ResourceNotFoundExcepti
 import com.intraviologistica.intravio.service.exceptions.RuleOfBusinessException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,11 +51,16 @@ public class UsuarioService {
         return new UsuarioDTO(usuarioSalvo);
     }
 
+    @Transactional
+    public Usuario encontraUsuarioPorEmail(String email) {
+        return usuarioRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("E-mail não encontrado: " + email));
+    }
+
     // Método para autenticar no sistema
     @Transactional
     public TokenDTO fazerLogin(CredenciaisDTO dto) {
-        Usuario usuario = usuarioRepository.findByEmail(dto.getEmail())
-                .orElseThrow(() -> new ResourceNotFoundException("E-mail não encontrado: " + dto.getEmail())); // Busca de usuário por e-mail. Caso não seja encontrado, será lançada uma exceção
+        Usuario usuario = encontraUsuarioPorEmail(dto.getEmail()); // Busca de usuário por e-mail. Caso não seja encontrado, será lançada uma exceção
 
         validaSenhas(dto, usuario);
 
@@ -70,7 +76,7 @@ public class UsuarioService {
 
     // Lista todos usuários retornando DTO
     @Transactional
-    public List<UsuarioDTO> listarUsuários(){
+    public List<UsuarioDTO> listarUsuários() {
         return usuarioRepository.findAll()
                 .stream()
                 .sorted(Comparator.comparing(Usuario::getPrimeiroNome))
@@ -79,7 +85,7 @@ public class UsuarioService {
     }
 
     @Transactional
-    public UsuarioDTO encontraUsuarioPorId(String id){
+    public UsuarioDTO encontraUsuarioPorId(String id) {
         Usuario usuario = usuarioRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
         return new UsuarioDTO(usuario);
@@ -96,9 +102,16 @@ public class UsuarioService {
         return usuarioRepository.save(usuario);
     }
 
+    @Transactional
+    public void deletaUsuario(String id) {
+        usuarioRepository.findById(id)
+                .orElseThrow(() -> new RuleOfBusinessException("Usuário não localizado"));
+        usuarioRepository.deleteById(id);
+    }
+
     // Método para verificar se um e-mail já existe. Caso exista, será lançada uma exceção
     private void validaEmail(UsuarioInputDTO dto) {
-        if (usuarioRepository.existsByEmail(dto.getEmail())){
+        if (usuarioRepository.existsByEmail(dto.getEmail())) {
             throw new RuleOfBusinessException("Erro ao cadastrar novo usuário. O e-mail já existe no sistema. Por favor, verifique as informações e tente novamente.");
         }
     }

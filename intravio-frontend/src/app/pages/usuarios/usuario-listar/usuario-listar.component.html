@@ -8,14 +8,14 @@
                 </div>
                 <div class="w-80">
                     <input *ngIf="abrePesquisa" class="custom-input" (keyup)="applyFilter($event)"
-                        placeholder="Pesquise nome, e-mail, departamento, filial">
+                        placeholder="Pesquise nome, e-mail...">
                 </div>
                 <div class="w-10">
-                    <button mat-mini-fab (click)="abrePesquisa = !abrePesquisa"
-                        color="secondary">
+                    <button mat-mini-fab (click)="abrePesquisa = !abrePesquisa" color="secondary">
                         <mat-icon>search</mat-icon>
                     </button>
-                    <button mat-mini-fab routerLink="/sistema/usuarios/cadastrar" class="mat-elevation-z8" color="primary">
+                    <button mat-mini-fab routerLink="/sistema/usuarios/cadastrar" class="mat-elevation-z8"
+                        color="primary">
                         <mat-icon>add</mat-icon>
                     </button>
                 </div>
@@ -26,13 +26,14 @@
     <div class="table-responsive mat-elevation-z8">
         <table mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)">
 
-            <ng-container matColumnDef="primeiroNome" >
+            <ng-container matColumnDef="primeiroNome">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="primeiroNome"> NOME </th>
                 <td mat-cell *matCellDef="let element"> {{element.primeiroNome}} </td>
             </ng-container>
 
-            <ng-container matColumnDef="segundoNome" >
-                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="segundoNome"> Sobrenome </th>
+            <ng-container matColumnDef="segundoNome">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="segundoNome"> Sobrenome
+                </th>
                 <td mat-cell *matCellDef="let element"> {{element.segundoNome}} </td>
             </ng-container>
 
@@ -49,12 +50,23 @@
             <ng-container matColumnDef="acoes">
                 <th class="text-right mr-1" mat-header-cell *matHeaderCellDef> AÇÕES </th>
                 <td class="text-right mr-1" mat-cell *matCellDef="let element"> {{element.symbol}}
-                    <a routerLink="/sistema/usuarios/atualizar/{{element.id}}">
-                        <i class="material-icons edit">edit</i>
-                    </a>
-                    <a routerLink="/sistema/usuarios/deletar/{{element.id}}">
-                        <i class="material-icons delete">delete</i>
-                    </a>
+                    <button mat-icon-button [matMenuTriggerFor]="menu">
+                        <mat-icon>more_vert</mat-icon>
+                    </button>
+                    <mat-menu #menu="matMenu">
+                        <button mat-menu-item routerLink="/sistema/usuarios/atualizar/{{element.id}}">
+                            <mat-icon>edit</mat-icon>
+                            <span>Editar</span>
+                        </button>
+                        <button mat-menu-item routerLink="/sistema/usuarios/alterar-senha/{{element.id}}">
+                            <mat-icon>lock</mat-icon>
+                            <span>Alterar senha</span>
+                        </button>
+                        <button mat-menu-item routerLink="/sistema/usuarios/deletar/{{element.id}}">
+                            <mat-icon>cancel</mat-icon>
+                            <span>Deletar</span>
+                        </button>
+                    </mat-menu>
                 </td>
             </ng-container>
 
