@@ -15,10 +15,10 @@ import { UsuarioService } from 'src/app/services/usuarios.service';
   styleUrls: ['./usuario-cadastrar.component.css']
 })
 export class UsuarioCadastrarComponent {
-  primeiroNome: UntypedFormControl = new UntypedFormControl(null, Validators.minLength(3));
-  segundoNome: UntypedFormControl = new UntypedFormControl(null, Validators.minLength(3));
+  primeiroNome: UntypedFormControl = new UntypedFormControl(null, Validators.minLength(1));
+  segundoNome: UntypedFormControl = new UntypedFormControl(null, Validators.minLength(1));
   perfil: UntypedFormControl = new UntypedFormControl(null, Validators.nullValidator);
-  email: UntypedFormControl = new UntypedFormControl(null, Validators.email);
+  email: UntypedFormControl = new UntypedFormControl(null, Validators.nullValidator);
   senha: UntypedFormControl = new UntypedFormControl(null, Validators.minLength(3));
   senhaRepetida: string = "";
 

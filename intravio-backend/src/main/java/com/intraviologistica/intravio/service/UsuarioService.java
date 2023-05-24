@@ -3,6 +3,7 @@ package com.intraviologistica.intravio.service;
 import com.intraviologistica.intravio.dto.CredenciaisDTO;
 import com.intraviologistica.intravio.dto.TokenDTO;
 import com.intraviologistica.intravio.dto.UsuarioDTO;
+import com.intraviologistica.intravio.dto.input.AlterarSenhaDTO;
 import com.intraviologistica.intravio.dto.input.UsuarioInputDTO;
 import com.intraviologistica.intravio.model.Usuario;
 import com.intraviologistica.intravio.repository.UsuarioRepository;
@@ -11,7 +12,6 @@ import com.intraviologistica.intravio.service.exceptions.ResourceNotFoundExcepti
 import com.intraviologistica.intravio.service.exceptions.RuleOfBusinessException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -104,9 +104,27 @@ public class UsuarioService {
 
     @Transactional
     public void deletaUsuario(String id) {
-        usuarioRepository.findById(id)
-                .orElseThrow(() -> new RuleOfBusinessException("Usuário não localizado"));
+        findById(id);
         usuarioRepository.deleteById(id);
+    }
+
+    @Transactional
+    public void alterarSenha(String id, AlterarSenhaDTO senhaDTO) {
+        Usuario usuario = findById(id);
+
+        boolean matches = passwordEncoder.matches(senhaDTO.getSenhaAtual(), usuario.getSenha());
+        if (!matches) {
+            throw new RuleOfBusinessException("A senha atual inserida está incorreta.");
+        }
+
+        usuario.setSenha(passwordEncoder.encode(senhaDTO.getSenhaNova()));
+        usuarioRepository.save(usuario);
+    }
+
+    @Transactional
+    public Usuario findById(String id) {
+        return usuarioRepository.findById(id)
+                .orElseThrow(() -> new RuleOfBusinessException("Usuário não localizado"));
     }
 
     // Método para verificar se um e-mail já existe. Caso exista, será lançada uma exceção

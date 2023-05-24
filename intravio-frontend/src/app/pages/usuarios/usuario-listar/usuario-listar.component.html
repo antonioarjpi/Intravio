@@ -58,7 +58,7 @@
                             <mat-icon>edit</mat-icon>
                             <span>Editar</span>
                         </button>
-                        <button mat-menu-item routerLink="/sistema/usuarios/alterar-senha/{{element.id}}">
+                        <button mat-menu-item (click)="openModalView(element)">
                             <mat-icon>lock</mat-icon>
                             <span>Alterar senha</span>
                         </button>

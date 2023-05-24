@@ -21,8 +21,8 @@ export class LoginComponent implements OnInit {
     private router: Router
   ) {}
 
-  email = new UntypedFormControl(null, Validators.email);
-  senha = new UntypedFormControl(null, Validators.minLength(6));
+  email = new UntypedFormControl(null, Validators.nullValidator);
+  senha = new UntypedFormControl(null, Validators.minLength(3));
 
   ngOnInit(): void { }
 

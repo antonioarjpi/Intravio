@@ -3,6 +3,7 @@ package com.intraviologistica.intravio.controller;
 import com.intraviologistica.intravio.dto.CredenciaisDTO;
 import com.intraviologistica.intravio.dto.TokenDTO;
 import com.intraviologistica.intravio.dto.UsuarioDTO;
+import com.intraviologistica.intravio.dto.input.AlterarSenhaDTO;
 import com.intraviologistica.intravio.dto.input.UsuarioInputDTO;
 import com.intraviologistica.intravio.model.Usuario;
 import com.intraviologistica.intravio.service.UsuarioService;
@@ -57,5 +58,11 @@ public class UsuarioController {
     public ResponseEntity<Usuario> deletarUsuario(@PathVariable String id){
         usuarioService.deletaUsuario(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}/alterar-senha")
+    public ResponseEntity<Void> atualizarSenha(@PathVariable String id, @RequestBody AlterarSenhaDTO senhaDTO){
+        usuarioService.alterarSenha(id, senhaDTO);
+        return ResponseEntity.ok().build();
     }
 }

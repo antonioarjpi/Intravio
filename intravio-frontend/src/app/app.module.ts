@@ -80,6 +80,7 @@ import { UsuarioCadastrarComponent } from './pages/usuarios/usuario-cadastrar/us
 import { UsuarioAtualizarComponent } from './pages/usuarios/usuario-atualizar/usuario-atualizar.component';
 import { UsuarioDeletarComponent } from './pages/usuarios/usuario-deletar/usuario-deletar.component';
 import { UsuarioListarComponent } from './pages/usuarios/usuario-listar/usuario-listar.component';
+import { UsuarioAlterarSenhaComponent } from './pages/usuarios/usuario-alterar-senha/usuario-alterar-senha.component';
 
 registerLocaleData(localePt);
 
@@ -129,6 +130,7 @@ registerLocaleData(localePt);
     UsuarioAtualizarComponent,
     UsuarioDeletarComponent,
     UsuarioListarComponent,
+    UsuarioAlterarSenhaComponent,
   ],
   imports: [
     BrowserModule,

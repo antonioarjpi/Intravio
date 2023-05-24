@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { Credentials } from "./../models/credentials";
 import { API_CONFIG } from "src/app/config/api.config";
 import { Usuario } from "../models/usuario";
+import { AlterarSenha } from "../models/alterarSenha";
 
 @Injectable({
   providedIn: 'root'
@@ -45,6 +46,10 @@ export class UsuarioService {
 
   delete(usuario: Usuario): Observable<void> {
     return this.http.delete<void>(`${API_CONFIG.baseUrl}/usuarios/${usuario.id}`)
+  }
+  
+  changePassword(id: String, senhas: AlterarSenha): Observable<void>{
+    return this.http.put<void>(`${API_CONFIG.baseUrl}/usuarios/${id}/alterar-senha`, senhas)
   }
 
   isAutenticado() {
