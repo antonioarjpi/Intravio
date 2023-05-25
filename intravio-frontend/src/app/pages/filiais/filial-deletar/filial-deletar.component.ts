@@ -44,9 +44,10 @@ export class FilialDeletarComponent implements OnInit {
   deletarFilial(): void {
     this.service.delete(this.filial.id).subscribe(() => {
       this.toast.success("Filial deletada com sucesso", "Exclusão");
+      this.router.navigate(["filiais"])
     },
-    (ex) => {
-      this.toast.error(ex.error.message);
-    })
+      (ex) => {
+        this.toast.error(ex.error.message);
+      })
   }
 }

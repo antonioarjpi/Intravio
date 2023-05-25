@@ -8,7 +8,7 @@ import { PedidoService } from 'src/app/services/pedido.service';
   templateUrl: './rastreio.component.html',
   styleUrls: ['./rastreio.component.css']
 })
-export class RastreioComponent implements OnInit {
+export class RastreioComponent {
 
   historicoPedidos: HistoricoPedido[] = [];
   codigoRastreio: String = "";
@@ -16,10 +16,7 @@ export class RastreioComponent implements OnInit {
   constructor(
     private pedidoService: PedidoService,
     private toast: ToastrService
-  ) { }
-
-  ngOnInit(): void {
-  }
+  ) { };
 
   buscarRastreamento() {
     if (this.codigoRastreio === null || this.codigoRastreio.length < 3) {
@@ -27,7 +24,7 @@ export class RastreioComponent implements OnInit {
       return;
     }
 
-    this.pedidoService.exibirHistoricoPedidos(this.codigoRastreio).subscribe(response => {
+    this.pedidoService.exibirHistoricoPedidos(this.codigoRastreio).subscribe((response) => {
       this.historicoPedidos = response;
     }, (ex) => {
       this.toast.error(ex.error.message);

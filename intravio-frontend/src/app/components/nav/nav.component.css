@@ -9,6 +9,13 @@
    background-color: #32373d;
 }
 
+@media only screen and (max-width: 600px) {
+   .sidenav{
+   width: 100%;
+
+   }
+}
+
 .sidenav-logo {
    width: 100%;
    padding: 10px 10px 40px 10px;
@@ -60,6 +67,10 @@
    display: block;
 }
 
+.dropdown-btn{
+   justify-content: stretch;
+}
+
 .sidenav label {
    width: 8rem;
    white-space: nowrap;
@@ -83,6 +94,15 @@
    color: white;
    background: linear-gradient(135deg, #fc8f74, #FF8264 100%);
    outline: none;
+}
+
+.clear{
+   display: flex;
+   justify-content: flex-end;
+   color: #f1f1f1;
+   padding-left: 12px;
+   padding-right: 12px;
+   height: 5px;
 }
 
 * {

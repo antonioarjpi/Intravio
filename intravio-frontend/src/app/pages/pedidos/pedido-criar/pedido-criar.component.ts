@@ -53,7 +53,6 @@ export class PedidoCriarComponent implements OnInit {
     destinatario: "",
     prioridade: null,
     acompanhaStatus: null
-
   };
 
   constructor(
@@ -93,16 +92,15 @@ export class PedidoCriarComponent implements OnInit {
 
   finalizarPedido(): void {
     this.pedido.itens = this.itens;
-    this.service.create(this.pedido).subscribe(
-      (response) => {
-        if (this.arquivos.length < 1) {
-          this.toast.success("Pedido realizado com sucesso", "Cadastro");
-          this.router.navigate(["pedidos"]);
-          return;
-        }
-        this.pedido.id = response.id;
-        this.adicionarArquivo(this.pedido.id);
-      },
+    this.service.create(this.pedido).subscribe((response) => {
+      if (this.arquivos.length < 1) {
+        this.toast.success("Pedido realizado com sucesso", "Cadastro");
+        this.router.navigate(["pedidos"]);
+        return;
+      }
+      this.pedido.id = response.id;
+      this.adicionarArquivo(this.pedido.id);
+    },
       (ex) => {
         if (ex.error.errors) {
           ex.error.errors.forEach((element) => {
@@ -121,7 +119,7 @@ export class PedidoCriarComponent implements OnInit {
       .subscribe(() => {
         this.toast.success("Pedido realizado com sucesso", "Cadastro");
         this.router.navigate(["pedidos"])
-      }, error => {
+      }, () => {
         this.toast.error("O pedido foi salvo, porém houve erro ao envia as imagens. Tente novamente", "Erro");
       });
   }
@@ -210,4 +208,3 @@ export class PedidoCriarComponent implements OnInit {
     this.quantidade = null;
   }
 }
-

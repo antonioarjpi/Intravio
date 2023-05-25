@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { UntypedFormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -10,7 +10,7 @@ import { ProdutoService } from 'src/app/services/produto.service';
   templateUrl: './produto-cadastrar.component.html',
   styleUrls: ['./produto-cadastrar.component.css']
 })
-export class ProdutoCadastrarComponent implements OnInit{
+export class ProdutoCadastrarComponent {
 
   id: UntypedFormControl = new UntypedFormControl(null, Validators.nullValidator);
   codigo: UntypedFormControl = new UntypedFormControl(null, Validators.minLength(1));
@@ -37,12 +37,7 @@ export class ProdutoCadastrarComponent implements OnInit{
     private router: Router
   ) { };
 
-  ngOnInit() {
-  
-  }
-
   cadastrarProduto(): void {
-
     if (!this.validaCampos()) {
       return;
     }
@@ -53,11 +48,10 @@ export class ProdutoCadastrarComponent implements OnInit{
     const novoPeso = this.produto.peso.toString().replace(".", "").replace(",", ".");
     this.produto.peso = parseFloat(novoPeso);
 
-    this.service.create(this.produto).subscribe(
-      () => {
-        this.toast.success("Produto cadastrada com sucesso", "Cadastro");
-        this.router.navigate(["produtos"])
-      },
+    this.service.create(this.produto).subscribe(() => {
+      this.toast.success("Produto cadastrada com sucesso", "Cadastro");
+      this.router.navigate(["produtos"]);
+    },
       (ex) => {
         if (ex.error.errors) {
           ex.error.errors.forEach((element) => {

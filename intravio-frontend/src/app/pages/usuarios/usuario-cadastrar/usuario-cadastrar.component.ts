@@ -44,11 +44,11 @@ export class UsuarioCadastrarComponent {
 
   ngOnInit(): void {
     this.departamentoService.findAll().subscribe((response) => {
-      this._departamento = response
+      this._departamento = response;
     });
 
     this.filialService.findAll().subscribe((response) => {
-      this._filial = response
+      this._filial = response;
     })
   };
 
@@ -58,11 +58,10 @@ export class UsuarioCadastrarComponent {
       return;
     }
 
-    this.service.create(this.usuario).subscribe(
-      () => {
-        this.toast.success("Usuário cadastrado com sucesso", "Cadastro");
-        this.router.navigate(["/sistema/usuarios"])
-      },
+    this.service.create(this.usuario).subscribe(() => {
+      this.toast.success("Usuário cadastrado com sucesso", "Cadastro");
+      this.router.navigate(["/sistema/usuarios"])
+    },
       (ex) => {
         if (ex.error.errors) {
           ex.error.errors.forEach((element) => {

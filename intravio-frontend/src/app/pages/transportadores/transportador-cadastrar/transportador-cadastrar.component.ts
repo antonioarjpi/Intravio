@@ -38,11 +38,10 @@ export class TransportadorCadastrarComponent {
       return;
     }
 
-    this.service.create(this.transportador).subscribe(
-      () => {
-        this.toast.success("Transportador cadastrado com sucesso", "Cadastro");
-        this.router.navigate(["transportadores"])
-      },
+    this.service.create(this.transportador).subscribe(() => {
+      this.toast.success("Transportador cadastrado com sucesso", "Cadastro");
+      this.router.navigate(["transportadores"])
+    },
       (ex) => {
         if (ex.error.errors) {
           ex.error.errors.forEach((element) => {

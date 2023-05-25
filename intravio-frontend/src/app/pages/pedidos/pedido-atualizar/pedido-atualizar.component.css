@@ -55,17 +55,6 @@ table {
     color: black;
     margin-top: 10px;
     margin-bottom: 25px;
-    position: relative;
-    display: block;
-}
-
-@media only screen and (max-width: 600px) {
-    .responsive {
-        width: 300px;
-        max-width: 300px;
-        overflow-x: scroll;
-    
-    }
 }
 
 th,
@@ -153,7 +142,7 @@ i {
     box-shadow: 10px 6px 14px -1px rgba(0, 0, 0, 0.75);
 }
 
-label {
+label{
     color: rgb(68, 68, 68);
     font-weight: 500;
     text-align: center;
@@ -177,4 +166,4 @@ label {
     padding: 3px;
     margin: 3px 0 0 3px;
     z-index: 100;
-}
+} 

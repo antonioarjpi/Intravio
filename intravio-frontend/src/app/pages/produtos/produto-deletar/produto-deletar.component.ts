@@ -9,7 +9,7 @@ import { ProdutoService } from 'src/app/services/produto.service';
   templateUrl: './produto-deletar.component.html',
   styleUrls: ['./produto-deletar.component.css']
 })
-export class ProdutoDeletarComponent implements OnInit{
+export class ProdutoDeletarComponent implements OnInit {
 
   produto: Produto = {
     id: null,
@@ -33,19 +33,18 @@ export class ProdutoDeletarComponent implements OnInit{
     this.produto.id = this.route.snapshot.paramMap.get('id');
     this.buscarPorId();
   }
-  
+
   buscarPorId(): void {
-    this.service.findById(this.produto.id).subscribe(response => {
-      this.produto = response
+    this.service.findById(this.produto.id).subscribe((response) => {
+      this.produto = response;
     })
   }
 
   deletarProduto(): void {
-    this.service.delete(this.produto.id).subscribe(
-      () => {
-        this.toast.success("Produto deletado com sucesso", "Exclusão");
-        this.router.navigate(["produtos"]);
-      },
+    this.service.delete(this.produto.id).subscribe(() => {
+      this.toast.success("Produto deletado com sucesso", "Exclusão");
+      this.router.navigate(["produtos"]);
+    },
       (ex) => {
         this.toast.error(ex.error.message);
       }

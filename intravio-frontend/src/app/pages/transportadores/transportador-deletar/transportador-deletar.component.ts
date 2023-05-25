@@ -28,16 +28,14 @@ export class TransportadorDeletarComponent implements OnInit {
     private route: ActivatedRoute
   ) { };
 
-
   ngOnInit(): void {
     this.transportador.id = this.route.snapshot.paramMap.get('id');
     this.buscarPorId();
   }
 
-
   buscarPorId(): void {
-    this.service.findById(this.transportador.id).subscribe(response => {
-      this.transportador = response
+    this.service.findById(this.transportador.id).subscribe((response) => {
+      this.transportador = response;
     })
   }
 

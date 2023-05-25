@@ -1,8 +1,6 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { Funcionario } from 'src/app/models/funcionario';
-import { FuncionarioService } from 'src/app/services/funcionario.service';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { MatSort, Sort } from '@angular/material/sort';
 import { UsuarioService } from 'src/app/services/usuarios.service';
@@ -35,8 +33,6 @@ export class UsuarioListarComponent {
     this.listarTodosFuncionarios();
   }
 
-  ngAfterViewInit() { }
-
   announceSortChange(sortState: Sort) {
     if (sortState.direction) {
       this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
@@ -60,7 +56,7 @@ export class UsuarioListarComponent {
   }
 
   openModalView(id) {
-   const dialogRef = this.dialog.open(UsuarioAlterarSenhaComponent, { data: id });
-   dialogRef.afterClosed().subscribe();
+    const dialogRef = this.dialog.open(UsuarioAlterarSenhaComponent, { data: id });
+    dialogRef.afterClosed().subscribe();
   };
 }

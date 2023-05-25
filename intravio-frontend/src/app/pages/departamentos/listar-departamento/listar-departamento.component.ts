@@ -17,13 +17,11 @@ export class ListarDepartamentoComponent implements OnInit {
   dataSource = new MatTableDataSource<Departamento>(this.ELEMENT_DATA);
   abrePesquisa: boolean = false;
 
-  constructor(private service: DepartamentoService) {}
+  constructor(private service: DepartamentoService) { }
 
   ngOnInit(): void {
     this.listarTodosDepartamentos();
   }
-
-  ngAfterViewInit() {}
 
   listarTodosDepartamentos() {
     this.service.findAll().subscribe((response) => {

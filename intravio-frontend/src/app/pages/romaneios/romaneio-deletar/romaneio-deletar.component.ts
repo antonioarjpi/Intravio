@@ -16,7 +16,6 @@ import { RomaneioService } from 'src/app/services/romaneio.service';
 })
 export class RomaneioDeletarComponent {
 
-
   ELEMENT_DATA: Pedido[] = [];
   pedidos: Pedido[] = [];
   transportador: UntypedFormControl = new UntypedFormControl(null, Validators.required);
@@ -52,7 +51,7 @@ export class RomaneioDeletarComponent {
   };
 
   buscarPedidoPorId(): void {
-    this.service.findById(this.romaneio.id).subscribe(response => {
+    this.service.findById(this.romaneio.id).subscribe((response) => {
       this.romaneio = response;
       this.listarPedidosDoRomaneio();
       for (let i = 0; i < response.pedidos.length; i++) {
@@ -71,11 +70,10 @@ export class RomaneioDeletarComponent {
   }
 
   deletarRomaneio(): void {
-    this.service.delete(this.romaneio).subscribe(
-      (response) => {
-        this.toast.success("Romaneio deletado com sucesso", "Exclusão");
-        this.router.navigate(["romaneios"]);
-      },
+    this.service.delete(this.romaneio).subscribe(() => {
+      this.toast.success("Romaneio deletado com sucesso", "Exclusão");
+      this.router.navigate(["romaneios"]);
+    },
       (ex) => {
         if (ex.error.errors) {
           ex.error.errors.forEach((element) => {

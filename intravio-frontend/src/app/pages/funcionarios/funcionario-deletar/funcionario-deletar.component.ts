@@ -13,7 +13,7 @@ import { FuncionarioService } from 'src/app/services/funcionario.service';
   templateUrl: './funcionario-deletar.component.html',
   styleUrls: ['./funcionario-deletar.component.css']
 })
-export class FuncionarioDeletarComponent implements OnInit{
+export class FuncionarioDeletarComponent implements OnInit {
 
   funcionario: Funcionario = {
     id: null,
@@ -35,7 +35,7 @@ export class FuncionarioDeletarComponent implements OnInit{
     private route: ActivatedRoute
   ) { };
 
-  ngOnInit(): void{
+  ngOnInit(): void {
     this.funcionario.id = this.route.snapshot.paramMap.get("id");
 
     this.buscarPorId();
@@ -49,18 +49,17 @@ export class FuncionarioDeletarComponent implements OnInit{
     })
   };
 
-  buscarPorId(): void{
+  buscarPorId(): void {
     this.service.findById(this.funcionario.id).subscribe((response) => {
       this.funcionario = response;
     })
   }
 
   deletarFuncionario(): void {
-    this.service.delete(this.funcionario.id).subscribe(
-      () => {
-        this.toast.success("Usuário deletado com sucesso", "Exclusão");
-        this.router.navigate(["usuarios"])
-      },
+    this.service.delete(this.funcionario.id).subscribe(() => {
+      this.toast.success("Usuário deletado com sucesso", "Exclusão");
+      this.router.navigate(["usuarios"]);
+    },
       (ex) => {
         if (ex.error.errors) {
           ex.error.errors.forEach((element) => {

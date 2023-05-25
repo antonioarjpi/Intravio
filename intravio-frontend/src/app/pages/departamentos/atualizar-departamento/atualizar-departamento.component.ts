@@ -26,16 +26,14 @@ export class AtualizarDepartamentoComponent implements OnInit {
     private route: ActivatedRoute
   ) { };
 
-
   ngOnInit(): void {
     this.departamento.id = this.route.snapshot.paramMap.get('id');
     this.buscarPorId();
   }
 
-
   buscarPorId(): void {
-    this.service.findById(this.departamento.id).subscribe(response => {
-      this.departamento = response
+    this.service.findById(this.departamento.id).subscribe((response) => {
+      this.departamento = response;
     })
   }
 
@@ -47,7 +45,7 @@ export class AtualizarDepartamentoComponent implements OnInit {
     this.service.update(this.departamento).subscribe(
       () => {
         this.toast.success("Departamento atualizado com sucesso", "Atualização");
-        this.router.navigate(["departamentos"])
+        this.router.navigate(["departamentos"]);
       },
       (ex) => {
         if (ex.error.errors) {

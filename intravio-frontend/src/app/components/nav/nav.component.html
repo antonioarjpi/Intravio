@@ -1,7 +1,10 @@
 <mat-drawer-container class="nav" autosize>
-    <mat-drawer #drawer class="sidenav" mode="side">
+    <mat-drawer #drawer class="sidenav" [mode]="width < 600 ? 'over' : 'side'" [opened]="isSidenavOpened">
 
         <mat-nav-list class="nav-list">
+            <div *ngIf="width < 600" class="clear">
+                <mat-icon (click)="drawer.toggle()">clear</mat-icon>
+            </div>
             <div class="sidenav-logo">
                 <app-logo />
             </div>
@@ -9,37 +12,37 @@
                 <i class="material-icons">home</i>
                 <label>Inicio</label>
             </a>
-            <a routerLink="pedidos">
+            <a routerLink="pedidos" (click)="!isSidenavOpened ? drawer.toggle() : null">
                 <i class="material-icons">assignment</i>
                 <label>Pedidos</label>
             </a>
-            <a routerLink="romaneios">
+            <a routerLink="romaneios" (click)="!isSidenavOpened ? drawer.toggle() : null">
                 <i class="material-icons">receipt</i>
                 <label>Romaneios</label>
             </a>
-            <a routerLink="usuarios">
+            <a routerLink="usuarios" (click)="!isSidenavOpened ? drawer.toggle() : null">
                 <i class="material-icons">supervisor_account</i>
                 <label>Usuários</label>
             </a>
-            <a routerLink="produtos">
+            <a routerLink="produtos" (click)="!isSidenavOpened ? drawer.toggle() : null">
                 <i class="material-icons">inbox</i>
                 <label> Produtos</label>
             </a>
             <a class="dropdown-btn" [class.active]="expandCadastro" (click)="toogleCadastro()">
                 <i class="material-icons">add</i>
                 Mais Opções
-                <i class="material-icons  ml-5">keyboard_arrow_down</i>
+                <i class="material-icons  ml-3">keyboard_arrow_down</i>
             </a>
             <div class="dropdown-container" [class.block]="expandCadastro">
-                <a routerLink="transportadores">
+                <a routerLink="transportadores" (click)="!isSidenavOpened ? drawer.toggle() : null">
                     <i class="material-icons">local_shipping</i>
                     <label>Transportadores</label>
                 </a>
-                <a routerLink="filiais">
+                <a *ngIf="isAdmin" routerLink="filiais" (click)="!isSidenavOpened ? drawer.toggle() : null">
                     <i class="material-icons">location_city</i>
                     <label>Filiais</label>
                 </a>
-                <a routerLink="departamentos">
+                <a routerLink="departamentos" (click)="!isSidenavOpened ? drawer.toggle() : null">
                     <i class="material-icons">domain</i>
                     <label>Departamentos</label>
                 </a>
@@ -50,7 +53,7 @@
                 <i class="material-icons ml-3">keyboard_arrow_down</i>
             </a>
             <div class="dropdown-container" [class.block]="expandConfig">
-                <a *ngIf="isAdmin" routerLink="sistema/usuarios">
+                <a *ngIf="isAdmin" routerLink="sistema/usuarios" (click)="!isSidenavOpened ? drawer.toggle() : null">
                     <i class="material-icons">supervisor_account</i>
                     <label> Usuários Sistema</label>
                 </a>
@@ -59,7 +62,7 @@
                     <label>Sair</label>
                 </a>
             </div>
-         
+
         </mat-nav-list>
     </mat-drawer>
 

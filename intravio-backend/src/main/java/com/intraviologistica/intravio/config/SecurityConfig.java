@@ -4,6 +4,7 @@ import com.intraviologistica.intravio.model.enums.Perfil;
 import com.intraviologistica.intravio.security.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -50,6 +51,10 @@ public class SecurityConfig {
             "/api/v1/transportadores/**",
     };
 
+    private final static String[] GET_MATCHERS = {
+            "/api/v1/filiais/**"
+    };
+
     @Bean
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
@@ -59,6 +64,8 @@ public class SecurityConfig {
                                         auth
                                                 /* Acesso público */
                                                 .requestMatchers(PUBLIC_MATCHERS).permitAll()
+                                                /* Acesso para pesquisa para quem estiver autenticado */
+                                                .requestMatchers(HttpMethod.GET, GET_MATCHERS).hasAnyAuthority(STANDARD, ADMIN)
                                                 /* Acesso apenas para ADMIN */
                                                 .requestMatchers(ADMIN_MATCHERS).hasAnyAuthority(ADMIN)
                                                 /* Acesso apenas para STARDAND e ADMIN */

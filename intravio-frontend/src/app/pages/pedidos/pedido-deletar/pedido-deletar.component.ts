@@ -23,7 +23,7 @@ export class PedidoDeletarComponent {
   ) { }
 
   cancelarPedido(id) {
-    this.service.delete(id, this.motivo).subscribe(response => {
+    this.service.delete(id, this.motivo).subscribe(() => {
       this.toast.success("Pedido cancelado com sucesso", "Cancelamento");
       setTimeout(() => {
         this.pedidoCancelado.emit();

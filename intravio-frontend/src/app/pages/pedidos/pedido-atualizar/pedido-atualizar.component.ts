@@ -2,7 +2,6 @@ import { Component, OnInit, Renderer2, ViewChild, AfterViewInit } from '@angular
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { SelectComponent } from 'src/app/components/select/select.component';
 import { Filial } from 'src/app/models/filial';
 import { Funcionario } from 'src/app/models/funcionario';
 import { Item } from 'src/app/models/item';
@@ -18,12 +17,7 @@ import { ProdutoService } from 'src/app/services/produto.service';
   templateUrl: './pedido-atualizar.component.html',
   styleUrls: ['./pedido-atualizar.component.css']
 })
-export class PedidoAtualizarComponent implements OnInit, AfterViewInit  {
-
-
-  
-  
-
+export class PedidoAtualizarComponent implements OnInit, AfterViewInit {
 
   firstFormGroup = this.formBuilder.group({
     origem: ['', Validators.required],
@@ -109,7 +103,7 @@ export class PedidoAtualizarComponent implements OnInit, AfterViewInit  {
   buscarPedidoPorId(): void {
     this.service.findById(this.pedido.id).subscribe((response) => {
       this.pedido = response;
-      
+
       this.pedido.prioridade = this.returnPriority(response.prioridade);
       this.pedido.acompanhaStatus = this.returnAcompanhaStatus(response.acompanhaStatus);
 

@@ -13,7 +13,7 @@ export class FilialListarComponent implements OnInit {
   ELEMENT_DATA: Filial[] = [];
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  displayedColumns: string[] = ["id","nome", "endereco", "complemento", "acoes"];
+  displayedColumns: string[] = ["id", "nome", "endereco", "complemento", "acoes"];
   dataSource = new MatTableDataSource<Filial>(this.ELEMENT_DATA);
   abrePesquisa: boolean = false;
 
@@ -22,8 +22,6 @@ export class FilialListarComponent implements OnInit {
   ngOnInit(): void {
     this.listarTodosDepartamentos();
   }
-
-  ngAfterViewInit() { }
 
   listarTodosDepartamentos() {
     this.service.findAll().subscribe((response) => {

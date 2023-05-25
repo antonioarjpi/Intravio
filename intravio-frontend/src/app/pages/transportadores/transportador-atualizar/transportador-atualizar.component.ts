@@ -34,12 +34,10 @@ export class TransportadorAtualizarComponent implements OnInit {
     private route: ActivatedRoute
   ) { };
 
-
   ngOnInit(): void {
     this.transportador.id = this.route.snapshot.paramMap.get('id');
     this.buscarPorId();
   }
-
 
   buscarPorId(): void {
     this.service.findById(this.transportador.id).subscribe(response => {
@@ -52,11 +50,10 @@ export class TransportadorAtualizarComponent implements OnInit {
       return;
     }
 
-    this.service.update(this.transportador).subscribe(
-      () => {
-        this.toast.success("Transportador atualizado com sucesso", "Atualização");
-        this.router.navigate(["transportadores"])
-      },
+    this.service.update(this.transportador).subscribe(() => {
+      this.toast.success("Transportador atualizado com sucesso", "Atualização");
+      this.router.navigate(["transportadores"])
+    },
       (ex) => {
         if (ex.error.errors) {
           ex.error.errors.forEach((element) => {

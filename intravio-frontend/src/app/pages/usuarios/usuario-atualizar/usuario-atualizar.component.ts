@@ -17,10 +17,10 @@ import { UsuarioService } from 'src/app/services/usuarios.service';
 export class UsuarioAtualizarComponent {
 
   id: string;
-  primeiroNome: UntypedFormControl = new UntypedFormControl(null, Validators.minLength(3));
-  segundoNome: UntypedFormControl = new UntypedFormControl(null, Validators.minLength(3));
+  primeiroNome: UntypedFormControl = new UntypedFormControl(null, Validators.minLength(1));
+  segundoNome: UntypedFormControl = new UntypedFormControl(null, Validators.minLength(2));
   perfil: UntypedFormControl = new UntypedFormControl(null, Validators.nullValidator);
-  email: UntypedFormControl = new UntypedFormControl(null, Validators.email);
+  email: UntypedFormControl = new UntypedFormControl(null, Validators.minLength(2));
 
   usuario: Usuario = {
     id: null,
@@ -58,7 +58,7 @@ export class UsuarioAtualizarComponent {
   };
 
   buscaUsuarioPorId() {
-    this.service.findById(this.id).subscribe(response => {
+    this.service.findById(this.id).subscribe((response) => {
       this.usuario = response;
     }), (ex) => {
       this.toast.error(ex.error.message)
@@ -70,11 +70,10 @@ export class UsuarioAtualizarComponent {
       return;
     }
 
-    this.service.update(this.usuario).subscribe(
-      () => {
-        this.toast.success("Usuário atualizado com sucesso", "Atualização");
-        this.router.navigate(["/sistema/usuarios"])
-      },
+    this.service.update(this.usuario).subscribe(() => {
+      this.toast.success("Usuário atualizado com sucesso", "Atualização");
+      this.router.navigate(["/sistema/usuarios"])
+    },
       (ex) => {
         if (ex.error.errors) {
           ex.error.errors.forEach((element) => {
@@ -92,5 +91,4 @@ export class UsuarioAtualizarComponent {
       this.primeiroNome.valid && this.email.valid && this.segundoNome.valid && this.perfil.valid
     );
   }
-
 }

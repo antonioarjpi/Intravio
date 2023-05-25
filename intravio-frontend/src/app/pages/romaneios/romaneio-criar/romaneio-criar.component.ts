@@ -1,5 +1,4 @@
-import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { UntypedFormControl, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
@@ -56,7 +55,6 @@ export class RomaneioCriarComponent {
     this.listarTodosPedidos();
   };
 
-
   addPedido(obj: Number) {
     if (this.romaneio.pedidos.includes(obj)) {
       const index = this.romaneio.pedidos.indexOf(obj);
@@ -76,11 +74,10 @@ export class RomaneioCriarComponent {
       this.romaneio.taxaFrete = parseFloat(this.romaneio.taxaFrete.toString().replace(".", "").replace(",", "."));
     }
 
-    this.service.create(this.romaneio).subscribe(
-      (response) => {
-        this.toast.success("Romaneio realizado com sucesso", "Cadastro");
-        this.router.navigate(["romaneios"]);
-      },
+    this.service.create(this.romaneio).subscribe((response) => {
+      this.toast.success("Romaneio realizado com sucesso", "Cadastro");
+      this.router.navigate(["romaneios"]);
+    },
       (ex) => {
         if (ex.error.errors) {
           ex.error.errors.forEach((element) => {

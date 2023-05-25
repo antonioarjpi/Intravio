@@ -73,22 +73,6 @@ const routes: Routes = [
         component: AtualizarDepartamentoComponent,
       },
       {
-        path: "filiais",
-        component: FilialListarComponent
-      },
-      {
-        path: "filiais/cadastrar",
-        component: FilialCadastrarComponent
-      },
-      {
-        path: "filiais/atualizar/:id",
-        component: FilialAtualizarComponent
-      },
-      {
-        path: "filiais/deletar/:id",
-        component: FilialDeletarComponent
-      },
-      {
         path: "transportadores",
         component: TransportadorListarComponent
       },
@@ -116,6 +100,7 @@ const routes: Routes = [
         path: "produtos/atualizar/:id",
         component: ProdutoAtualizarComponent
       },
+
       {
         path: "produtos/deletar/:id",
         component: ProdutoDeletarComponent
@@ -198,7 +183,23 @@ const routes: Routes = [
       {
         path: "sistema/usuarios",
         component: UsuarioListarComponent
-      }
+      },
+      {
+        path: "filiais",
+        component: FilialListarComponent
+      },
+      {
+        path: "filiais/cadastrar",
+        component: FilialCadastrarComponent
+      },
+      {
+        path: "filiais/atualizar/:id",
+        component: FilialAtualizarComponent
+      },
+      {
+        path: "filiais/deletar/:id",
+        component: FilialDeletarComponent
+      },
     ]
   },
   {
@@ -208,7 +209,7 @@ const routes: Routes = [
   {
     path: "rastreamento",
     component: RastreioComponent,
-  },
+  }
 ];
 
 @NgModule({

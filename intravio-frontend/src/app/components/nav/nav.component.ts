@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { UsuarioService } from 'src/app/services/usuarios.service';
 
@@ -7,17 +7,16 @@ import { UsuarioService } from 'src/app/services/usuarios.service';
   templateUrl: './nav.component.html',
   styleUrls: ['./nav.component.css']
 })
-export class NavComponent implements OnInit {
+export class NavComponent{
 
+  width = window.innerWidth;
+  isSidenavOpened: boolean = this.width < 600 ? false : true;
   expandCadastro: boolean = false;
   expandConfig: boolean = false;
   isAdmin: boolean = this.usuarioService.getRoles().includes('ADMIN');
 
   constructor(private router: Router,
     private usuarioService: UsuarioService) { }
-
-  ngOnInit(): void {
-  }
 
   toogleCadastro() {
     if (this.expandCadastro) {
@@ -37,7 +36,7 @@ export class NavComponent implements OnInit {
     }
   }
 
-  desabilita(){
+  desabilita() {
     this.expandConfig = false;
     this.expandCadastro = false;
   }

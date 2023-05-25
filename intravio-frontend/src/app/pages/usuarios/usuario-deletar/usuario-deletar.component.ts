@@ -35,7 +35,7 @@ export class UsuarioDeletarComponent {
   };
 
   buscaUsuarioPorId() {
-    this.service.findById(this.id).subscribe(response => {
+    this.service.findById(this.id).subscribe((response) => {
       this.usuario = response;
     }), (ex) => {
       this.toast.error(ex.error.message)
@@ -43,11 +43,10 @@ export class UsuarioDeletarComponent {
   }
 
   deletarUsuario(): void {
-    this.service.delete(this.usuario).subscribe(
-      () => {
-        this.toast.success("Usuário deletado com sucesso", "Exclusão");
-        this.router.navigate(["/sistema/usuarios"])
-      },
+    this.service.delete(this.usuario).subscribe(() => {
+      this.toast.success("Usuário deletado com sucesso", "Exclusão");
+      this.router.navigate(["/sistema/usuarios"])
+    },
       (ex) => {
         if (ex.error.errors) {
           ex.error.errors.forEach((element) => {

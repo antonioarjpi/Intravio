@@ -40,7 +40,7 @@ export class FilialCadastrarComponent {
   ) { };
 
   cadastrarFilial(): void {
-    
+
     if (!this.validaCampos()) {
       return;
     }
@@ -48,7 +48,7 @@ export class FilialCadastrarComponent {
     this.service.create(this.filial).subscribe(
       () => {
         this.toast.success("Filial cadastrada com sucesso", "Cadastro");
-        this.router.navigate(["filiais"])
+        this.router.navigate(["filiais"]);
       },
       (ex) => {
         if (ex.error.errors) {

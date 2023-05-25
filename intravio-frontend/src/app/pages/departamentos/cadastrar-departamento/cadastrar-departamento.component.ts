@@ -30,11 +30,10 @@ export class CadastrarDepartamentoComponent {
       return;
     }
 
-    this.service.create(this.departamento).subscribe(
-      () => {
-        this.toast.success("Departamento cadastrado com sucesso", "Cadastro");
-        this.router.navigate(["departamentos"])
-      },
+    this.service.create(this.departamento).subscribe(() => {
+      this.toast.success("Departamento cadastrado com sucesso", "Cadastro");
+      this.router.navigate(["departamentos"]);
+    },
       (ex) => {
         if (ex.error.errors) {
           ex.error.errors.forEach((element) => {

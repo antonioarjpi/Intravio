@@ -17,13 +17,11 @@ export class TransportadorListarComponent implements OnInit {
   dataSource = new MatTableDataSource<Transportador>(this.ELEMENT_DATA);
   abrePesquisa: boolean = false;
 
-  constructor(private service: TransportadorService) {}
+  constructor(private service: TransportadorService) { }
 
   ngOnInit(): void {
     this.listarTodosTransportadors();
   }
-
-  ngAfterViewInit() {}
 
   listarTodosTransportadors() {
     this.service.findAll().subscribe((response) => {

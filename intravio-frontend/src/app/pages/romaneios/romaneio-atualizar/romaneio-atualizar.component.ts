@@ -88,11 +88,10 @@ export class RomaneioAtualizarComponent {
       this.romaneio.taxaFrete = parseFloat(this.romaneio.taxaFrete.toString().replace(".", "").replace(",", "."));
     }
 
-    this.service.update(this.romaneio).subscribe(
-      (response) => {
-        this.toast.success("Romaneio atualizado com sucesso", "Atualização");
-        this.router.navigate(["romaneios"]);
-      },
+    this.service.update(this.romaneio).subscribe((response) => {
+      this.toast.success("Romaneio atualizado com sucesso", "Atualização");
+      this.router.navigate(["romaneios"]);
+    },
       (ex) => {
         if (ex.error.errors) {
           ex.error.errors.forEach((element) => {

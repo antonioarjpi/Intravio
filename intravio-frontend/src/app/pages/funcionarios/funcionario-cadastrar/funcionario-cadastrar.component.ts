@@ -38,7 +38,7 @@ export class FuncionarioCadastrarComponent implements OnInit {
     private router: Router
   ) { };
 
-  ngOnInit(): void{
+  ngOnInit(): void {
     this.departamentoService.findAll().subscribe((response) => {
       this._departamento = response
     });
@@ -54,11 +54,10 @@ export class FuncionarioCadastrarComponent implements OnInit {
       return;
     }
 
-    this.service.create(this.funcionario).subscribe(
-      () => {
-        this.toast.success("Usuário cadastrado com sucesso", "Cadastro");
-        this.router.navigate(["usuarios"])
-      },
+    this.service.create(this.funcionario).subscribe(() => {
+      this.toast.success("Usuário cadastrado com sucesso", "Cadastro");
+      this.router.navigate(["usuarios"]);
+    },
       (ex) => {
         if (ex.error.errors) {
           ex.error.errors.forEach((element) => {

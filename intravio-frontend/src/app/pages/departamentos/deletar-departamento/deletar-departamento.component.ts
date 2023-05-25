@@ -23,15 +23,14 @@ export class DeletarDepartamentoComponent implements OnInit {
     private route: ActivatedRoute
   ) { };
 
-
   ngOnInit(): void {
     this.departamento.id = this.route.snapshot.paramMap.get('id');
     this.buscarPorId();
   }
 
   buscarPorId(): void {
-    this.service.findById(this.departamento.id).subscribe(response => {
-      this.departamento = response
+    this.service.findById(this.departamento.id).subscribe((response) => {
+      this.departamento = response;
     })
   }
 

@@ -1,4 +1,4 @@
-import { Component, Inject, EventEmitter } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { AlterarSenha } from 'src/app/models/alterarSenha';
@@ -20,8 +20,6 @@ export class UsuarioAlterarSenhaComponent {
     senhaAtual: '',
     senhaNova: ''
   }
-
-  ev = new EventEmitter<void>();
 
   constructor(
     private dialogRef: MatDialogRef<UsuarioListarComponent>,

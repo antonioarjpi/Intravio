@@ -271,7 +271,7 @@ export class PedidoModal {
     } else if (status == "2") {
       return "Destinatário";
     } else {
-      return "Remetente e Destinatário"
+      return "Remetente e Destinatário";
     }
   };
 
@@ -283,7 +283,7 @@ export class PedidoModal {
     } else if (status == "2") {
       return "ALTA";
     } else {
-      return "URGENTE"
+      return "URGENTE";
     }
   };
 

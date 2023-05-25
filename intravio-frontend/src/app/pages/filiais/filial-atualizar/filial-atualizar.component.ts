@@ -60,7 +60,7 @@ export class FilialAtualizarComponent implements OnInit {
     this.service.create(this.filial).subscribe(
       () => {
         this.toast.success("Filial atualizada com sucesso", "Atualização");
-        this.router.navigate(["filiais"])
+        this.router.navigate(["filiais"]);
       },
       (ex) => {
         if (ex.error.errors) {

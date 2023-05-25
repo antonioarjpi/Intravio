@@ -1,0 +1,22 @@
+.navbar {
+ 
+}
+
+.navbar-brand {
+    font-weight: bold;
+}
+
+.nav-link {
+    margin-right: 10px;
+}
+
+.button{
+    color: #fff !important;
+    background-color: var(--color-primary) !important;;
+}
+
+@media only screen and (min-width: 600px) {
+    .collapse{
+        justify-content: right;
+    }
+}

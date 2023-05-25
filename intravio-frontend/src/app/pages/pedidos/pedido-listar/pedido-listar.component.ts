@@ -103,7 +103,7 @@ export class PedidoListarComponent implements OnInit {
     let list: Pedido[] = [];
     this.ELEMENT_DATA.forEach(element => {
       if (element.statusPedido == status)
-        list.push(element)
+        list.push(element);
     });
 
     this.recarregaLista(list);
@@ -113,7 +113,7 @@ export class PedidoListarComponent implements OnInit {
     let list: Pedido[] = [];
     this.ELEMENT_DATA.forEach(element => {
       if (element.prioridade == prioridade)
-        list.push(element)
+        list.push(element);
     });
 
     this.recarregaLista(list);
@@ -159,7 +159,7 @@ export class PedidoListarComponent implements OnInit {
   }
 
   listarTodos() {
-    this.recarregaLista(this.ELEMENT_DATA)
+    this.recarregaLista(this.ELEMENT_DATA);
   }
 
   retornaPrioridade(status: any): string {
@@ -170,7 +170,7 @@ export class PedidoListarComponent implements OnInit {
     } else if (status == "2") {
       return "ALTA";
     } else {
-      return "URGENTE"
+      return "URGENTE";
     }
   };
 

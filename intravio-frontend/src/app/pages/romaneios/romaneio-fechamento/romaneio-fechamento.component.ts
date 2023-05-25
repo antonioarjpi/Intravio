@@ -3,7 +3,6 @@ import { UntypedFormControl, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { forkJoin } from 'rxjs';
 import { Pedido } from 'src/app/models/pedido';
 import { RomaneioFechamento, RomaneioInput } from 'src/app/models/romaneio';
 import { Transportador } from 'src/app/models/transportador';
@@ -58,7 +57,7 @@ export class RomaneioFechamentoComponent {
   ngOnInit(): void {
     this.romaneioFechamento.romaneioId = this.route.snapshot.paramMap.get("id")
 
-    this.transportadorService.findAll().subscribe(response => {
+    this.transportadorService.findAll().subscribe((response) => {
       this.transportadores = response;
     });
 
@@ -66,7 +65,7 @@ export class RomaneioFechamentoComponent {
   };
 
   buscarPedidoPorId(): void {
-    this.service.findById(this.romaneioFechamento.romaneioId).subscribe(response => {
+    this.service.findById(this.romaneioFechamento.romaneioId).subscribe((response) => {
       this.romaneio = response;
       this.listarPedidosDoRomaneio();
       this.romaneioFechamento.pedidosConcluido = response.pedidos
@@ -104,11 +103,10 @@ export class RomaneioFechamentoComponent {
   }
 
   atualizarRomaneio(): void {
-    this.service.fecharRomaneio(this.romaneioFechamento).subscribe(
-      (response) => {
-        this.toast.success("Romaneio fechado com sucesso", "Fechamento");
-        this.router.navigate(["romaneios"]);
-      },
+    this.service.fecharRomaneio(this.romaneioFechamento).subscribe(() => {
+      this.toast.success("Romaneio fechado com sucesso", "Fechamento");
+      this.router.navigate(["romaneios"]);
+    },
       (ex) => {
         if (ex.error.errors) {
           ex.error.errors.forEach((element) => {
@@ -122,7 +120,7 @@ export class RomaneioFechamentoComponent {
   };
 
   listarPedidosDoRomaneio() {
-    this.pedidoService.findAllByRomaneio(this.romaneioFechamento.romaneioId).subscribe(response => {
+    this.pedidoService.findAllByRomaneio(this.romaneioFechamento.romaneioId).subscribe((response) => {
       this.atualizarTabela(response.sort((a, b) => a.numeroPedido - b.numeroPedido));
     })
   };

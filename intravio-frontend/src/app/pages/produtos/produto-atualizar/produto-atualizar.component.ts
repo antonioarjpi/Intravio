@@ -10,7 +10,7 @@ import { ProdutoService } from 'src/app/services/produto.service';
   templateUrl: './produto-atualizar.component.html',
   styleUrls: ['./produto-atualizar.component.css']
 })
-export class ProdutoAtualizarComponent implements OnInit{
+export class ProdutoAtualizarComponent implements OnInit {
 
   id: UntypedFormControl = new UntypedFormControl(null, Validators.nullValidator);
   codigo: UntypedFormControl = new UntypedFormControl(null, Validators.minLength(1));
@@ -42,10 +42,10 @@ export class ProdutoAtualizarComponent implements OnInit{
     this.produto.id = this.route.snapshot.paramMap.get('id');
     this.buscarPorId();
   }
-  
+
   buscarPorId(): void {
     this.service.findById(this.produto.id).subscribe(response => {
-      this.produto = response
+      this.produto = response;
     })
   }
 
@@ -63,7 +63,7 @@ export class ProdutoAtualizarComponent implements OnInit{
     this.service.update(this.produto).subscribe(
       () => {
         this.toast.success("Produto atualizado com sucesso", "Atualização");
-        this.router.navigate(["produtos"])
+        this.router.navigate(["produtos"]);
       },
       (ex) => {
         if (ex.error.errors) {

@@ -29,8 +29,6 @@ export class ProdutoListarComponent implements OnInit {
     this.listarTodosProdutos();
   }
 
-  ngAfterViewInit() { }
-
   announceSortChange(sortState: Sort) {
     if (sortState.direction) {
       this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
@@ -52,6 +50,5 @@ export class ProdutoListarComponent implements OnInit {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
-
 }
 

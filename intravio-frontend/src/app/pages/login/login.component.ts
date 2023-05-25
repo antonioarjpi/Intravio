@@ -19,7 +19,7 @@ export class LoginComponent implements OnInit {
     private toast: ToastrService,
     private service: UsuarioService,
     private router: Router
-  ) {}
+  ) { }
 
   email = new UntypedFormControl(null, Validators.nullValidator);
   senha = new UntypedFormControl(null, Validators.minLength(3));
@@ -29,10 +29,10 @@ export class LoginComponent implements OnInit {
   login() {
     localStorage.clear();
     this.service.autenticar(this.creds).subscribe((response) => {
-        this.service.sucessoLogin(
-          response.headers.get("Authorization").substring(7));
-        this.router.navigate(['home']);
-      },
+      this.service.sucessoLogin(
+        response.headers.get("Authorization").substring(7));
+      this.router.navigate(['home']);
+    },
       () => {
         this.toast.error("Usuário ou/e senha inválidos.", "Login");
       }
