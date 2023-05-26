@@ -1,9 +1,7 @@
 package com.intraviologistica.intravio.repository;
 
-import com.intraviologistica.intravio.model.Departamento;
-import com.intraviologistica.intravio.model.Endereco;
-import com.intraviologistica.intravio.model.Filial;
 import com.intraviologistica.intravio.model.Funcionario;
+import com.intraviologistica.intravio.model.FuncionarioTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -29,9 +27,7 @@ class FuncionarioRepositoryTest {
 
     @Test
     public void testSalvarFuncionario() {
-        Departamento departamento = getDepartamento();
-
-        Funcionario funcionario = getFuncionario(departamento);
+        Funcionario funcionario = FuncionarioTest.getFuncionario1();
 
         funcionarioRepository.save(funcionario);
 
@@ -40,9 +36,7 @@ class FuncionarioRepositoryTest {
 
     @Test
     public void testBuscarFuncionarioPorEmail() {
-        Departamento departamento = getDepartamento();
-
-        Funcionario funcionario = getFuncionario(departamento);
+        Funcionario funcionario = FuncionarioTest.getFuncionario1();
         funcionarioRepository.save(funcionario);
 
         Funcionario encontrado = funcionarioRepository.findByEmail("joao@teste.com");
@@ -57,12 +51,10 @@ class FuncionarioRepositoryTest {
 
         assertThat(funcionarios).isEmpty();
 
-        Departamento departamento = getDepartamento();
-
-        Funcionario joao = getFuncionario(departamento);
+        Funcionario joao = FuncionarioTest.getFuncionario1();
         joao = funcionarioRepository.save(joao);
 
-        Funcionario maria = getFuncionarioB(departamento);
+        Funcionario maria = FuncionarioTest.getFuncionario2();
         maria = funcionarioRepository.save(maria);
 
         funcionarios = funcionarioRepository.findAll();
@@ -73,30 +65,24 @@ class FuncionarioRepositoryTest {
 
     @Test
     public void testBuscarFuncionarioPorId() {
-        Departamento departamento = getDepartamento();
-
-        Funcionario funcionario = getFuncionario(departamento);
-        funcionario.setFilial(getFilial());
+        Funcionario funcionario = FuncionarioTest.getFuncionario1();
         funcionario = funcionarioRepository.save(funcionario);
 
         Funcionario encontrado = funcionarioRepository.findById(funcionario.getId()).orElse(null);
 
         assertThat(encontrado).isNotNull();
         assertThat(encontrado).isEqualTo(funcionario);
-        assertThat(encontrado.getFilial()).isNotNull();
-        assertThat(encontrado.getDepartamento()).isNotNull();
+        assertThat(encontrado.getFilial()).isNull();
+        assertThat(encontrado.getDepartamento()).isNull();
     }
 
     @Test
     public void testAtualizarFuncionario() {
-        Departamento departamento = getDepartamento();
-        Funcionario funcionario = getFuncionario(departamento);
-
-        funcionario.setFilial(getFilial());
+        Funcionario funcionario = FuncionarioTest.getFuncionario1();
 
         funcionario = funcionarioRepository.save(funcionario);
 
-        funcionario = new Funcionario(funcionario.getId(), "Novo Nome", "email@email.com", departamento, getFilial());
+        funcionario = new Funcionario(funcionario.getId(), "Maria Silva", "maria@email.com", null, funcionario.getFilial());
 
         Funcionario funcionarioAtualizado = funcionarioRepository.save(funcionario);
 
@@ -109,9 +95,7 @@ class FuncionarioRepositoryTest {
 
     @Test
     public void testExcluirFuncionario() {
-        Departamento departamento = getDepartamento();
-        Funcionario funcionario = getFuncionario(departamento);
-        funcionario.setFilial(getFilial());
+        Funcionario funcionario = FuncionarioTest.getFuncionario1();
 
         funcionario = funcionarioRepository.save(funcionario);
 
@@ -120,50 +104,5 @@ class FuncionarioRepositoryTest {
         Optional<Funcionario> funcionarioRemovido = funcionarioRepository.findById(funcionario.getId());
 
         assertThat(funcionarioRemovido).isNotPresent();
-    }
-
-    private static Funcionario getFuncionario(Departamento departamento) {
-        Funcionario funcionario = new Funcionario();
-        funcionario.setId("id1");
-        funcionario.setNome("João");
-        funcionario.setEmail("joao@teste.com");
-        funcionario.setDepartamento(departamento);
-        return funcionario;
-    }
-
-    private static Funcionario getFuncionarioB(Departamento departamento) {
-        Funcionario maria = new Funcionario();
-        maria.setId("id2");
-        maria.setNome("Maria");
-        maria.setEmail("maria@teste.com");
-        maria.setDepartamento(departamento);
-        return maria;
-    }
-
-    private Departamento getDepartamento() {
-        Departamento departamento = new Departamento();
-        departamento.setId("id-3");
-        departamento.setNome("TI");
-        departamento = departamentoRepository.save(departamento);
-        return departamento;
-    }
-
-    private Filial getFilial() {
-        Endereco endereco = new Endereco();
-        endereco.setId("enderecoID");
-        endereco.setBairro("Bairro");
-        endereco.setRua("Rua");
-        endereco.setCep("CEP");
-        endereco.setNumero(1);
-        endereco.setComplemento("Complemento");
-        endereco.setCidade("cidade");
-        endereco.setEstado("estado");
-
-        Filial filial = new Filial();
-        filial.setId(1L);
-        filial.setNome("Filial A");
-        filial.setEndereco(endereco);
-
-        return filialRepository.save(filial);
     }
 }

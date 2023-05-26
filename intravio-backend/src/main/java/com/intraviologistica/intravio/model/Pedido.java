@@ -58,23 +58,6 @@ public class Pedido {
     public Pedido() {
     }
 
-    public Pedido(String id, List<Item> itens, List<String> imagens, Funcionario remetente, Funcionario destinatario, Filial origem, Filial destino, LocalDateTime dataPedido, LocalDateTime dataAtualizacao, String codigoRastreio, AcompanhaStatus acompanhaStatus, StatusPedido statusPedido, Prioridade prioridade, Romaneio romaneio) {
-        this.id = id;
-        this.itens = itens;
-        this.imagens = imagens;
-        this.remetente = remetente;
-        this.destinatario = destinatario;
-        this.origem = origem;
-        this.destino = destino;
-        this.dataPedido = dataPedido;
-        this.dataAtualizacao = dataAtualizacao;
-        this.codigoRastreio = codigoRastreio;
-        this.acompanhaStatus = acompanhaStatus;
-        this.statusPedido = statusPedido;
-        this.prioridade = prioridade;
-        this.romaneio = romaneio;
-    }
-
     public Double getValorTotal() {
         Double soma = 0.0;
         for (Item item : itens) {

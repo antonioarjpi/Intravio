@@ -1,7 +1,7 @@
 package com.intraviologistica.intravio.repository;
 
-import com.intraviologistica.intravio.model.Endereco;
 import com.intraviologistica.intravio.model.Filial;
+import com.intraviologistica.intravio.model.FilialTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -21,7 +21,7 @@ class FilialRepositoryTest {
 
     @Test
     public void testSalvarFilial() {
-        Filial filial = getFilial();
+        Filial filial = FilialTest.getFilial1();
 
         filialRepository.save(filial);
 
@@ -30,11 +30,11 @@ class FilialRepositoryTest {
 
     @Test
     public void testBuscarFilialPorNome() {
-        Filial filial = getFilial();
+        Filial filial = FilialTest.getFilial1();
 
         filialRepository.save(filial);
 
-        Filial encontrado = filialRepository.findByNome("Filial A");
+        Filial encontrado = filialRepository.findByNome("Filial Alpha");
 
         assertThat(encontrado).isNotNull();
         assertThat(encontrado.getId()).isEqualTo(filial.getId());
@@ -46,10 +46,10 @@ class FilialRepositoryTest {
 
         assertThat(filiais).isEmpty();
 
-        Filial filialA = getFilial();
+        Filial filialA = FilialTest.getFilial1();
         filialA = filialRepository.save(filialA);
 
-        Filial filialB = getFilialB();
+        Filial filialB = FilialTest.getFilial2();
         filialB = filialRepository.save(filialB);
 
         filiais = filialRepository.findAll();
@@ -60,20 +60,9 @@ class FilialRepositoryTest {
 
     @Test
     public void testAtualizarFilial() {
-        Filial filialSalva = filialRepository.save(getFilial());
+        Filial filialSalva = filialRepository.save(FilialTest.getFilial1());
 
-        filialSalva = new Filial(filialSalva.getId(), "Filial C");
-
-        Endereco endereco = new Endereco();
-        endereco.setId("enderecoID2");
-        endereco.setBairro("Bairro2");
-        endereco.setRua("Rua2");
-        endereco.setCep("CEP2");
-        endereco.setNumero(1);
-        endereco.setComplemento("Complemento2");
-        endereco.setCidade("cidade2");
-        endereco.setEstado("estado2");
-        filialSalva.setEndereco(endereco);
+        filialSalva = FilialTest.getFilial2();
 
         filialRepository.save(filialSalva);
 
@@ -89,11 +78,12 @@ class FilialRepositoryTest {
         assertThat(filialAtualizada.get().getEndereco().getCep()).isEqualTo(filialSalva.getEndereco().getCep());
         assertThat(filialAtualizada.get().getEndereco().getCidade()).isEqualTo(filialSalva.getEndereco().getCidade());
         assertThat(filialAtualizada.get().getEndereco().getEstado()).isEqualTo(filialSalva.getEndereco().getEstado());
+        assertThat(filialAtualizada.get().getEndereco().getNumero()).isEqualTo(filialSalva.getEndereco().getNumero());
     }
 
     @Test
     public void testExcluirFilial() {
-        Filial filialSalva = filialRepository.save(getFilial());
+        Filial filialSalva = filialRepository.save(FilialTest.getFilial1());
 
         assertThat(filialSalva.getId()).isNotNull();
 
@@ -106,48 +96,23 @@ class FilialRepositoryTest {
 
     @Test
     public void testBuscarFilialPorId() {
-        Filial filial = getFilial();
+        Filial filial = FilialTest.getFilial1();
         filial = filialRepository.save(filial);
 
         Filial encontrado = filialRepository.findById(filial.getId()).orElse(null);
 
         assertThat(encontrado).isNotNull();
         assertThat(encontrado).isEqualTo(filial);
+        assertThat(encontrado.getId()).isEqualTo(filial.getId());
+        assertThat(encontrado.getNome()).isEqualTo(filial.getNome());
+        assertThat(encontrado.getEndereco().getRua()).isEqualTo(filial.getEndereco().getRua());
+        assertThat(encontrado.getEndereco().getCep()).isEqualTo(filial.getEndereco().getCep());
+        assertThat(encontrado.getEndereco().getBairro()).isEqualTo(filial.getEndereco().getBairro());
+        assertThat(encontrado.getEndereco().getCidade()).isEqualTo(filial.getEndereco().getCidade());
+        assertThat(encontrado.getEndereco().getEstado()).isEqualTo(filial.getEndereco().getEstado());
+        assertThat(encontrado.getEndereco().getComplemento()).isEqualTo(filial.getEndereco().getComplemento());
+        assertThat(encontrado.getEndereco().getNumero()).isEqualTo(filial.getEndereco().getNumero());
+        assertThat(encontrado.getEndereco().getId()).isEqualTo(filial.getEndereco().getId());
     }
 
-    private static Filial getFilial() {
-        Endereco endereco = new Endereco();
-        endereco.setId("enderecoID");
-        endereco.setBairro("Bairro");
-        endereco.setRua("Rua");
-        endereco.setCep("CEP");
-        endereco.setNumero(1);
-        endereco.setComplemento("Complemento");
-        endereco.setCidade("cidade");
-        endereco.setEstado("estado");
-
-        Filial filial = new Filial();
-        filial.setId(1L);
-        filial.setNome("Filial A");
-        filial.setEndereco(endereco);
-        return filial;
-    }
-
-    private static Filial getFilialB() {
-        Endereco endereco = new Endereco();
-        endereco.setId("enderecoID2");
-        endereco.setBairro("Bairro2");
-        endereco.setRua("Rua2");
-        endereco.setCep("CEP2");
-        endereco.setNumero(1);
-        endereco.setComplemento("Complemento2");
-        endereco.setCidade("cidade2");
-        endereco.setEstado("estado2");
-
-        Filial filialB = new Filial();
-        filialB.setId(2L);
-        filialB.setNome("Filial B");
-        filialB.setEndereco(endereco);
-        return filialB;
-    }
 }

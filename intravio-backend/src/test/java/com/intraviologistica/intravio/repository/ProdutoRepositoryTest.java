@@ -1,6 +1,7 @@
 package com.intraviologistica.intravio.repository;
 
 import com.intraviologistica.intravio.model.Produto;
+import com.intraviologistica.intravio.model.ProdutoTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -21,7 +22,7 @@ class ProdutoRepositoryTest {
 
     @Test
     public void testSalvarProduto() {
-        Produto produto = getProduto();
+        Produto produto =  ProdutoTest.getProduto1();
 
         produtoRepository.save(produto);
 
@@ -30,7 +31,7 @@ class ProdutoRepositoryTest {
 
     @Test
     public void testBuscarProdutoPorNome() {
-        Produto produto = getProduto();
+        Produto produto =  ProdutoTest.getProduto1();
 
         produtoRepository.save(produto);
 
@@ -46,10 +47,10 @@ class ProdutoRepositoryTest {
 
         assertThat(produtos).isEmpty();
 
-        Produto notebook = getProduto();
+        Produto notebook =  ProdutoTest.getProduto1();
         notebook = produtoRepository.save(notebook);
 
-        Produto smartphone = getProduto2();
+        Produto smartphone =  ProdutoTest.getProduto2();
         smartphone = produtoRepository.save(smartphone);
 
         produtos = produtoRepository.findAll();
@@ -60,7 +61,7 @@ class ProdutoRepositoryTest {
 
     @Test
     public void testBuscarProdutoPorId() {
-        Produto produto = getProduto();
+        Produto produto =  ProdutoTest.getProduto1();
 
         produtoRepository.save(produto);
 
@@ -81,7 +82,7 @@ class ProdutoRepositoryTest {
 
     @Test
     public void testDeleteProdutoById() {
-        Produto produto = getProduto();
+        Produto produto =  ProdutoTest.getProduto1();
         Produto produtoSalvo = produtoRepository.save(produto);
 
         assertThat(produtoSalvo.getId()).isNotNull();
@@ -94,7 +95,7 @@ class ProdutoRepositoryTest {
 
     @Test
     public void testAtualizaProduto() {
-        Produto produto = getProduto();
+        Produto produto = ProdutoTest.getProduto1();
 
         Produto produtoSalvo = produtoRepository.save(produto);
 
@@ -114,35 +115,5 @@ class ProdutoRepositoryTest {
         assertThat(produtoAtualizado.getDataCriacao()).isEqualTo(produtoSalvo.getDataCriacao());
         assertThat(produtoAtualizado.getFabricante()).isEqualTo(produtoSalvo.getFabricante());
         assertThat(produtoAtualizado.getCodigo()).isEqualTo(produtoSalvo.getCodigo());
-    }
-
-    private static Produto getProduto() {
-        Produto produto = new Produto();
-        produto.setId("pid1");
-        produto.setCodigo(123);
-        produto.setNome("Notebook");
-        produto.setDescricao("Notebook Dell Inspiron 15");
-        produto.setPreco(3500.00);
-        produto.setPeso(2.0);
-        produto.setFabricante("Dell");
-        produto.setModelo("Inspiron 15");
-        produto.setDataCriacao(LocalDateTime.now());
-        produto.setDataAtualizacao(LocalDateTime.now());
-        return produto;
-    }
-
-    private static Produto getProduto2() {
-        Produto smartphone = new Produto();
-        smartphone.setId("pid2");
-        smartphone.setCodigo(124);
-        smartphone.setNome("Smartphone");
-        smartphone.setDescricao("Smartphone Samsung Galaxy S20");
-        smartphone.setPreco(4000.00);
-        smartphone.setPeso(0.3);
-        smartphone.setFabricante("Samsung");
-        smartphone.setModelo("Galaxy S20");
-        smartphone.setDataCriacao(LocalDateTime.now());
-        smartphone.setDataAtualizacao(LocalDateTime.now());
-        return smartphone;
     }
 }

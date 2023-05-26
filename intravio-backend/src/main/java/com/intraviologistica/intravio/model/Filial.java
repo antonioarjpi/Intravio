@@ -18,9 +18,10 @@ public class Filial {
     public Filial() {
     }
 
-    public Filial(Long id, String nome) {
+    public Filial(Long id, String nome, Endereco endereco) {
         this.id = id;
         this.nome = nome;
+        this.endereco = endereco;
     }
 
     public Long getId() {
@@ -52,6 +53,7 @@ public class Filial {
         return "Filial{" +
                 "id=" + id +
                 ", nome='" + nome + '\'' +
+                ", endereco=" + endereco +
                 '}';
     }
 }

@@ -1,6 +1,7 @@
 package com.intraviologistica.intravio.repository;
 
 import com.intraviologistica.intravio.model.Departamento;
+import com.intraviologistica.intravio.model.DepartamentoTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -24,7 +25,7 @@ class DepartamentoRepositoryTest {
 
     @Test
     public void testSalvarDepartamento() {
-        Departamento departamento = getDepartamento();
+        Departamento departamento = DepartamentoTest.getDepartamento1();
 
         departamentoRepository.save(departamento);
 
@@ -33,9 +34,9 @@ class DepartamentoRepositoryTest {
 
     @Test
     public void testBuscarDepartamentoPorNome() {
-        Departamento departamento = departamentoRepository.save(getDepartamento());
+        Departamento departamento = departamentoRepository.save(DepartamentoTest.getDepartamento1());
 
-        Departamento encontrado = departamentoRepository.findByNomeIgnoreCase("Departamento A");
+        Departamento encontrado = departamentoRepository.findByNomeIgnoreCase("Financeiro");
 
         assertThat(encontrado).isNotNull();
         assertThat(encontrado.getId()).isEqualTo(departamento.getId());
@@ -47,12 +48,8 @@ class DepartamentoRepositoryTest {
 
         assertThat(departamentos).isEmpty();
 
-        Departamento departamentoA = getDepartamento();
-        departamentoA.setNome("Departamento A");
-        departamentoA = departamentoRepository.save(departamentoA);
-
-        Departamento departamentoB = new Departamento("id2", "Departamento B");
-        departamentoB = departamentoRepository.save(departamentoB);
+        Departamento departamentoA = departamentoRepository.save(DepartamentoTest.getDepartamento1());
+        Departamento departamentoB = departamentoRepository.save(DepartamentoTest.getDepartamento2());
 
         departamentos = departamentoRepository.findAll();
 
@@ -62,20 +59,22 @@ class DepartamentoRepositoryTest {
 
     @Test
     public void testBuscarDepartamentoPorId() {
-        Departamento departamento = getDepartamento();
+        Departamento departamento = DepartamentoTest.getDepartamento1();
         departamento = departamentoRepository.save(departamento);
 
         Departamento encontrado = departamentoRepository.findById(departamento.getId()).orElse(null);
 
         assertThat(encontrado).isNotNull();
         assertThat(encontrado).isEqualTo(departamento);
+        assertThat(encontrado.getId()).isEqualTo(departamento.getId());
+        assertThat(encontrado.getNome()).isEqualTo(departamento.getNome());
     }
 
     @Test
     public void testAtualizarDepartamento() {
-        Departamento departamentoSalvo = departamentoRepository.save(getDepartamento());
+        Departamento departamentoSalvo = departamentoRepository.save(DepartamentoTest.getDepartamento1());
 
-        departamentoSalvo = new Departamento(departamentoSalvo.getId(), "Novo Departamento");
+        departamentoSalvo = new Departamento(departamentoSalvo.getId(), "Marketing");
 
         departamentoRepository.save(departamentoSalvo);
 
@@ -89,19 +88,12 @@ class DepartamentoRepositoryTest {
 
     @Test
     public void testExcluirDepartamento() {
-        Departamento departamentoSalvo = departamentoRepository.save(getDepartamento());
+        Departamento departamentoSalvo = departamentoRepository.save(DepartamentoTest.getDepartamento1());
 
         departamentoRepository.deleteById(departamentoSalvo.getId());
 
         Optional<Departamento> departamentoExcluido = departamentoRepository.findById(departamentoSalvo.getId());
 
         assertThat(departamentoExcluido).isNotPresent();
-    }
-
-    private static Departamento getDepartamento() {
-        Departamento departamento = new Departamento();
-        departamento.setId("id1");
-        departamento.setNome("Departamento A");
-        return departamento;
     }
 }
