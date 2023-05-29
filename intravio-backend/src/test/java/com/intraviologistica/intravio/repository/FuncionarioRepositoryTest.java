@@ -1,7 +1,6 @@
 package com.intraviologistica.intravio.repository;
 
-import com.intraviologistica.intravio.model.Funcionario;
-import com.intraviologistica.intravio.model.FuncionarioTest;
+import com.intraviologistica.intravio.model.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -29,9 +28,19 @@ class FuncionarioRepositoryTest {
     public void testSalvarFuncionario() {
         Funcionario funcionario = FuncionarioTest.getFuncionario1();
 
-        funcionarioRepository.save(funcionario);
+        Filial filial = filialRepository.save(FilialTest.getFilial1());
+        Departamento departamento = departamentoRepository.save(DepartamentoTest.getDepartamento1());
 
-        assertThat(funcionario.getId()).isNotNull();
+        funcionario.setFilial(filial);
+        funcionario.setDepartamento(departamento);
+
+        Funcionario funcionarioSalvo = funcionarioRepository.save(funcionario);
+
+        assertThat(funcionarioSalvo.getId()).isNotNull();
+        assertThat(funcionarioSalvo.getNome()).isEqualTo(funcionario.getNome());
+        assertThat(funcionarioSalvo.getEmail()).isEqualTo(funcionario.getEmail());
+        assertThat(funcionarioSalvo.getFilial()).isEqualTo(funcionario.getFilial());
+        assertThat(funcionarioSalvo.getDepartamento()).isEqualTo(funcionario.getDepartamento());
     }
 
     @Test
@@ -51,16 +60,25 @@ class FuncionarioRepositoryTest {
 
         assertThat(funcionarios).isEmpty();
 
+        Filial filial = filialRepository.save(FilialTest.getFilial1());
+        Departamento departamento = departamentoRepository.save(DepartamentoTest.getDepartamento1());
+
         Funcionario joao = FuncionarioTest.getFuncionario1();
+        joao.setFilial(filial);
         joao = funcionarioRepository.save(joao);
 
         Funcionario maria = FuncionarioTest.getFuncionario2();
+        maria.setDepartamento(departamento);
         maria = funcionarioRepository.save(maria);
 
         funcionarios = funcionarioRepository.findAll();
 
         assertThat(funcionarios).hasSize(2);
         assertThat(funcionarios).contains(joao, maria);
+        assertThat(joao.getFilial()).isNotNull();
+        assertThat(joao.getDepartamento()).isNull();
+        assertThat(maria.getFilial()).isNull();
+        assertThat(maria.getDepartamento()).isNotNull();
     }
 
     @Test

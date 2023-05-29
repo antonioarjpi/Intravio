@@ -34,7 +34,6 @@ public class Romaneio {
     public Romaneio() {
     }
 
-
     public Double getValorTotal() {
         Double soma = 0.0;
         for (Pedido pedido : pedidos) {
@@ -136,21 +135,6 @@ public class Romaneio {
 
     public void setNumeroRomaneio(Integer numeroRomaneio) {
         this.numeroRomaneio = numeroRomaneio;
-    }
-
-    @Override
-    public String toString() {
-        return "Romaneio{" +
-                "id='" + id + '\'' +
-                ", numeroRomaneio=" + numeroRomaneio +
-                ", pedidos=" + pedidos +
-                ", transportador=" + transportador +
-                ", Status=" + Status +
-                ", taxaFrete=" + taxaFrete +
-                ", dataCriacao=" + dataCriacao +
-                ", dataAtualizacao=" + dataAtualizacao +
-                ", observacao='" + observacao + '\'' +
-                '}';
     }
 }
 

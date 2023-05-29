@@ -73,16 +73,4 @@ public class HistoricoPedido {
     public void setComentario(String comentario) {
         this.comentario = comentario;
     }
-
-    @Override
-    public String toString() {
-        return "HistoricoPedido{" +
-                "id=" + id +
-                ", pedido=" + pedido +
-                ", dataAtualizacao=" + dataAtualizacao +
-                ", statusAnterior=" + statusAnterior +
-                ", statusAtual=" + statusAtual +
-                ", comentario='" + comentario + '\'' +
-                '}';
-    }
 }

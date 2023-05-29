@@ -23,15 +23,6 @@ public class Item {
     public Item() {
     }
 
-    public Item(Pedido pedido, Produto produto, String descricao, Integer quantidade, Double peso, Double preco) {
-        this.descricao = descricao;
-        this.quantidade = quantidade;
-        this.preco = preco;
-        this.peso = peso;
-        id.setProduto(produto);
-        id.setPedido(pedido);
-    }
-
     public Double getPrecoTotal() {
         return this.preco * quantidade;
     }
@@ -95,16 +86,5 @@ public class Item {
 
     public void setProduto(Produto produto) {
         id.setProduto(produto);
-    }
-
-    @Override
-    public String toString() {
-        return "Item{" +
-                "id=" + id +
-                ", descricao='" + descricao + '\'' +
-                ", quantidade=" + quantidade +
-                ", preco=" + preco +
-                ", peso=" + peso +
-                '}';
     }
 }

@@ -18,11 +18,6 @@ public class ItemPedidoPK {
     public ItemPedidoPK() {
     }
 
-    public ItemPedidoPK(Pedido pedido, Produto produto) {
-        this.pedido = pedido;
-        this.produto = produto;
-    }
-
     public Pedido getPedido() {
         return pedido;
     }
@@ -39,24 +34,4 @@ public class ItemPedidoPK {
         this.produto = produto;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ItemPedidoPK that = (ItemPedidoPK) o;
-        return Objects.equals(pedido, that.pedido) && Objects.equals(produto, that.produto);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(pedido, produto);
-    }
-
-    @Override
-    public String toString() {
-        return "ItemPedidoPK{" +
-                "pedido=" + pedido +
-                ", produto=" + produto +
-                '}';
-    }
 }

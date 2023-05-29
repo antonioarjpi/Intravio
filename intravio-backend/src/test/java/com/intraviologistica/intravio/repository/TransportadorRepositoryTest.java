@@ -1,6 +1,7 @@
 package com.intraviologistica.intravio.repository;
 
 import com.intraviologistica.intravio.model.Transportador;
+import com.intraviologistica.intravio.model.TransportadorTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -20,13 +21,14 @@ class TransportadorRepositoryTest {
 
     @Test
     public void testSalvarTransportador() {
-        Transportador transportador = getTransportador();
+        Transportador transportador = TransportadorTest.getTransportador();
 
         Transportador transportadorSalvo = transportadorRepository.save(transportador);
 
         assertThat(transportadorSalvo).isNotNull();
         assertThat(transportadorSalvo.getId()).isNotNull();
         assertThat(transportadorSalvo.getNome()).isEqualTo(transportador.getNome());
+        assertThat(transportadorSalvo.getCnpj()).isEqualTo(transportador.getCnpj());
         assertThat(transportadorSalvo.getMotorista()).isEqualTo(transportador.getMotorista());
         assertThat(transportadorSalvo.getPlaca()).isEqualTo(transportador.getPlaca());
         assertThat(transportadorSalvo.getVeiculo()).isEqualTo(transportador.getVeiculo());
@@ -35,7 +37,7 @@ class TransportadorRepositoryTest {
 
     @Test
     public void testBuscarTransportadorPorId() {
-        Transportador transportador = getTransportador();
+        Transportador transportador = TransportadorTest.getTransportador();
         transportadorRepository.save(transportador);
 
         Optional<Transportador> transportadorEncontrado = transportadorRepository.findById(transportador.getId());
@@ -45,14 +47,15 @@ class TransportadorRepositoryTest {
         assertThat(transportador.getPlaca()).isEqualTo(transportadorEncontrado.get().getPlaca());
         assertThat(transportador.getVeiculo()).isEqualTo(transportadorEncontrado.get().getVeiculo());
         assertThat(transportador.getObservacao()).isEqualTo(transportadorEncontrado.get().getObservacao());
+        assertThat(transportador.getCnpj()).isEqualTo(transportadorEncontrado.get().getCnpj());
     }
 
     @Test
     public void testBuscarTodosTransportadores() {
-        Transportador transportador1 = getTransportador();
+        Transportador transportador1 = TransportadorTest.getTransportador();
         transportador1 = transportadorRepository.save(transportador1);
 
-        Transportador transportador2 = getTransportador();
+        Transportador transportador2 = TransportadorTest.getTransportador();
         transportador2.setId("id2");
         transportador2.setNome("Nova Transportadora");
         transportador2.setMotorista("João");
@@ -69,7 +72,7 @@ class TransportadorRepositoryTest {
 
     @Test
     public void testAtualizarTransportador() {
-        Transportador transportadorSalvo = transportadorRepository.save(getTransportador());
+        Transportador transportadorSalvo = transportadorRepository.save(TransportadorTest.getTransportador());
 
         transportadorSalvo = new Transportador(transportadorSalvo.getId(), "Transportador", "Eduardo", "III-0000", "Volks", "Nova Observacao", "99.999.999/0001-99");
 
@@ -90,23 +93,11 @@ class TransportadorRepositoryTest {
 
     @Test
     public void testExcluirTransportador() {
-        Transportador transportadorSalvo = transportadorRepository.save(getTransportador());
+        Transportador transportadorSalvo = transportadorRepository.save(TransportadorTest.getTransportador());
 
         transportadorRepository.deleteById(transportadorSalvo.getId());
 
         Optional<Transportador> transportadorExcluido = transportadorRepository.findById(transportadorSalvo.getId());
         assertThat(transportadorExcluido).isNotPresent();
-    }
-
-    private static Transportador getTransportador() {
-        Transportador transportador = new Transportador();
-        transportador.setId("id1");
-        transportador.setNome("VIP Transportadora");
-        transportador.setMotorista("Carlos");
-        transportador.setPlaca("PPP-1111");
-        transportador.setVeiculo("Mercedes-Benz");
-        transportador.setObservacao("Observacao");
-        transportador.setCnpj("00.000.000/0001-00");
-        return transportador;
     }
 }

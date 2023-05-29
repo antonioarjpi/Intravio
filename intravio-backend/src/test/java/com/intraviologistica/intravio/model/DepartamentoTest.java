@@ -11,7 +11,10 @@ public class DepartamentoTest {
     }
 
     public static Departamento getDepartamento2() {
-        return new Departamento("4ba256a", "Comercial");
+        Departamento departamento = new Departamento();
+        departamento.setId("4ba256a");
+        departamento.setNome("Comercial");
+        return departamento;
     }
 
     @Test

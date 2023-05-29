@@ -1,15 +1,29 @@
 package com.intraviologistica.intravio.model;
 
+import com.intraviologistica.intravio.model.enums.StatusRomaneio;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
-class RomaneioTest {
+public class RomaneioTest {
 
+    public static Romaneio getRomaneio() {
+        Romaneio romaneio = new Romaneio();
+        romaneio.setId("id1");
+        romaneio.setNumeroRomaneio(1);
+        romaneio.setStatus(StatusRomaneio.ABERTO);
+        romaneio.setObservacao("Observação");
+        romaneio.setTaxaFrete(3.00);
+        romaneio.setTransportador(TransportadorTest.getTransportador());
+        romaneio.setDataCriacao(LocalDateTime.now());
+        romaneio.setDataAtualizacao(LocalDateTime.now());
+        return romaneio;
+    }
 
     @Test
     public void testGetValorTotal() {

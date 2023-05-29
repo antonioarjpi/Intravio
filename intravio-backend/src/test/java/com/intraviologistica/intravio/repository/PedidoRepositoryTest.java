@@ -4,7 +4,6 @@ import com.intraviologistica.intravio.model.*;
 import com.intraviologistica.intravio.model.enums.AcompanhaStatus;
 import com.intraviologistica.intravio.model.enums.Prioridade;
 import com.intraviologistica.intravio.model.enums.StatusPedido;
-import com.intraviologistica.intravio.model.enums.StatusRomaneio;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -13,8 +12,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,21 +47,17 @@ class PedidoRepositoryTest {
     @Test
     @DirtiesContext
     public void testSalvarPedido() {
-        Funcionario funcionario1 = funcionarioRepository.save(getFuncionarioA());
-        Funcionario funcionario2 = funcionarioRepository.save(getFuncionarioB());
+        funcionarioRepository.save(FuncionarioTest.getFuncionario1());
+        funcionarioRepository.save(FuncionarioTest.getFuncionario2());
+        filialRepository.save(FilialTest.getFilial1());
+        filialRepository.save(FilialTest.getFilial2());
 
-        Filial filialA = filialRepository.save(getFilialA());
-        Filial filialB = filialRepository.save(getFilialB());
+        // instância item
+        Item item = getItem();
 
         // cria um pedido com um item
-        Pedido pedido = getPedido();
-        pedido.setId("id1");
-        pedido.setNumeroPedido(1);
-        pedido.setOrigem(filialA);
-        pedido.setDestino(filialB);
-        pedido.setRemetente(funcionario1);
-        pedido.setDestinatario(funcionario2);
-        pedido.setItens(Arrays.asList(getItem()));
+        Pedido pedido = PedidoTest.getPedido();
+        pedido.setItens(List.of(item));
 
         // salva o pedido
         Pedido pedidoSalvo = pedidoRepository.save(pedido);
@@ -73,24 +66,27 @@ class PedidoRepositoryTest {
         assertThat(pedidoSalvo.getItens()).hasSize(1);
         assertThat(pedidoSalvo.getItens().get(0).getPedido().getId()).isEqualTo(pedidoSalvo.getId());
         assertThat(pedidoSalvo.getItens().get(0).getId().getProduto().getId()).isNotNull();
+        assertThat(pedidoSalvo.getItens().get(0).getPeso()).isEqualTo(1.0);
+        assertThat(pedidoSalvo.getItens().get(0).getPreco()).isEqualTo(10.0);
+        assertThat(pedidoSalvo.getItens().get(0).getPrecoTotal()).isEqualTo(10.0);
+        assertThat(pedidoSalvo.getItens().get(0).getPesoTotal()).isEqualTo(1.0);
+        assertThat(pedido.getItens().get(0).getDescricao()).isEqualTo(item.getDescricao());
+        assertThat(pedido.getItens().get(0).getQuantidade()).isEqualTo(1);
+        assertThat(pedido.getItens().get(0).getPedido().getId()).isEqualTo(pedidoSalvo.getId());
+        assertThat(pedido.getItens().get(0).getProduto().getId()).isEqualTo("id1");
+
     }
 
     @Test
     void testBuscarPedidoPorId() {
-        Funcionario funcionario1 = funcionarioRepository.save(getFuncionarioA());
-        Funcionario funcionario2 = funcionarioRepository.save(getFuncionarioB());
+        funcionarioRepository.save(FuncionarioTest.getFuncionario1());
+        funcionarioRepository.save(FuncionarioTest.getFuncionario2());
+        filialRepository.save(FilialTest.getFilial1());
+        filialRepository.save(FilialTest.getFilial2());
 
-        Filial filialA = filialRepository.save(getFilialA());
-        Filial filialB = filialRepository.save(getFilialB());
-
-        Pedido pedidoSalvo = getPedido();
-        pedidoSalvo.setNumeroPedido(1);
-        pedidoSalvo.setOrigem(filialA);
-        pedidoSalvo.setDestino(filialB);
-        pedidoSalvo.setRemetente(funcionario1);
-        pedidoSalvo.setDestinatario(funcionario2);
-
-        pedidoSalvo = pedidoRepository.save(pedidoSalvo);
+        Pedido pedido = PedidoTest.getPedido();
+        pedido.setItens(List.of(getItem()));
+        Pedido pedidoSalvo = pedidoRepository.save(pedido);
 
         String idPedido = pedidoSalvo.getId();
 
@@ -101,24 +97,35 @@ class PedidoRepositoryTest {
                 .get()
                 .extracting(Pedido::getId)
                 .isEqualTo(idPedido);
+        assertThat(pedidoEncontrado.get().getStatusPedido()).isEqualTo(StatusPedido.PENDENTE);
+        assertThat(pedidoEncontrado.get().getNumeroPedido()).isEqualTo(1);
+        assertThat(pedidoEncontrado.get().getPrioridade()).isEqualTo(Prioridade.BAIXA);
+        assertThat(pedidoEncontrado.get().getCodigoRastreio()).isEqualTo("c20000l");
+        assertThat(pedidoEncontrado.get().getDataPedido()).isNotNull();
+        assertThat(pedidoEncontrado.get().getDataAtualizacao()).isNotNull();
+        assertThat(pedidoEncontrado.get().getItens()).isNotEmpty();
+        assertThat(pedidoEncontrado.get().getHistoricoPedidos()).isNotEmpty();
+        assertThat(pedidoEncontrado.get().getHistoricoPedidos().get(0).getId()).isNotNull();
+        assertThat(pedidoEncontrado.get().getHistoricoPedidos().get(0).getId()).isEqualTo(1);
+        assertThat(pedidoEncontrado.get().getHistoricoPedidos().get(0).getStatusAnterior()).isNull();
+        assertThat(pedidoEncontrado.get().getHistoricoPedidos().get(0).getStatusAtual()).isEqualTo(StatusPedido.PENDENTE);
+        assertThat(pedidoEncontrado.get().getHistoricoPedidos().get(0).getComentario()).isEqualTo("Pedido Teste");
+        assertThat(pedidoEncontrado.get().getHistoricoPedidos().get(0).getDataAtualizacao()).isNotNull();
+
+
     }
 
     @Test
     void testBuscarPedidoPorNumeroPedido() {
-        Funcionario funcionario1 = funcionarioRepository.save(getFuncionarioA());
-        Funcionario funcionario2 = funcionarioRepository.save(getFuncionarioB());
+        funcionarioRepository.save(FuncionarioTest.getFuncionario1());
+        funcionarioRepository.save(FuncionarioTest.getFuncionario2());
+        filialRepository.save(FilialTest.getFilial1());
+        filialRepository.save(FilialTest.getFilial2());
 
-        Filial filialA = filialRepository.save(getFilialA());
-        Filial filialB = filialRepository.save(getFilialB());
+        Pedido pedido = getPedido();
+        pedido.setNumeroPedido(1);
 
-        Pedido pedidoSalvo = getPedido();
-        pedidoSalvo.setNumeroPedido(1);
-        pedidoSalvo.setOrigem(filialA);
-        pedidoSalvo.setDestino(filialB);
-        pedidoSalvo.setRemetente(funcionario1);
-        pedidoSalvo.setDestinatario(funcionario2);
-
-        pedidoSalvo = pedidoRepository.save(pedidoSalvo);
+        Pedido pedidoSalvo = pedidoRepository.save(pedido);
 
         Integer numeroPedido = pedidoSalvo.getNumeroPedido();
 
@@ -133,35 +140,26 @@ class PedidoRepositoryTest {
 
     @Test
     public void testBuscarTodosPedidos() {
-        Funcionario funcionario1 = funcionarioRepository.save(getFuncionarioA());
-        Funcionario funcionario2 = funcionarioRepository.save(getFuncionarioB());
+        funcionarioRepository.save(FuncionarioTest.getFuncionario1());
+        funcionarioRepository.save(FuncionarioTest.getFuncionario2());
 
-        Filial filialA = filialRepository.save(getFilialA());
-        Filial filialB = filialRepository.save(getFilialB());
+        filialRepository.save(FilialTest.getFilial1());
+        filialRepository.save(FilialTest.getFilial2());
 
+        // Pedido 1
         Pedido pedido1 = getPedido();
         pedido1.setId("id1");
         pedido1.setNumeroPedido(1);
-        pedido1.setRemetente(funcionario1);
-        pedido1.setDestinatario(funcionario2);
-        pedido1.setOrigem(filialA);
-        pedido1.setDestino(filialB);
 
+        // Pedido 2
         Pedido pedido2 = getPedido();
         pedido2.setNumeroPedido(2);
         pedido2.setId("id2");
-        pedido2.setRemetente(funcionario1);
-        pedido2.setDestinatario(funcionario2);
-        pedido2.setOrigem(filialA);
-        pedido2.setDestino(filialB);
 
+        // Pedido 3
         Pedido pedido3 = getPedido();
         pedido3.setNumeroPedido(3);
         pedido3.setId("id3");
-        pedido3.setRemetente(funcionario1);
-        pedido3.setDestinatario(funcionario2);
-        pedido3.setOrigem(filialA);
-        pedido3.setDestino(filialB);
 
         pedido1 = pedidoRepository.save(pedido1);
         pedido2 = pedidoRepository.save(pedido2);
@@ -177,22 +175,13 @@ class PedidoRepositoryTest {
 
     @Test
     public void testAtualizaPedido() {
-        Funcionario funcionario1 = funcionarioRepository.save(getFuncionarioA());
-        Funcionario funcionario2 = funcionarioRepository.save(getFuncionarioB());
+        Funcionario funcionario1 = funcionarioRepository.save(FuncionarioTest.getFuncionario1());
+        Funcionario funcionario2 = funcionarioRepository.save(FuncionarioTest.getFuncionario2());
 
-        Filial filialA = filialRepository.save(getFilialA());
-        Filial filialB = filialRepository.save(getFilialB());
-
-        List<String> imagens = new ArrayList<>();
-        imagens.add("imagem.png");
+        Filial filialA = filialRepository.save(FilialTest.getFilial1());
+        Filial filialB = filialRepository.save(FilialTest.getFilial2());
 
         Pedido pedido = getPedido();
-        pedido.setOrigem(filialA);
-        pedido.setDestino(filialB);
-        pedido.setRemetente(funcionario1);
-        pedido.setDestinatario(funcionario2);
-        pedido.setCodigoRastreio("Y0000001");
-        pedido.setImagens(imagens);
 
         pedido = pedidoRepository.save(pedido);
 
@@ -202,9 +191,8 @@ class PedidoRepositoryTest {
         pedido.setDestinatario(funcionario1);
         pedido.setAcompanhaStatus(AcompanhaStatus.SIM_REMETENTE);
         pedido.atualizarStatus(StatusPedido.ENTREGUE, "Objeto entregue");
-        imagens.add("imagens.jpg");
-        pedido.setImagens(imagens);
         pedido.setPrioridade(Prioridade.URGENTE);
+
         Pedido pedidoAtualizado = pedidoRepository.save(pedido);
 
         assertThat(pedidoAtualizado).isNotNull();
@@ -228,11 +216,11 @@ class PedidoRepositoryTest {
 
     @Test
     public void testExcluirPedidoPorId() {
-        Funcionario funcionario1 = funcionarioRepository.save(getFuncionarioA());
-        Funcionario funcionario2 = funcionarioRepository.save(getFuncionarioB());
+        Funcionario funcionario1 = funcionarioRepository.save(FuncionarioTest.getFuncionario1());
+        Funcionario funcionario2 = funcionarioRepository.save(FuncionarioTest.getFuncionario2());
 
-        Filial filialA = filialRepository.save(getFilialA());
-        Filial filialB = filialRepository.save(getFilialB());
+        Filial filialA = filialRepository.save(FilialTest.getFilial1());
+        Filial filialB = filialRepository.save(FilialTest.getFilial2());
 
         Pedido pedido = getPedido();
         pedido.setOrigem(filialA);
@@ -254,19 +242,22 @@ class PedidoRepositoryTest {
 
     @Test
     public void testFindByRomaneioId() {
-        Funcionario funcionario1 = funcionarioRepository.save(getFuncionarioA());
-        Funcionario funcionario2 = funcionarioRepository.save(getFuncionarioB());
+        Funcionario funcionario1 = funcionarioRepository.save(FuncionarioTest.getFuncionario1());
+        Funcionario funcionario2 = funcionarioRepository.save(FuncionarioTest.getFuncionario2());
 
-        Filial filialA = filialRepository.save(getFilialA());
-        Filial filialB = filialRepository.save(getFilialB());
+        Filial filialA = filialRepository.save(FilialTest.getFilial1());
+        Filial filialB = filialRepository.save(FilialTest.getFilial2());
 
-        Romaneio romaneio1 = getRomaneio();
-        romaneio1.setId("id1");
+        transportadorRepository.save(TransportadorTest.getTransportador());
+
+        Romaneio romaneio1 = RomaneioTest.getRomaneio();
         romaneio1 = romaneioRepository.save(romaneio1);
-        Romaneio romaneio2 = getRomaneio();
+
+        Romaneio romaneio2 = RomaneioTest.getRomaneio();
         romaneio2.setId("id2");
         romaneio2 = romaneioRepository.save(romaneio2);
-        Romaneio romaneio3 = getRomaneio();
+
+        Romaneio romaneio3 = RomaneioTest.getRomaneio();
         romaneio3.setId("id3");
         romaneio3 = romaneioRepository.save(romaneio3);
 
@@ -322,37 +313,15 @@ class PedidoRepositoryTest {
         assertThat(pedidosEncontrados.size()).isEqualTo(1);
     }
 
-    private Romaneio getRomaneio() {
-        Romaneio romaneio = new Romaneio();
-        romaneio.setId("id1");
-        romaneio.setStatus(StatusRomaneio.ABERTO);
-        romaneio.setObservacao("Observação");
-        romaneio.setTaxaFrete(3.00);
-        romaneio.setTransportador(getTransportador());
-        romaneio.setDataCriacao(LocalDateTime.now());
-        romaneio.setDataAtualizacao(LocalDateTime.now());
-        return romaneio;
-    }
-
-    private Transportador getTransportador() {
-        Transportador transportador = new Transportador();
-        transportador.setId("tid1");
-        transportador.setNome("VIP Transportadora");
-        transportador.setMotorista("Carlos");
-        transportador.setPlaca("PPP-1111");
-        transportador.setVeiculo("Mercedes-Benz");
-        transportador.setObservacao("Observacao");
-        return transportadorRepository.save(transportador);
-    }
-
     private Item getItem() {
-        ItemPedidoPK id = new ItemPedidoPK();
-        id.setPedido(getPedido());
-        id.getPedido().setId("id1");
-        id.setProduto(getProduto());
-        id.getProduto().setId("id1");
+        ItemPedidoPK pk = new ItemPedidoPK();
+        pk.setPedido(PedidoTest.getPedido());
+        pk.getPedido().setId("41bc-ab36");
+        pk.setProduto(ProdutoTest.getProduto1());
+        pk.getProduto().setId("id1");
+
         Item item = new Item();
-        item.setId(id);
+        item.setId(pk);
         item.setDescricao("Item teste");
         item.setQuantidade(1);
         item.setPreco(10.0);
@@ -360,57 +329,14 @@ class PedidoRepositoryTest {
         return item;
     }
 
-    private Produto getProduto() {
-        Produto produto = new Produto();
-        produto.setNome("Notebook");
-        produto.setDescricao("Notebook Dell Inspiron 15");
-        produto.setPreco(3500.00);
-        produto.setPeso(2.0);
-        produto.setFabricante("Dell");
-        produto.setModelo("Inspiron 15");
-        produto.setDataCriacao(LocalDateTime.now());
-        produto.setDataAtualizacao(LocalDateTime.now());
-        return produto;
-    }
-
-    private Filial getFilialA() {
-        Filial filial = new Filial();
-        filial.setId(1l);
-        filial.setNome("Filial A");
-        return filial;
-    }
-
-    private Filial getFilialB() {
-        Filial filialB = new Filial();
-        filialB.setId(2l);
-        filialB.setNome("Filial B");
-        return filialB;
-    }
-
-    private Funcionario getFuncionarioA() {
-        Funcionario funcionario = new Funcionario();
-        funcionario.setId("fidA");
-        funcionario.setNome("João");
-        funcionario.setEmail("joao@teste.com");
-        return funcionario;
-    }
-
-    private Funcionario getFuncionarioB() {
-        Funcionario funcionario = new Funcionario();
-        funcionario.setId("fidB");
-        funcionario.setNome("Maria");
-        funcionario.setEmail("maria@teste.com");
-        return funcionario;
-    }
-
     private Pedido getPedido() {
         Pedido pedido = new Pedido();
-        pedido.setId("id");
+        pedido.setId("41bc-ab36");
         pedido.setNumeroPedido(1);
-        pedido.setOrigem(getFilialA());
-        pedido.setDestino(getFilialB());
-        pedido.setRemetente(getFuncionarioA());
-        pedido.setDestinatario(getFuncionarioB());
+        pedido.setOrigem(FilialTest.getFilial1());
+        pedido.setDestino(FilialTest.getFilial2());
+        pedido.setRemetente(FuncionarioTest.getFuncionario1());
+        pedido.setDestinatario(FuncionarioTest.getFuncionario2());
         pedido.setDataPedido(LocalDateTime.now());
         pedido.setDataAtualizacao(LocalDateTime.now());
         pedido.setPrioridade(Prioridade.BAIXA);

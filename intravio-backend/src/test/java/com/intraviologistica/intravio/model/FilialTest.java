@@ -11,7 +11,11 @@ public class FilialTest {
     }
 
     public static Filial getFilial2() {
-        return new Filial(2l, "Filial Beta", EnderecoTest.getEndereco2());
+        Filial filial = new Filial();
+        filial.setId(2l);
+        filial.setNome("Filial Beta");
+        filial.setEndereco(EnderecoTest.getEndereco2());
+        return filial;
     }
 
     @Test

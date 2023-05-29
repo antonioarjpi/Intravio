@@ -1,16 +1,39 @@
 package com.intraviologistica.intravio.model;
 
+import com.intraviologistica.intravio.model.enums.AcompanhaStatus;
+import com.intraviologistica.intravio.model.enums.Prioridade;
 import com.intraviologistica.intravio.model.enums.StatusPedido;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
-class PedidoTest {
+public class PedidoTest {
+
+    public static Pedido getPedido() {
+        Pedido pedido = new Pedido();
+        pedido.setId("41bc-ab36");
+        pedido.setNumeroPedido(1);
+        pedido.setOrigem(FilialTest.getFilial1());
+        pedido.setDestino(FilialTest.getFilial2());
+        pedido.setRemetente(FuncionarioTest.getFuncionario1());
+        pedido.setDestinatario(FuncionarioTest.getFuncionario2());
+        pedido.setDataPedido(LocalDateTime.now());
+        pedido.setDataAtualizacao(LocalDateTime.now());
+        pedido.setPrioridade(Prioridade.BAIXA);
+        pedido.setImagens(List.of("imagem.png"));
+        pedido.setAcompanhaStatus(AcompanhaStatus.NAO);
+        pedido.setCodigoRastreio("c20000l");
+
+        pedido.atualizarStatus(StatusPedido.PENDENTE, "Pedido Teste");
+
+        return pedido;
+    }
 
     @Test
     void testGetValorTotal() {

@@ -217,26 +217,4 @@ public class Pedido {
     public void setNumeroPedido(Integer numeroPedido) {
         this.numeroPedido = numeroPedido;
     }
-
-    @Override
-    public String toString() {
-        return "Pedido{" +
-                "id=" + id +
-                ", numeroPedido=" + numeroPedido +
-                ", itens=" + itens +
-                ", historicoPedidos=" + historicoPedidos +
-                ", remetente=" + remetente +
-                ", destinatario=" + destinatario +
-                ", origem=" + origem +
-                ", destino=" + destino +
-                ", romaneio=" + romaneio +
-                ", imagens=" + imagens +
-                ", dataPedido=" + dataPedido +
-                ", dataAtualizacao=" + dataAtualizacao +
-                ", codigoRastreio='" + codigoRastreio + '\'' +
-                ", acompanhaStatus=" + acompanhaStatus +
-                ", statusPedido=" + statusPedido +
-                ", prioridade=" + prioridade +
-                '}';
-    }
 }
