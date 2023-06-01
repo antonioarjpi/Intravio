@@ -74,7 +74,7 @@ public class FileService {
         }
 
         response.setContentType("application/zip");
-        response.setHeader("Content-Disposition", "attachment; filename=\"contratos.zip\"");
+        response.setHeader("Content-Disposition", "attachment; filename=\"imagens.zip\"");
         zipOut.finish();
     }
 

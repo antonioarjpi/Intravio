@@ -2,6 +2,7 @@ package com.intraviologistica.intravio.controller;
 
 import com.intraviologistica.intravio.dto.FuncionarioDTO;
 import com.intraviologistica.intravio.dto.input.FuncionarioInputDTO;
+import com.intraviologistica.intravio.model.Funcionario;
 import com.intraviologistica.intravio.service.FuncionarioService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,20 +27,20 @@ public class FuncionarioController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<FuncionarioInputDTO> buscarFuncionarioPorId(@PathVariable String id) {
-        FuncionarioInputDTO funcionario = funcionarioService.buscaFuncionarioPorId(id);
+    public ResponseEntity<FuncionarioDTO> buscarFuncionarioPorId(@PathVariable String id) {
+        FuncionarioDTO funcionario = funcionarioService.buscaFuncionarioPorId(id);
         return ResponseEntity.ok(funcionario);
     }
 
     @PostMapping
-    public ResponseEntity<FuncionarioInputDTO> salvaFuncionario(@RequestBody FuncionarioInputDTO funcionarioInputDTO) {
-        FuncionarioInputDTO savedFuncionario = funcionarioService.salvaFuncionario(funcionarioInputDTO);
+    public ResponseEntity<FuncionarioDTO> salvaFuncionario(@RequestBody FuncionarioInputDTO funcionarioInputDTO) {
+        FuncionarioDTO savedFuncionario = funcionarioService.salvaFuncionario(funcionarioInputDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedFuncionario);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<FuncionarioInputDTO> atualizaFuncionario(@PathVariable String id, @RequestBody FuncionarioInputDTO funcionarioInputDTO) {
-        FuncionarioInputDTO updatedFuncionario = funcionarioService.atualizaFuncionario(id, funcionarioInputDTO);
+    public ResponseEntity<FuncionarioDTO> atualizaFuncionario(@PathVariable String id, @RequestBody FuncionarioInputDTO funcionarioInputDTO) {
+        FuncionarioDTO updatedFuncionario = funcionarioService.atualizaFuncionario(id, funcionarioInputDTO);
         return ResponseEntity.ok(updatedFuncionario);
     }
 

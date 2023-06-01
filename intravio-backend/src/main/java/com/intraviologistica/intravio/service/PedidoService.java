@@ -20,9 +20,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Service
@@ -150,12 +147,12 @@ public class PedidoService {
 
     public void envioDeEmail(Pedido pedido) {
         if (pedido.getAcompanhaStatus().ordinal() == 1) {
-            envioEmailDestinatarioPedidoPendete(pedido);
+            envioEmailDestinatarioPedidoPendente(pedido);
         } else if (pedido.getAcompanhaStatus().ordinal() == 2) {
             envioEmailRemetentePedidoPendente(pedido);
         } else if (pedido.getAcompanhaStatus().ordinal() == 3) {
             envioEmailRemetentePedidoPendente(pedido);
-            envioEmailDestinatarioPedidoPendete(pedido);
+            envioEmailDestinatarioPedidoPendente(pedido);
         }
     }
 
@@ -187,7 +184,7 @@ public class PedidoService {
     }
 
     // Armazena a foto no sistema e atribui ao pedido
-    private void salvaFotoNoPedido(MultipartFile[] files, Pedido pedido, String path) throws Exception {
+    public void salvaFotoNoPedido(MultipartFile[] files, Pedido pedido, String path) throws Exception {
         List<String> list = new ArrayList<>();
         for (int i = 0; i < files.length; i++) {
             String filename = fileService.enviaArquivo(files[i], path);
@@ -302,8 +299,7 @@ public class PedidoService {
         emailService.enviarEmail(pedido.getRemetente().getEmail(), assunto, conteudo.toString());
     }
 
-
-    private void envioEmailRemetentePedidoPendente(Pedido pedido) {
+    public void envioEmailRemetentePedidoPendente(Pedido pedido) {
         String[] nomes = pedido.getDestinatario().getNome().split(" ");
         String primeiroNome = nomes[0];
 
@@ -323,7 +319,7 @@ public class PedidoService {
         emailService.enviarEmail(pedido.getRemetente().getEmail(), assunto, conteudo.toString());
     }
 
-    private void envioEmailDestinatarioPedidoPendete(Pedido pedido) {
+    public void envioEmailDestinatarioPedidoPendente(Pedido pedido) {
         String[] nomes = pedido.getDestinatario().getNome().split(" ");
         String primeiroNome = nomes[0];
 
@@ -345,7 +341,7 @@ public class PedidoService {
         emailService.enviarEmail(pedido.getRemetente().getEmail(), assunto, conteudo.toString());
     }
 
-    private static void tabelaDeItensDoPedidoHtml(Pedido pedido, StringBuilder conteudo) {
+    public static void tabelaDeItensDoPedidoHtml(Pedido pedido, StringBuilder conteudo) {
         conteudo.append("<table border=\"1\">");
         conteudo.append("<tr><th>Produto</th><th>Quantidade</th><th>Descrição</th></tr>");
         for (Item item : pedido.getItens()) {

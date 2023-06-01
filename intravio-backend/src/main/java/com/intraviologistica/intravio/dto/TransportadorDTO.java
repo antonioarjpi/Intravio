@@ -16,16 +16,6 @@ public class TransportadorDTO {
     public TransportadorDTO() {
     }
 
-    public TransportadorDTO(String id, String nome, String motorista, String placa, String veiculo, String observacao, String cnpj) {
-        this.id = id;
-        this.nome = nome;
-        this.motorista = motorista;
-        this.placa = placa;
-        this.veiculo = veiculo;
-        this.observacao = observacao;
-        this.cnpj = cnpj;
-    }
-
     public String getId() {
         return id;
     }

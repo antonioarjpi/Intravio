@@ -35,11 +35,6 @@ public class DepartamentoService {
     }
 
     @Transactional
-    public Departamento buscarDepartamentoPorNome(String nome) {
-        return departamentoRepository.findByNomeIgnoreCase(nome);
-    }
-
-    @Transactional
     public Departamento buscarDepartamentoPorId(String id) {
         return departamentoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Departamento não encontrado com id: " + id));
@@ -66,6 +61,7 @@ public class DepartamentoService {
 
     @Transactional
     public void excluirDepartamento(String id) {
+        buscarDepartamentoPorId(id);
         departamentoRepository.deleteById(id);
     }
 

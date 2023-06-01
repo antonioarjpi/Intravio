@@ -8,6 +8,11 @@ public class AlterarSenhaDTO {
     public AlterarSenhaDTO() {
     }
 
+    public AlterarSenhaDTO(String senhaAtual, String senhaNova) {
+        this.senhaAtual = senhaAtual;
+        this.senhaNova = senhaNova;
+    }
+
     public String getSenhaAtual() {
         return senhaAtual;
     }

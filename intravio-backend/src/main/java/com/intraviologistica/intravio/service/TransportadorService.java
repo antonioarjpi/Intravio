@@ -62,6 +62,7 @@ public class TransportadorService {
 
     @Transactional
     public void deletaTransportador(String id) {
+        findById(id);
         transportadorRepository.deleteById(id);
     }
 

@@ -15,14 +15,6 @@ public class FuncionarioInputDTO {
     public FuncionarioInputDTO() {
     }
 
-    public FuncionarioInputDTO(String id, String nome, String email, String departamento, Long filial) {
-        this.id = id;
-        this.nome = nome;
-        this.email = email;
-        this.departamento = departamento;
-        this.filial = filial;
-    }
-
     public String getId() {
         return id;
     }

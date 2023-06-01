@@ -40,11 +40,6 @@ public class FilialService {
     }
 
     @Transactional
-    public Filial buscarFilialPorNome(String nome) {
-        return filialRepository.findByNome(nome);
-    }
-
-    @Transactional
     public FilialDTO buscarFilialPorId(Long id) {
         return toDTO(findById(id));
     }
@@ -86,6 +81,7 @@ public class FilialService {
 
     @Transactional
     public void excluiFilial(Long id) {
+        findById(id);
         filialRepository.deleteById(id);
     }
 

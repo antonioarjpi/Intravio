@@ -93,7 +93,7 @@ public class UsuarioService {
 
     @Transactional
     public Usuario atualizaUsuario(String id, UsuarioInputDTO dto) {
-        Usuario usuario = usuarioRepository.findById(id).get();
+        Usuario usuario = findById(id);
         usuario.setId(id);
         usuario.setPrimeiroNome(dto.getPrimeiroNome());
         usuario.setSegundoNome(dto.getSegundoNome());
@@ -124,7 +124,7 @@ public class UsuarioService {
     @Transactional
     public Usuario findById(String id) {
         return usuarioRepository.findById(id)
-                .orElseThrow(() -> new RuleOfBusinessException("Usuário não localizado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário não localizado"));
     }
 
     // Método para verificar se um e-mail já existe. Caso exista, será lançada uma exceção

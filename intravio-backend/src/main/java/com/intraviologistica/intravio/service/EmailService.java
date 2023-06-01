@@ -4,27 +4,28 @@ import com.intraviologistica.intravio.service.exceptions.RuleOfBusinessException
 import jakarta.mail.*;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Properties;
 
 @Service
-@Transactional
 public class EmailService {
 
     private final JavaMailSender mailSender;
 
+    @Value("${spring.mail.username}")
+    private String email;
+
+    @Value("${spring.mail.password}")
+    private String password;
+
+    @Autowired
     public EmailService(JavaMailSender mailSender) {
         this.mailSender = mailSender;
     }
-
-    @Value("${spring.mail.username}")
-    private String email;
-    @Value("${spring.mail.password}")
-    private String password;
 
     public void enviarEmail(String destinatario, String assunto, String conteudo) {
         Session session = getSession();

@@ -1,6 +1,6 @@
 package com.intraviologistica.intravio.controller;
 
-import com.intraviologistica.intravio.dto.input.ProdutoInputDTO;
+import com.intraviologistica.intravio.dto.ProdutoDTO;
 import com.intraviologistica.intravio.service.ProdutoService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,28 +20,28 @@ public class ProdutoController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ProdutoInputDTO>> listarProdutos() {
-        List<ProdutoInputDTO> produtos = produtoService.listaProdutos();
+    public ResponseEntity<List<ProdutoDTO>> listarProdutos() {
+        List<ProdutoDTO> produtos = produtoService.listaProdutos();
         return ResponseEntity.ok(produtos);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProdutoInputDTO> buscarProdutoPorId(@PathVariable String id) {
-        ProdutoInputDTO produto = produtoService.buscaProdutoPorIdDTO(id);
+    public ResponseEntity<ProdutoDTO> buscarProdutoPorId(@PathVariable String id) {
+        ProdutoDTO produto = produtoService.buscaProdutoPorIdDTO(id);
         return ResponseEntity.ok(produto);
     }
 
     @PostMapping
-    public ResponseEntity<ProdutoInputDTO> criarProduto(@RequestBody ProdutoInputDTO produtoInputDTO) {
-        ProdutoInputDTO produtoCriado = produtoService.salvaProduto(produtoInputDTO);
+    public ResponseEntity<ProdutoDTO> criarProduto(@RequestBody ProdutoDTO produtoDTO) {
+        ProdutoDTO produtoCriado = produtoService.salvaProduto(produtoDTO);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(produtoCriado.getId()).toUri();
         return ResponseEntity.created(location).body(produtoCriado);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProdutoInputDTO> atualizarProduto(@PathVariable String id, @RequestBody ProdutoInputDTO produtoInputDTO) {
-        ProdutoInputDTO produtoAtualizado = produtoService.atualizaProduto(id, produtoInputDTO);
+    public ResponseEntity<ProdutoDTO> atualizarProduto(@PathVariable String id, @RequestBody ProdutoDTO produtoDTO) {
+        ProdutoDTO produtoAtualizado = produtoService.atualizaProduto(id, produtoDTO);
         return ResponseEntity.ok(produtoAtualizado);
     }
 

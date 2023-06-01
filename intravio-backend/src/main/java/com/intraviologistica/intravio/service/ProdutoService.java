@@ -1,6 +1,6 @@
 package com.intraviologistica.intravio.service;
 
-import com.intraviologistica.intravio.dto.input.ProdutoInputDTO;
+import com.intraviologistica.intravio.dto.ProdutoDTO;
 import com.intraviologistica.intravio.model.Produto;
 import com.intraviologistica.intravio.repository.ProdutoRepository;
 import com.intraviologistica.intravio.service.exceptions.ResourceNotFoundException;
@@ -27,11 +27,11 @@ public class ProdutoService {
     }
 
     @Transactional
-    public List<ProdutoInputDTO> listaProdutos() {
+    public List<ProdutoDTO> listaProdutos() {
         List<Produto> produtos = produtoRepository.findAll();
         return produtos.stream()
                 .map(this::toDTO)
-                .sorted(Comparator.comparing(ProdutoInputDTO::getCodigo))
+                .sorted(Comparator.comparing(ProdutoDTO::getCodigo))
                 .collect(Collectors.toList());
     }
 
@@ -42,13 +42,13 @@ public class ProdutoService {
     }
 
     @Transactional
-    public ProdutoInputDTO buscaProdutoPorIdDTO(String id) {
+    public ProdutoDTO buscaProdutoPorIdDTO(String id) {
         return toDTO(buscaProdutoPorId(id));
     }
 
     @Transactional
-    public ProdutoInputDTO salvaProduto(ProdutoInputDTO produtoInputDTO) {
-        Produto produto = toEntity(produtoInputDTO);
+    public ProdutoDTO salvaProduto(ProdutoDTO produtoDTO) {
+        Produto produto = toEntity(produtoDTO);
         produto.setId(getUuid());
         produto.setDataCriacao(LocalDateTime.now());
         Produto produtoSalvo = produtoRepository.save(produto);
@@ -56,10 +56,10 @@ public class ProdutoService {
     }
 
     @Transactional
-    public ProdutoInputDTO atualizaProduto(String id, ProdutoInputDTO produtoInputDTO) {
+    public ProdutoDTO atualizaProduto(String id, ProdutoDTO produtoDTO) {
         Produto produto = produtoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Produto não encontrado"));
-        Produto produtoConvertido = toEntity(produtoInputDTO);
+        Produto produtoConvertido = toEntity(produtoDTO);
         produtoConvertido.setId(produto.getId());
         produtoConvertido.setDataCriacao(produto.getDataCriacao());
         Produto produtoAtualizado = produtoRepository.save(produtoConvertido);
@@ -73,7 +73,7 @@ public class ProdutoService {
         produtoRepository.delete(produto);
     }
 
-    public Produto toEntity(ProdutoInputDTO dto) {
+    public Produto toEntity(ProdutoDTO dto) {
         Produto produto = new Produto();
         produto.setId(dto.getId());
         produto.setCodigo(dto.getCodigo());
@@ -87,8 +87,8 @@ public class ProdutoService {
         return produto;
     }
 
-    public ProdutoInputDTO toDTO(Produto produto) {
-        ProdutoInputDTO dto = new ProdutoInputDTO();
+    public ProdutoDTO toDTO(Produto produto) {
+        ProdutoDTO dto = new ProdutoDTO();
         dto.setId(produto.getId());
         dto.setCodigo(produto.getCodigo());
         dto.setNome(produto.getNome());
