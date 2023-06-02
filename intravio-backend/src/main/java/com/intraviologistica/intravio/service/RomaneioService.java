@@ -92,7 +92,7 @@ public class RomaneioService {
     }
 
     @Transactional
-    public Romaneio AtualizarRomaneio(RomaneioInputDTO dto) {
+    public RomaneioDTO atualizarRomaneio(RomaneioInputDTO dto) {
         Romaneio romaneio = findById(dto.getId());
 
         if (romaneio.getStatus().ordinal() == 3) {
@@ -117,7 +117,7 @@ public class RomaneioService {
 
         romaneio = romaneioRepository.save(romaneio);
 
-        return romaneio;
+        return new RomaneioDTO(romaneio);
     }
 
     // Exclui o Romaneio se status não for igual a "FECHADO"

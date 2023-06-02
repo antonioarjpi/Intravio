@@ -200,13 +200,12 @@ public class RomaneioServiceTest {
         when(pedidoService.buscaPorNumeroPedido(1)).thenReturn(getPedido());
         when(pedidoService.salvaPedidoRetornandoEntidade(any(Pedido.class))).thenReturn(getPedido());
 
-        Romaneio romaneioAtualizado = romaneioService.AtualizarRomaneio(romaneioInputDTO);
+        RomaneioDTO romaneioAtualizado = romaneioService.atualizarRomaneio(romaneioInputDTO);
 
         verify(romaneioRepository, times(1)).findById(romaneioInputDTO.getId());
 
         ArgumentCaptor<Romaneio> romaneioCaptor = ArgumentCaptor.forClass(Romaneio.class);
         verify(romaneioRepository, times(1)).save(romaneioCaptor.capture());
-        Romaneio romaneioSalvo = romaneioCaptor.getValue();
 
         assertNotNull(romaneioAtualizado);
     }

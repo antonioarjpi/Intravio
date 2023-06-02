@@ -1,8 +1,8 @@
 package com.intraviologistica.intravio.controller;
 
+import com.intraviologistica.intravio.dto.RomaneioDTO;
 import com.intraviologistica.intravio.dto.input.RomaneioFechamentoDTO;
 import com.intraviologistica.intravio.dto.input.RomaneioInputDTO;
-import com.intraviologistica.intravio.dto.RomaneioDTO;
 import com.intraviologistica.intravio.model.Romaneio;
 import com.intraviologistica.intravio.service.RomaneioService;
 import jakarta.validation.Valid;
@@ -42,9 +42,9 @@ public class RomaneioController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Romaneio> atualizarRomaneio(@PathVariable String id, @Valid @RequestBody RomaneioInputDTO romaneioInputDTO) {
+    public ResponseEntity<RomaneioDTO> atualizarRomaneio(@PathVariable String id, @Valid @RequestBody RomaneioInputDTO romaneioInputDTO) {
         romaneioInputDTO.setId(id);
-        return ResponseEntity.ok(romaneioService.AtualizarRomaneio(romaneioInputDTO));
+        return ResponseEntity.ok(romaneioService.atualizarRomaneio(romaneioInputDTO));
     }
 
     @PutMapping("/{id}/status/{status}")
@@ -55,12 +55,8 @@ public class RomaneioController {
 
     @PutMapping("/{id}/processar")
     public ResponseEntity<Void> processarRomaneio(@PathVariable String id) {
-        //try{
         romaneioService.processarRomaneio(id);
         return ResponseEntity.noContent().build();
-//        }catch (Exception e){
-//            return ResponseEntity.internalServerError().build();
-//        }
     }
 
     @PutMapping("/{id}/fechamento")
