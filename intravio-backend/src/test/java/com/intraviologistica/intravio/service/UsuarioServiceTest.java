@@ -1,5 +1,7 @@
 package com.intraviologistica.intravio.service;
 
+import com.intraviologistica.intravio.dto.CredenciaisDTO;
+import com.intraviologistica.intravio.dto.TokenDTO;
 import com.intraviologistica.intravio.dto.UsuarioDTO;
 import com.intraviologistica.intravio.dto.input.AlterarSenhaDTO;
 import com.intraviologistica.intravio.dto.input.UsuarioInputDTO;
@@ -7,6 +9,7 @@ import com.intraviologistica.intravio.model.Usuario;
 import com.intraviologistica.intravio.model.enums.Perfil;
 import com.intraviologistica.intravio.repository.UsuarioRepository;
 import com.intraviologistica.intravio.security.JwtService;
+import com.intraviologistica.intravio.service.exceptions.AuthenticateErrorException;
 import com.intraviologistica.intravio.service.exceptions.ResourceNotFoundException;
 import com.intraviologistica.intravio.service.exceptions.RuleOfBusinessException;
 import org.junit.jupiter.api.Assertions;
@@ -16,14 +19,15 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 public class UsuarioServiceTest {
@@ -75,7 +79,7 @@ public class UsuarioServiceTest {
     }
 
     @Test
-    public void testCadastrarUsuario_ErroQyabdiEmailJaExistente() {
+    public void testCadastrarUsuario_ErroQuandoEmailJaExistente() {
         String email = "usuario@example.com";
 
         UsuarioInputDTO dto = new UsuarioInputDTO();
@@ -105,6 +109,58 @@ public class UsuarioServiceTest {
 
         verify(usuarioRepository, times(1)).findByEmail(email); // Verifique se o método findByEmail() do repository foi chamado uma vez com o email correto
     }
+
+    @Test
+    public void testFazerLogin_QuandoSucesso() {
+        CredenciaisDTO dto = new CredenciaisDTO();
+        dto.setEmail("antonio@email.com");
+        dto.setSenha("senha");
+
+        Usuario usuario = new Usuario();
+        usuario.setEmail("antonio@email.com");
+        usuario.setSenha(passwordEncoder.encode("senha"));
+
+        when(usuarioRepository.findByEmail(dto.getEmail())).thenReturn(java.util.Optional.of(usuario));
+
+        when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class))).thenReturn(mock(Authentication.class));
+
+        when(jwtService.generateToken(usuario)).thenReturn("jwtToken");
+
+        when(passwordEncoder.matches(dto.getSenha(), usuario.getSenha())).thenReturn(true);
+
+        TokenDTO result = usuarioService.fazerLogin(dto);
+
+
+        assertNotNull(result); // Verificar se resultado não é nulo
+        assertEquals("jwtToken", result.getToken()); // Verificar se o token foi gerado
+
+        // Verificar se os métodos foram chamados corretamente
+        verify(usuarioRepository).findByEmail(dto.getEmail());
+        verify(authenticationManager).authenticate(any(UsernamePasswordAuthenticationToken.class));
+        verify(jwtService).generateToken(usuario);
+    }
+
+    @Test
+    public void testFazerLogin_QuandoSenhaForInvalida() {
+        CredenciaisDTO dto = new CredenciaisDTO();
+        dto.setEmail("antonio@email.com");
+        dto.setSenha("senha");
+
+        Usuario usuario = new Usuario();
+        usuario.setEmail("antonio@email.com");
+        usuario.setSenha(passwordEncoder.encode("senhaErrada"));
+
+        when(usuarioRepository.findByEmail(dto.getEmail())).thenReturn(java.util.Optional.of(usuario));
+
+        when(passwordEncoder.matches(dto.getSenha(), usuario.getSenha())).thenReturn(false);
+
+        assertThrows(AuthenticateErrorException.class, () -> usuarioService.fazerLogin(dto)); // Executar o método a ser testado e verificar se lança a exceção esperada
+
+        verify(usuarioRepository).findByEmail(dto.getEmail());
+        verify(passwordEncoder).matches(dto.getSenha(), usuario.getSenha());
+        verifyNoMoreInteractions(authenticationManager, jwtService);
+    }
+
 
     @Test
     public void testEncontraUsuarioPorEmail_UsuarioNaoEncontrado() {

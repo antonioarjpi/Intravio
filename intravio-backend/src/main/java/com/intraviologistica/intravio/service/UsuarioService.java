@@ -8,6 +8,7 @@ import com.intraviologistica.intravio.dto.input.UsuarioInputDTO;
 import com.intraviologistica.intravio.model.Usuario;
 import com.intraviologistica.intravio.repository.UsuarioRepository;
 import com.intraviologistica.intravio.security.JwtService;
+import com.intraviologistica.intravio.service.exceptions.AuthenticateErrorException;
 import com.intraviologistica.intravio.service.exceptions.ResourceNotFoundException;
 import com.intraviologistica.intravio.service.exceptions.RuleOfBusinessException;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -138,7 +139,7 @@ public class UsuarioService {
         boolean matches = passwordEncoder.matches(dto.getSenha(), usuario.getSenha()); // Verifica se a senha criptografada armazenada é igual à senha enviada no DTO e retorna verdadeiro em caso afirmativo
 
         if (!matches) {
-            throw new RuleOfBusinessException("Senha incorreta."); // Caso o matches for falso, retorna uma exceção
+            throw new AuthenticateErrorException("Senha incorreta."); // Caso o matches for falso, retorna uma exceção
         }
     }
 

@@ -46,14 +46,6 @@ public class UsuarioDTO {
         this.email = email;
     }
 
-    public Perfil getRole() {
-        return perfil;
-    }
-
-    public void setRole(Perfil perfil) {
-        this.perfil = perfil;
-    }
-
     public String getId() {
         return id;
     }

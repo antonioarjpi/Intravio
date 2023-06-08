@@ -25,11 +25,6 @@ public class JwtService {
     @Value("${jwt.expiration}")
     private Long expiration;
 
-    public JwtService(String encodeToString, long expirationTime) {
-        this.expiration = expirationTime;
-        this.secret_key = encodeToString;
-    }
-
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }

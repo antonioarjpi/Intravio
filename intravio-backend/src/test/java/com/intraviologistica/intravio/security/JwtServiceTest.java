@@ -12,6 +12,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.lang.reflect.Field;
 import java.security.Key;
 import java.util.Base64;
 import java.util.Collections;
@@ -31,9 +32,16 @@ class JwtServiceTest {
     private JwtService jwtService;
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws IllegalAccessException, NoSuchFieldException {
         MockitoAnnotations.openMocks(this);
-        jwtService = new JwtService(Base64.getEncoder().encodeToString(SECRET_KEY.getEncoded()), EXPIRATION_TIME);
+        jwtService = new JwtService();
+        Field secretKeyField = JwtService.class.getDeclaredField("secret_key");
+        secretKeyField.setAccessible(true);
+        secretKeyField.set(jwtService, Base64.getEncoder().encodeToString(SECRET_KEY.getEncoded()));
+
+        Field expirationField = JwtService.class.getDeclaredField("expiration");
+        expirationField.setAccessible(true);
+        expirationField.set(jwtService, EXPIRATION_TIME);
     }
 
     @Test
