@@ -13,7 +13,7 @@
                 <div class="w-10">
                     <button mat-mini-fab (click)="abrePesquisa = !abrePesquisa"
                         color="secondary">
-                        <mat-icon>search</mat-icon>
+                        <mat-icon>{{abrePesquisa ? "clear" : "search"}}</mat-icon>
                     </button>
                     <button mat-mini-fab routerLink="/usuarios/cadastrar" class="mat-elevation-z8" color="primary">
                         <mat-icon>add</mat-icon>

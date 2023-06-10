@@ -14,7 +14,7 @@ import { FuncionarioService } from 'src/app/services/funcionario.service';
   templateUrl: './funcionario-atualizar.component.html',
   styleUrls: ['./funcionario-atualizar.component.css']
 })
-export class FuncionarioAtualizarComponent implements OnInit{
+export class FuncionarioAtualizarComponent implements OnInit {
 
   nome: UntypedFormControl = new UntypedFormControl(null, Validators.minLength(3));
   email: UntypedFormControl = new UntypedFormControl(null, Validators.email);
@@ -39,10 +39,8 @@ export class FuncionarioAtualizarComponent implements OnInit{
     private route: ActivatedRoute
   ) { };
 
-  ngOnInit(): void{
+  ngOnInit(): void {
     this.funcionario.id = this.route.snapshot.paramMap.get("id");
-
-    this.buscarPorId();
 
     this.departamentoService.findAll().subscribe((response) => {
       this._departamento = response
@@ -51,11 +49,16 @@ export class FuncionarioAtualizarComponent implements OnInit{
     this.filialService.findAll().subscribe((response) => {
       this._filial = response
     })
+
+    this.buscarPorId();
+
   };
 
-  buscarPorId(): void{
+  buscarPorId(): void {
     this.service.findById(this.funcionario.id).subscribe((response) => {
       this.funcionario = response;
+      this.funcionario.departamento = this._departamento.find(obj => obj.nome === response.departamento).id //Busca o departamento que veio na resposta e insere no funcionário
+      this.funcionario.filial = this._filial.find(obj => obj.nome === response.filial.toString()).id; //Busca a Filial que veio na resposta e insere no funcionário
     })
   }
 
